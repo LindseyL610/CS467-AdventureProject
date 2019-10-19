@@ -1,0 +1,30 @@
+{
+	"ID" : "",
+	"long_text" : "",
+	"short_text" : "",
+	"exits" : [
+		{
+			"ID" : "",		
+			"text" : "",
+			"direction" : "",
+			"next_room" : ""
+		}
+	]
+
+}
+
+
+{
+	"ID" : "",
+	"long_text" : "",
+	"short_text" : "",
+	"exits" : [
+		{
+			"ID" : "",		
+			"text" : "",
+			"direction" : "",
+			"next_room" : ""
+		}
+	]
+
+}
