@@ -8,6 +8,7 @@
 import os
 import datetime
 import sys
+import Game
 
 DEBUG_MODE = False
 
@@ -257,18 +258,14 @@ def prompt():
 		process_command(input_str)
 
 # Display title screen
-print("title screen placeholder")
+#print("title screen placeholder")
 
 # Display menu screen for loading saved game or creating new game
-loaded = load_menu(True)
+#loaded = load_menu(True)
 
 # Prompt for game input
-if loaded:
-	prompt()
+#if loaded:
+#	prompt()
 
-
-
-
-
-
-
+game = Game.Game()
+game.prompt()
