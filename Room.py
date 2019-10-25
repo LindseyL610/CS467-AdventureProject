@@ -1,5 +1,6 @@
 import os
 import json
+import Exit
 
 class Room:
 	def __init__(self, id):
@@ -20,11 +21,20 @@ class Room:
 		self.id = data['id']
 		self.long_description = data['long_description']
 		self.short_description = data['short_description']
-		self.exits = data['exits']
+		
+
+		self.exits = dict()				
+
+		print(data["exits"])
+
+		for dir in data["exits"]:
+			if data["exits"][dir] is not None:
+				self.exits[dir] = Exit.Exit(data["exits"][dir])
+			else:
+				self.exits[dir] = None
 
 		self.actions = {}
 
 		self.status = {"visited" : False,
                      "objects" : []
                     }
-

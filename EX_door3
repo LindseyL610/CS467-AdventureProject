@@ -1,0 +1,4 @@
+{
+  "id": "door3",
+  "rooms": [ "test0", "test3" ]
+}

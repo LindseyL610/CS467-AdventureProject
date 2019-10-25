@@ -1,1 +1,4 @@
-data:Placeholder Game state data for Test1 at 2019-10-19 12:30:53.308706
+{
+	"user_name" : "Test1",
+	"current_room" : "balcony"
+}
