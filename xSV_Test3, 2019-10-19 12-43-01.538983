@@ -1,0 +1,27 @@
+{
+	"user_name": "Test3",
+	"current_room": "room0",
+	"bag": [ "bag_item4", "bag_item5", "bag_item6" ],
+	"rooms": {
+		"room0": {
+			"native_items": [ "default_item1", "default_item2" ],
+			"dropped_items": null
+		},
+		"room1": {
+			"native_items": null,
+			"dropped_items": null
+		},
+		"room2": {
+			"native_items": [ "default_item5" ],
+			"dropped_items": [ "default_item4" ]
+		},
+		"room3": {
+			"native_items": [ "default_item6" ],
+			"dropped_items": null
+		},
+		"room4": {
+			"native_items": null,
+			"dropped_items": [ "default_item3" ]
+		}
+	}
+}

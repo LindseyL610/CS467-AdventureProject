@@ -1,0 +1,12 @@
+{
+	"id": "room2",
+	"long_description": "You are in room room2 (south from room0). - long description",
+	"short_description": "You are in room room2 (south from room0). - short description",
+	"exits": {
+		"north": "door2",
+		"south": null,
+		"east": null,
+		"west": null
+	},
+	"default_items": [ "default_item5" ]
+}

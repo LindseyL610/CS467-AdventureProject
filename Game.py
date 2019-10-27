@@ -7,7 +7,10 @@ import sys
 ROOM = "RM_"
 SAVE = "SV_"
 EXIT = "EX_"
+FEATURE = "FE_"
+
 DEBUG_MODE = True
+DEFAULT = "config"
 
 def toggle_debug(input):
 	global DEBUG_MODE
@@ -36,8 +39,6 @@ def debug(output):
 
 class Game:
 	def __init__(self):
-		self.rooms = self.load_rooms()
-
 #		for room in self.rooms:
 #			print("id= " + self.rooms[room].id)
 #			print("long_description= " + self.rooms[room].long_description)
@@ -46,11 +47,10 @@ class Game:
 #			print("actions= " + str(self.rooms[room].actions))
 #			print("status= " + str(self.rooms[room].status))
 
+		self.rooms = self.load_rooms()
+
 		self.load_menu(True)
 
-		print(str(self.rooms))
-
-		print(str(self.current_room))
 
 	def load_data_from_file(self, file_name):
 		file = open(file_name, "r")
@@ -60,8 +60,7 @@ class Game:
 
 		file.close()
 
-		self.user_name = data['user_name']
-		self.current_room = data['current_room']
+		return data
 
 
 	def get_file_names(self, type):
@@ -164,13 +163,20 @@ class Game:
 			#NOTE: The following file read functionality was adapted from: https://www.guru99.com/reading-and-writing-files-in-python.html#3
 			f = open(match, "r")
 			if f.mode is 'r':
-				self.load_data_from_file(match)
+				data = self.load_data_from_file(match)
 				self.current_file = match
 			f.close()
 			print("Game loaded!")
 		else:
 			print("Error loading game file!")
 			return
+
+		self.user_name = data['user_name']
+		self.current_room = data['current_room']
+		self.bag = data['bag'].copy()
+
+		for room in data["rooms"]:
+			self.rooms[room].set_state(data["rooms"][room])
 
 		#debug("user_name=" + user_name)
 		#debug("new_game=" + str(new_game))
@@ -179,15 +185,15 @@ class Game:
 
 
 	def create_new_game(self):
-		#NOTE: Globals need to be removed once Game class is implemented
-		global user_name
-		global new_game
-		global game_data
+		data = self.load_data_from_file(DEFAULT)
+		self.current_file = None
 
 		self.user_name = input("Enter your name: ")
-		time = str(datetime.datetime.now())
-
-		self.load_data_from_file("config")
+		self.current_room = data['start_room']
+		self.bag = list()
+		
+		for room in self.rooms:
+			self.rooms[room].set_state(None)
 
 	def load_rooms(self):
 		rooms = dict()
@@ -198,6 +204,40 @@ class Game:
 			rooms[name] = Room.Room(name)
 
 		return rooms
+
+	def save_game(self):
+
+		data = dict()
+
+		data["user_name"] = self.user_name
+		data["current_room"] = self.current_room
+		data["bag"] = self.bag.copy()
+
+		data["rooms"] = dict()
+		for room in self.rooms:
+			data["rooms"][room] = self.rooms[room].state.copy()
+
+		new_filename = "SV_" + self.user_name + ", " + str(datetime.datetime.now()).replace(":", "-")
+	
+		if self.current_file is None:
+			retrieve_file = new_filename
+			new_game = True
+		else:
+			retrieve_file = self.current_file
+			new_game = False
+
+		f = open (retrieve_file, "w")
+
+		f.truncate(0)
+		f.write(json.dumps(data))
+		f.close()
+	
+		if not new_game:
+			os.rename(retrieve_file, new_filename)
+
+		self.current_file = new_filename
+		print("Game saved!")
+
 
 	def go(self, direction):
 		origin = self.current_room
@@ -214,21 +254,68 @@ class Game:
 		else:
 			print ("There is nowhere to go in that direction!")
 
+	# checks if item is in the room, and if so, removes it from the room and adds to the bag
+	def take_item(self, item):
+		if self.rooms[self.current_room].check_item(item):
+			#remove item from room
+			self.rooms[self.current_room].remove_item(item)
+
+			#put item in bag
+			self.bag.append(item)
+
+			print("The " + item + " is now in your bag.")
+
+			return True
+
+		else:
+			print("You can't take the " + item + "!")
+
+			return False
+
+	# checks if item is in inventory and if so, removes it and adds it to the current room
+	def drop_item(self, item):
+		if item in self.bag:
+			self.rooms[self.current_room].add_dropped_item(item)
+			self.bag.remove(item)
+			print("You dropped the " + item + " in the " + self.current_room + ".")
+
+			return True
+
+		else:
+			print("You don't have the " + item + "!")
+
+			return False
 
 	def prompt(self):
-		if not self.rooms[self.current_room].status['visited']:
-			print(self.rooms[self.current_room].long_description)
-		else:
-			print(self.rooms[self.current_room].short_description)
+		debug("current room: " + str(self.current_room))
+		debug("room state: " + str(self.rooms[self.current_room].state))
+		debug("bag: " + str(self.bag))
 
+		print(self.rooms[self.current_room].get_prompt())
 		input_str = input("> ")
 
 		return input_str
 
 
 
-
 game = Game()
 
+#Test moving from room to room
 while True:
 	game.go(game.prompt())
+
+
+
+
+
+#Test take item
+#while True:
+	#game.take_item(game.prompt())
+
+#Test drop item
+#game.take_item("default_item1")
+#while True:
+	#game.drop_item(game.prompt())
+
+#game.save_game()
+

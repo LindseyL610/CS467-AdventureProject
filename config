@@ -1,4 +1,3 @@
 {
-  "user_name" :  null,
-  "current_room": "test0"
+	"start_room": "room0"
 }

@@ -1,4 +1,4 @@
 {
   "id": "door4",
-  "rooms": [ "test0", "test4" ]
+	"rooms": [ "room0", "room4" ]
 }

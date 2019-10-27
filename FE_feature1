@@ -1,0 +1,18 @@
+{
+	"id": "feature1_jar",
+	"state": null,
+	"actions": {
+		"look": "looked",
+		"smash": "smashed"
+	},
+	"items": {
+		"smashed": "door key"
+	},
+	"display": {
+		"default" : "There is a glass jar in the middle of the room.",
+		"looked": "Upon closer inspection, there is a key inside the jar!",
+		"smashed": "The jar has been completely smashed."
+	}
+
+
+}

@@ -16,40 +16,6 @@ import Game
 
 
 
-def save_game():
-	global current_file
-	global new_game
-	
-	new_filename = "SV_" + user_name + ", " + str(datetime.datetime.now()).replace(":", "-")
-	
-	if new_game:
-		retrieve_file = new_filename
-	else:
-		retrieve_file = current_file
-	
-	f = open (retrieve_file, "w")
-
-	f.truncate(0)
-	f.write("data:" + game_data)
-	f.close()
-	
-	if not new_game:
-		os.rename(retrieve_file, new_filename)
-
-	current_file = new_filename
-	new_game = False
-	print("Game saved!")
-
-	debug("user_name=" + user_name)
-	debug("new_game=" + str(new_game))
-	debug("game_data=" + game_data)
-	debug("current_file=" + current_file)
-
-
-	
-
-
-
 def process_command(input):
 	ret_val = True
 
