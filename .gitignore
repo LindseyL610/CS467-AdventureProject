@@ -1,5 +1,19 @@
 
+<<<<<<< HEAD
 Tower Escape/.vs/slnx.sqlite
 Tower Escape/.vs/slnx.sqlite
 Tower Escape/.vs/Tower Escape/v16/.suo
 Tower Escape/.vs/VSWorkspaceState.json
+=======
+.vs/CS467-AdventureProject/v16/.suo
+*.pyc
+Tower Escape/.vs/ProjectSettings.json
+*.sqlite
+*.sqlite
+*.sqlite
+Tower Escape/.vs/ProjectSettings.json
+Tower Escape/.vs/slnx.sqlite
+Tower Escape/.vs/ProjectSettings.json
+>>>>>>> 32f894d71173352518def77dc6771f4356724a80
+Tower Escape/.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
