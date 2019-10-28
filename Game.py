@@ -1,8 +1,9 @@
-﻿import Room
+import Room
 import os
 import json
 import datetime
 import sys
+import parser_class
 
 ROOM = "RM_"
 SAVE = "SV_"
@@ -46,6 +47,8 @@ class Game:
 #			print("exits= " + str(self.rooms[room].exits))
 #			print("actions= " + str(self.rooms[room].actions))
 #			print("status= " + str(self.rooms[room].status))
+
+		self.parser = parser_class.Parser()
 
 		self.rooms = self.load_rooms()
 
@@ -293,29 +296,11 @@ class Game:
 
 		print(self.rooms[self.current_room].get_prompt())
 		input_str = input("> ")
-
-		return input_str
-
+		self.parser.parse_input(self, input_str)
 
 
 game = Game()
 
-#Test moving from room to room
+
 while True:
-	game.go(game.prompt())
-
-
-
-
-
-#Test take item
-#while True:
-	#game.take_item(game.prompt())
-
-#Test drop item
-#game.take_item("default_item1")
-#while True:
-	#game.drop_item(game.prompt())
-
-#game.save_game()
-
+	game.prompt()
