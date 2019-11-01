@@ -65,11 +65,32 @@ class Action:
 				Action.go_action(game, action_args)
 			else:
 				print("You cannot do that.")
+		elif Action.perform_special_action(game, action_args):
+			return
 		elif action_args[0] == "take":
 			game.take_item(action_args[1])
 		elif action_args[0] == "drop":
-			game.drop_itme(action_args[1])
+			game.drop_item(action_args[1])
 
 	#staticmethod
 	def go_action(game, action_args):
 		game.go(action_args[0])
+
+	#staticmethod
+	def perform_special_action(game, action_args):
+		special_action = False
+		ob = action_args[1]
+	
+		for obj in game.rooms[game.current_room].items:
+			if obj.id == ob:
+				ob = obj
+				special_action = True
+				break
+
+		if special_action == False:
+			return False
+			
+		else:
+			for act in ob.actions:
+				if act == action_args[0]:
+					ob.perform_action(game, action_args[0])

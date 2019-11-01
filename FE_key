@@ -1,0 +1,16 @@
+{
+        "id": "key",
+        "state": null,
+        "actions": {
+                "use": "used"
+        },
+        "items": {
+        },
+        "display": {
+                "default" : "There is a key lying on the ground.",
+		"used": "You unlocked the door."
+        }
+
+
+}
+

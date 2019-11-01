@@ -4,6 +4,7 @@ import json
 import datetime
 import sys
 import parser_class
+import Feature
 
 ROOM = "RM_"
 SAVE = "SV_"
@@ -51,6 +52,8 @@ class Game:
 		self.parser = parser_class.Parser()
 
 		self.rooms = self.load_rooms()
+
+		self.current_room = ""
 
 		self.load_menu(True)
 
@@ -290,7 +293,7 @@ class Game:
 			return False
 
 	def prompt(self):
-		debug("current room: " + str(self.current_room))
+		debug("\ncurrent room: " + str(self.current_room))
 		debug("room state: " + str(self.rooms[self.current_room].state))
 		debug("bag: " + str(self.bag))
 

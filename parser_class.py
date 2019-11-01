@@ -7,7 +7,7 @@ class Parser:
 		self.speech_dict = self.init_parts_of_speech()
 		self.action_args = []
 		self.parts_of_speech = []
-		self.debug = None # Temporary for debugging
+		self.debug = False # Temporary for debugging
 
 	# Temporary method for debugging
 	def print_parsed(self):
@@ -101,8 +101,11 @@ class Parser:
 			"help": "verb",
 			"jump": "verb",
 			"drop": "verb",
+			"open": "verb",
+			"use": "verb",
 			"book": "object",
-			"door1": "object",
+			"door": "object",
+			"key": "object",
 			"north": "direction",
 			"south": "direction",
 			"east": "direction",

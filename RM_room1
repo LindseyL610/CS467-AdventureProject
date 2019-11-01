@@ -8,5 +8,5 @@
 		"east": null,
 		"west": null
 	},
-	"default_items": [ "default_item3", "default_item4" ]
+	"items": []
 }

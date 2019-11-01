@@ -1,6 +1,7 @@
 import os
 import json
 import Exit
+import Feature
 
 class Room:
 	def __init__(self, id):
@@ -14,6 +15,7 @@ class Room:
 		self.short_description = data['short_description']
 
 		self.exits = dict()
+		self.items = list()
 
 		#debug(data["exits"])
 
@@ -23,7 +25,8 @@ class Room:
 			else:
 				self.exits[dir] = None
 
-		self.default_items = data["default_items"]
+		for item in data["items"]:
+			self.items.append(Feature.Feature(item))
 
 	def get_room_data(self):
 		files = os.listdir(os.path.dirname(os.path.realpath(__file__)))
@@ -49,13 +52,6 @@ class Room:
 
 			self.state["visited"] = False
 
-			if self.default_items is not None:
-				self.state["native_items"] = self.default_items.copy()
-			else:
-				self.state["native_items"] = list()
-
-			self.state["dropped_items"] = list()
-
 		#or use state data passed as arg
 		else:
 			self.state = state.copy()
@@ -68,26 +64,18 @@ class Room:
 		else:
 			prompt = self.short_description
 
-		if len(self.state["dropped_items"]) is not 0:
-			for item in self.state["dropped_items"]:
-				prompt = prompt + " The " + item + " is where you dropped it."
-
 		return prompt
 
 	def check_item(self, item):
-		all_items = self.state["native_items"] + self.state["dropped_items"]
+		for itm in self.items:
+			if itm.id == item:	
+				return True
 
-		if item in all_items:
-			return True
-
-		else:
-			return False
+		return False
 
 	def remove_item(self, item):
-		if item in self.state["native_items"]:
-			self.state["native_items"].remove(item)
-		elif item in self.state["dropped_items"]:
-			self.state["dropped_items"].remove(item)
+		if item in self.items:
+			self.items.remove(item)
 
 	def add_dropped_item(self, item):
-		self.state["dropped_items"].append(item)
+		self.items.append(Feature.Feature(item))
