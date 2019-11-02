@@ -4,12 +4,11 @@ import json
 import datetime
 import sys
 import parser_class
+import Exit
 import Feature
 
-ROOM = "RM_"
-SAVE = "SV_"
-EXIT = "EX_"
-FEATURE = "FE_"
+OBJECTS = "OB"
+SAVES = "SV"
 
 DEBUG_MODE = True
 DEFAULT = "config"
@@ -41,19 +40,13 @@ def debug(output):
 
 class Game:
 	def __init__(self):
-#		for room in self.rooms:
-#			print("id= " + self.rooms[room].id)
-#			print("long_description= " + self.rooms[room].long_description)
-#			print("short_description= " + self.rooms[room].short_description)
-#			print("exits= " + str(self.rooms[room].exits))
-#			print("actions= " + str(self.rooms[room].actions))
-#			print("status= " + str(self.rooms[room].status))
 
 		self.parser = parser_class.Parser()
 
-		self.rooms = self.load_rooms()
+		self.object_data = self.load_data_from_file(OBJECTS)
+		self.game_data = self.load_data_from_file(SAVES)
 
-		self.current_room = ""
+		#self.current_room = ""
 
 		self.load_menu(True)
 
@@ -68,27 +61,67 @@ class Game:
 
 		return data
 
+	def load_menu(self, initial):
+		i = 1
 
-	def get_file_names(self, type):
-		type_files = list()
-	
-		files = os.listdir(os.path.dirname(os.path.realpath(__file__)))
+		load_names = dict()
 
-		for name in files:
-			if name.find(type) is 0:
-				type_files.append(name)
+		for save in self.game_data["saves"]:
+			name = self.game_data["saves"][save]["data"]["player"]["name"]
+			time = self.game_data["saves"][save]["time"]
 
-		return type_files
+			display = name + ", " + time
 
-	def get_object_names(self, type):
-		object_names = list()
+			display_obj = dict()
 
-		files = self.get_file_names(type)
+			display_obj["display"] = display
+			display_obj["id"] = save
 
-		for name in files:
-			object_names.append(name[3:])
+			load_names[str(i)] = display_obj.copy()
+			i += 1
 
-		return object_names
+		if not initial and len(load_names) is 0:
+			print("No saved games found!")
+			return
+
+		create_idx = str(len(load_names))
+		quit_idx = str(len(load_names)+1)
+
+		if initial:
+			print("Select a saved game to load, or create a new game.")
+		else:
+			print("Select a saved game to load.")
+
+		for i in load_names:
+			print(i + ". " + load_names[i]["display"])
+
+		if initial:
+			create_idx = str(len(load_names)+1)
+			quit_idx = str(len(load_names)+2)
+			max = len(load_names)+2
+			print(create_idx + ". Create New Game")
+			print(quit_idx + ". Quit")
+
+		else:
+			back_idx = str(len(load_names)+1)
+			max = len(load_names)+1
+			print(back_idx + ". Go back")
+
+		selection = self.validate_input(1, max)
+
+		if initial:
+			if int(selection) is (max-1):
+				debug("creating new game")
+				self.create_new_game()
+				return True
+		
+		if int(selection) is max:
+				return False
+
+		debug("loading saved game: " + str(load_names[selection]["display"]))
+		self.load_saved_game(load_names[selection]["id"])
+
+		return True
 
 	def validate_input(self, min, max):
 		global DEBUG_MODE
@@ -114,160 +147,143 @@ class Game:
 
 		return selection
 
-	def load_menu(self, initial):
-		i = 1
-		load_names = self.get_object_names(SAVE)
+	def create_new_game(self):
+		# Create a new player --for now this is just a generic object
+		self.player = {}
+		self.player["name"] = input("Enter your name: ")
 
-		if not initial and len(load_names) is 0:
-			print("No saved games found!")
-			return
-
-		if initial:
-			print("Select a saved game to load, or create a new game.")
-		else:
-			print("Select a saved game to load.")
-
-		for name in load_names:
-			print(str(i) + ". " + name)
-			i = i + 1
-
-		if initial:
-			print(str(i) + ". Create New Game")
-			i = i + 1
-			print(str(i) + ". Quit")
-		else:
-			print(str(i) + ". Go back")
-
-		selection = self.validate_input(1, i)
-
-		if initial:
-			if int(selection) is (i-1):
-				self.create_new_game()
-				return True
+		# These are data attributes for the saved game --currently not saved
+		self.current_save = None #index of game in "saves" list
+		self.timestamp = None #timestamp for when game was last saved
 		
-		if int(selection) is i:
-				return False
+		# Here the default game state data is loaded
+		self.state = self.game_data["default"].copy()
 
-		idx = int(selection) - 1
-		debug("loading saved game: " + str(load_names[idx]))
-		self.load_saved_game(load_names[idx])
+		# Load up instances of all objects for a new game
+		self.construct_all_objects(True)
 
-		return True
+	def construct_all_objects(self, new):
+		self.objects = dict()
+		
+		# for each object
+		for object in self.object_data:
+			# get the object type
+			type = object["type"]
 
-	def load_saved_game(self, load_name):
+			# get the object data
+			data = object["data"]
+
+			# get the object id
+			id = data["id"]
+
+			# if this is a new game
+			if new:
+				# use the default state provided in the object data
+				state = object["default_state"]
+			# if this game is loaded from a saved game
+			else:
+				# use the saved state data
+				state = self.game_data["saves"][self.current_save]["data"]["object_state"][id].copy()
+
+			# construct an instance of that object
+			self.objects[id] = self.construct_single_object(type, data, state)
+
+	def construct_single_object(self, type, data, state):
+		ret_obj = None
+		
+		# Call the appropriate constructor for the object type
+		if type == "room":
+			ret_obj = Room.Room(data, state)
+		elif type == "exit":
+			ret_obj = Exit.Exit(data, state)
+		elif type == "feature":
+			ret_obj = Feature.Feature(data, state)
+
+		return ret_obj
+
+	def load_saved_game(self, id):
 		debug("load_saved_game()")
 
-		files = self.get_file_names(SAVE)
-		debug(files)
+		# Load player object from saved game data based on ID
+		self.player = self.game_data["saves"][id]["data"]["player"].copy()
 
-		for name in files:
-			if name.find(load_name) is 3:
-				debug("matching file: " + name)
-				match = name
-
-		if match:
-			#NOTE: The following file read functionality was adapted from: https://www.guru99.com/reading-and-writing-files-in-python.html#3
-			f = open(match, "r")
-			if f.mode is 'r':
-				data = self.load_data_from_file(match)
-				self.current_file = match
-			f.close()
-			print("Game loaded!")
-		else:
-			print("Error loading game file!")
-			return
-
-		self.user_name = data['user_name']
-		self.current_room = data['current_room']
-		self.bag = data['bag'].copy()
-
-		for room in data["rooms"]:
-			self.rooms[room].set_state(data["rooms"][room])
-
-		#debug("user_name=" + user_name)
-		#debug("new_game=" + str(new_game))
-		#debug("game_data=" + game_data)
-		#debug("current_file=" + current_file)
-
-
-	def create_new_game(self):
-		data = self.load_data_from_file(DEFAULT)
-		self.current_file = None
-
-		self.user_name = input("Enter your name: ")
-		self.current_room = data['start_room']
-		self.bag = list()
+		# These are data attributes for the saved game 
+		self.current_save = id #index of game in "saves" list
+		self.timestamp = self.game_data["saves"][id]["time"]
 		
-		for room in self.rooms:
-			self.rooms[room].set_state(None)
+		# Here the saved game state data is loaded
+		self.state = self.game_data["saves"][id]["data"]["game_state"].copy()
 
-	def load_rooms(self):
-		rooms = dict()
-				
-		room_names = self.get_object_names(ROOM)
-
-		for name in room_names:
-			rooms[name] = Room.Room(name)
-
-		return rooms
+		# Load up instances of all objects for the saved game
+		self.construct_all_objects(False)
 
 	def save_game(self):
-
 		data = dict()
 
-		data["user_name"] = self.user_name
-		data["current_room"] = self.current_room
-		data["bag"] = self.bag.copy()
+		new_save = dict()
 
-		data["rooms"] = dict()
-		for room in self.rooms:
-			data["rooms"][room] = self.rooms[room].state.copy()
+		# Get the game data that is going to be saved
+		data["player"] = self.player.copy()
+		data["game_state"] = self.state.copy()
+		data["object_state"] = {}
 
-		new_filename = "SV_" + self.user_name + ", " + str(datetime.datetime.now()).replace(":", "-")
+		# For each object
+		for obj in self.objects:
+			# Add object state data
+			data["object_state"][obj] = self.objects[obj].get_state_data().copy()
+
+		# if this is a game that hasn't been previously saved
+		if self.current_save is None:
+			# assign a new save ID
+			self.current_save = self.game_data["save_ctr"]
+			
+			# increment the save ID counter
+			self.game_data["save_ctr"] += 1
+
+		# write or overwrite the game data into the saves list
+		self.game_data["saves"][str(self.current_save)] = {}
+		self.game_data["saves"][str(self.current_save)]["data"] = data.copy()
+		self.game_data["saves"][str(self.current_save)]["time"] = str(datetime.datetime.now()).replace(":", "-")
 	
-		if self.current_file is None:
-			retrieve_file = new_filename
-			new_game = True
-		else:
-			retrieve_file = self.current_file
-			new_game = False
-
-		f = open (retrieve_file, "w")
+		# write the game data to the save file
+		f = open (SAVES, "w")
 
 		f.truncate(0)
-		f.write(json.dumps(data))
+		f.write(json.dumps(self.game_data))
 		f.close()
 	
-		if not new_game:
-			os.rename(retrieve_file, new_filename)
-
-		self.current_file = new_filename
 		print("Game saved!")
 
+	def get_current_room(self):
+		return self.state["current_room"]
 
 	def go(self, direction):
-		origin = self.current_room
-		exits = self.rooms[origin].exits
+		origin = self.get_current_room()
+		exits = self.objects[origin].data["exits"].copy()
 
 		if exits[direction] is not None:
-			for room in exits[direction].rooms:
+			if self.objects[exits[direction]].state["locked"]:
+				print("That exit is locked!")
+				return
+
+			for room in self.objects[exits[direction]].data["rooms"]:
 				if not (room == origin):
 					destination = room
 
-			self.current_room = destination
-			print("You travel " + direction + " through the " + exits[direction].id + ".")
+			self.state["current_room"] = destination
+			print("You travel " + direction + " through the " + exits[direction] + ".")
 
 		else:
 			print ("There is nowhere to go in that direction!")
 
 	# checks if item is in the room, and if so, removes it from the room and adds to the bag
 	def take_item(self, item):
-		if self.rooms[self.current_room].check_item(item):
+		if self.objects[self.get_current_room()].check_item(item):
 			#remove item from room
-			self.rooms[self.current_room].remove_item(item)
+			self.objects[self.get_current_room()].remove_item(item)
 
 			#put item in bag
-			self.bag.append(item)
+			self.state["bag"].append(item)
 
 			print("The " + item + " is now in your bag.")
 
@@ -280,10 +296,10 @@ class Game:
 
 	# checks if item is in inventory and if so, removes it and adds it to the current room
 	def drop_item(self, item):
-		if item in self.bag:
-			self.rooms[self.current_room].add_dropped_item(item)
-			self.bag.remove(item)
-			print("You dropped the " + item + " in the " + self.current_room + ".")
+		if item in self.state["bag"]:
+			self.objects[self.get_current_room()].add_dropped_item(item)
+			self.state["bag"].remove(item)
+			print("You dropped the " + item + " in the " + self.get_current_room() + ".")
 
 			return True
 
@@ -293,17 +309,30 @@ class Game:
 			return False
 
 	def prompt(self):
-		debug("\ncurrent room: " + str(self.current_room))
-		debug("room state: " + str(self.rooms[self.current_room].state))
-		debug("bag: " + str(self.bag))
+		debug("\ncurrent room: " + str(self.get_current_room()))
+		debug("room state: " + str(self.objects[self.get_current_room()].get_state_data()))
+		debug("game: " + str(self.state))
 
-		print(self.rooms[self.current_room].get_prompt())
+		print(self.objects[self.get_current_room()].get_prompt())
 		input_str = input("> ")
 		self.parser.parse_input(self, input_str)
 
 
 game = Game()
+#debug("game data= " + str(game.game_data))
+#debug("object data= " + str(game.object_data))
+#debug("player= " + str(game.player))
+#debug("current save= " + str(game.current_save))
+#debug("state= " + str(game.state))
+#debug("objects= " + str(game.objects))
 
+#game.save_game()
+#debug("game data= " + str(game.game_data))
+#debug("object data= " + str(game.object_data))
+#debug("player= " + str(game.player))
+#debug("current save= " + str(game.current_save))
+#debug("state= " + str(game.state))
+#debug("objects= " + str(game.objects))
 
 while True:
 	game.prompt()

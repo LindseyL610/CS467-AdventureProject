@@ -81,8 +81,8 @@ class Action:
 		special_action = False
 		ob = action_args[1]
 	
-		for obj in game.rooms[game.current_room].items:
-			if obj.id == ob:
+		for obj in game.objects[game.get_current_room()].state["items"]:
+			if game.objects[obj].data["id"] == ob:
 				ob = obj
 				special_action = True
 				break
@@ -91,6 +91,6 @@ class Action:
 			return False
 			
 		else:
-			for act in ob.actions:
+			for act in game.objects[ob].data["actions"]:
 				if act == action_args[0]:
-					ob.perform_action(game, action_args[0])
+					game.objects[ob].perform_action(game, action_args[0])
