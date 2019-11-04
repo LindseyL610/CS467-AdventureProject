@@ -58,7 +58,7 @@
 		"data": {
 			"id": "door",
 			"static": true,
-			"description": "Description of door.",
+			"description": "It's hard to see because of the intricate patterns on the door, but there is a keyhole in the door's center.",
 			"rooms": [ "balcony", "cooling room" ],
 			"actions": {
 				"open": "open",
@@ -78,7 +78,7 @@
 		"data": {
 			"id": "grand door",
 			"static": true,
-			"description": "Description of grand door.",
+			"description": "The grand door towers over you. Distributed across its surface are five inscrutable symbols.",
 			"rooms": [ "tower entrance", "final room" ],
 			"actions": {
 			},
@@ -94,7 +94,7 @@
 		"data": {
 			"id": "stairs",
 			"static": true,
-			"description": "Description of stairs.",
+			"description": "The stairs lead up to the east and disappear into darkness. A mist seems to descend, and there is a cold draft.",
 			"rooms": [ "tower entrance", "cooling room" ],
 			"actions": {
 			},
@@ -110,7 +110,7 @@
 		"data": {
 			"id": "hallway",
 			"static": true,
-			"description": "Description of hallway.",
+			"description": "The hallway appears to be blocked.",
 			"rooms": [ "cooling room", "mouse pad" ],
 			"actions": {
 			},
@@ -126,7 +126,7 @@
 		"data": {
 			"id": "book",
 			"static": false,
-			"description": "Description of book.",
+			"description": "The book is old and thick. The pages seem weathered and brittle. There is nothing on the cover, but along the spine it says 'Documentation.'",
 			"actions": {
 				"open": "opened"
 			},
@@ -151,7 +151,7 @@
 		"data": {
 			"id": "key",
 			"static": false,
-			"description": "Description of key.",
+			"description": "The key is heavy and metal, crudely shaped but unmistakably a key.",
 			"actions": {
 				"use": "used"
 			},
@@ -174,7 +174,7 @@
 		"data": {
 			"id": "fridge",
 			"static": true,
-			"description": "Description of fridge.",
+			"description": "The fridge is huge and towers over you. It seems way too big to be used merely for storing (human) food.",
 			"actions": {
 				"open": "opened"
 			},
@@ -199,7 +199,7 @@
 		"data": {
 			"id": "cheese",
 			"static": false,
-			"description": "Description of cheese.",
+			"description": "The cheese is actually pretty big. A wedge about the size of your head. A cold mist seeps out of the holes in the cheese.",
 			"actions": {
 				"eat": "ate"
 			},
