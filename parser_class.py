@@ -58,6 +58,10 @@ class Parser:
 			print("Your bag contains the following items:")
 			for item in game.state["bag"]:
 				print(item)
+		elif self.user_input == "loadgame":
+			game.load_menu(False)
+		elif self.user_input == "savegame":
+			game.save_game()
 		else:
 			return 1
 	
