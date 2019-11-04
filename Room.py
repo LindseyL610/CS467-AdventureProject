@@ -8,12 +8,21 @@ class Room:
 		self.data = data.copy()
 		self.state = state.copy()
 
-	def get_prompt(self):
+	def get_prompt(self, game):
 		if not self.state['visited']:
 			prompt = self.data["long_description"]
 			self.state['visited'] = True
 		else:
 			prompt = self.data["short_description"]
+
+		for itm in self.state["items"]:
+			obj = game.objects[itm]
+
+			if obj.data["static"] == False:
+				if obj.state["current_state"] in obj.data["message"]:
+					prompt += ("\n" + obj.data["message"][obj.state["current_state"]])
+				else:
+					prompt += ("\n" + obj.data["message"]["default"])
 
 		return prompt
 

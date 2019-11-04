@@ -10,7 +10,7 @@ import Feature
 OBJECTS = "OB"
 SAVES = "SV"
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 DEFAULT = "config"
 
 def toggle_debug(input):
@@ -313,7 +313,7 @@ class Game:
 		debug("room state: " + str(self.objects[self.get_current_room()].get_state_data()))
 		debug("game: " + str(self.state))
 
-		print(self.objects[self.get_current_room()].get_prompt())
+		print(self.objects[self.get_current_room()].get_prompt(self))
 		input_str = input("> ")
 		self.parser.parse_input(self, input_str)
 

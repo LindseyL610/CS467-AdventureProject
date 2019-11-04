@@ -3,8 +3,8 @@
 		"type": "room",
 		"data": {
 			"id": "balcony",
-			"long_description": "You find yourself on a balcony on the side of a humongous tower extending as far down and up as you can see before vanishing in clouds. In front of you, to the north, lies a massive stone door. It doesn't look like you could open it very easily. There is also a thick book lying unopened on a table in the center of the balcony.",
-			"short_description": "You are on the balcony. There is a book and a stone door.",
+			"long_description": "You find yourself on a balcony on the side of a humongous tower extending as far down and up as you can see before vanishing in clouds. In front of you, to the north, lies a massive stone door. It doesn't look like you could open it very easily.",
+			"short_description": "You are on the balcony. There is a stone door on the north wall.",
 			"exits": {
 				"north": "door",
 				"south": null,
@@ -25,7 +25,7 @@
 			"short_description": "You are in the tower entrance. The grand door is to the north. To the east are stairs.",
 			"exits": {
 				"north": "grand door",
-				"south": "door",
+				"south": null,
 				"east": "stairs",
 				"west": null
 			}
@@ -39,11 +39,11 @@
 		"type": "room",
 		"data": {
 			"id": "cooling room",
-			"long_description": "You find yourself in a freezing cold room. You can see your breath. A giant fridge lies ahead. Ahead of you to the north is a door that seems to lead to a hallway.",
-			"short_description": "You are in the cold room with the fridge. The stairs are to the west. The door to the hallway is to the north.",
+			"long_description": "You find yourself in a freezing cold room. You can see your breath. A giant fridge lies ahead. On your left, to the west, there is a staircase, leading downwards. Ahead of you to the north is a hallway.",
+			"short_description": "You are in the cold room with the fridge. The stairs are to the west. The hallway is to the north. The door to the balcony is to the south.",
 			"exits": {
 				"north": "hallway",
-				"south": null,
+				"south": "door",
 				"east": null,
 				"west": "stairs"
 			}
@@ -57,7 +57,17 @@
 		"type": "exit",
 		"data": {
 			"id": "door",
-			"rooms": [ "balcony", "room1" ]
+			"static": true,
+			"description": "Description of door.",
+			"rooms": [ "balcony", "cooling room" ],
+			"actions": {
+				"open": "open",
+				"unlock": "unlock"
+			},
+			"display": {
+				"open": "You opened the door.",
+				"unlock": "You unlocked the door."
+			}
 		},
 		"default_state": {
 			"locked": true
@@ -67,7 +77,13 @@
 		"type": "exit",
 		"data": {
 			"id": "grand door",
-			"rooms": [ "tower entrance", "final room" ]
+			"static": true,
+			"description": "Description of grand door.",
+			"rooms": [ "tower entrance", "final room" ],
+			"actions": {
+			},
+			"display": {
+			}
 		},
 		"default_state": {
 			"locked": true
@@ -77,7 +93,13 @@
 		"type": "exit",
 		"data": {
 			"id": "stairs",
-			"rooms": [ "tower entrance", "cooling room" ]
+			"static": true,
+			"description": "Description of stairs.",
+			"rooms": [ "tower entrance", "cooling room" ],
+			"actions": {
+			},
+			"display": {
+			}
 		},
 		"default_state": {
 			"locked": false
@@ -87,7 +109,13 @@
 		"type": "exit",
 		"data": {
 			"id": "hallway",
-			"rooms": [ "cooling room", "mouse pad" ]
+			"static": true,
+			"description": "Description of hallway.",
+			"rooms": [ "cooling room", "mouse pad" ],
+			"actions": {
+			},
+			"display": {
+			}
 		},
 		"default_state": {
 			"locked": true
@@ -97,6 +125,8 @@
 		"type": "feature",
 		"data": {
 			"id": "book",
+			"static": false,
+			"description": "Description of book.",
 			"actions": {
 				"open": "opened"
 			},
@@ -106,6 +136,10 @@
 			"display": {
 				"default": "There is a thick book lying unopened on a table in the center of the balcony.",
 				"opened": "A key fell on the ground."
+			},
+			"message": {
+				"default": "There is a thick book lying unopened on a table in the center of the balcony.",
+				"opened": "There is a book in the room."
 			}
 		},
 		"default_state": {
@@ -116,6 +150,8 @@
 		"type": "feature",
 		"data": {
 			"id": "key",
+			"static": false,
+			"description": "Description of key.",
 			"actions": {
 				"use": "used"
 			},
@@ -124,6 +160,9 @@
 			"display": {
 				"default": "There is a key lying on the ground.",
 				"used": "You unlocked the door."
+			},
+			"message": {
+				"default": "There is a key lying on the ground."
 			}
 		},
 		"default_state": {
@@ -134,6 +173,8 @@
 		"type": "feature",
 		"data": {
 			"id": "fridge",
+			"static": true,
+			"description": "Description of fridge.",
 			"actions": {
 				"open": "opened"
 			},
@@ -143,6 +184,10 @@
 			"display": {
 				"default": "A giant fridge towers over you.",
 				"opened": "A piece of cheese tumbles out."
+			},
+			"message": {
+				"default": "A giant fridge towers over you.",
+				"opened": "A giant fridge towers over you. It is open."
 			}
 		},
 		"default_state": {
@@ -153,14 +198,20 @@
 		"type": "feature",
 		"data": {
 			"id": "cheese",
+			"static": false,
+			"description": "Description of cheese.",
 			"actions": {
-				"use": "used"
+				"eat": "ate"
 			},
 			"items": {
 			},
 			"display": {
 				"default": "There is a piece of cheese lying on the ground.",
-				"used": "You ate the cheese."
+				"ate": "You ate the cheese."
+			},
+			"message": {
+				"default": "There is a piece of cheese lying on the ground.",
+				"used": null
 			}
 		},
 		"default_state": {
