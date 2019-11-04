@@ -20,12 +20,12 @@
 	{
 		"type": "room",
 		"data": {
-			"id": "tower entrance",
-			"long_description": "You are inside the tower. Before you lies an enormous door. You sense something important lies behind it. To the east are stairs.",
-			"short_description": "You are in the tower entrance. The grand door is to the north. To the east are stairs.",
+			"id": "lobby",
+			"long_description": "You are inside the tower, in what looks like a lobby. Before you lies an enormous door. You sense something important lies behind it. To the east are stairs.",
+			"short_description": "You are in the lobby. The grand door is to the north. To the east are stairs. The door to the balcony is to the south.",
 			"exits": {
 				"north": "grand door",
-				"south": null,
+				"south": "door",
 				"east": "stairs",
 				"west": null
 			}
@@ -39,11 +39,11 @@
 		"type": "room",
 		"data": {
 			"id": "cooling room",
-			"long_description": "You find yourself in a freezing cold room. You can see your breath. A giant fridge lies ahead. On your left, to the west, there is a staircase, leading downwards. Ahead of you to the north is a hallway.",
-			"short_description": "You are in the cold room with the fridge. The stairs are to the west. The hallway is to the north. The door to the balcony is to the south.",
+			"long_description": "You find yourself in a freezing cold room. You can see your breath. A giant fridge lies ahead. To the west, there is a staircase, leading downwards. Ahead of you to the north is a hallway.",
+			"short_description": "You are in the cold room with the fridge. The stairs are to the west. The hallway is to the north.",
 			"exits": {
 				"north": "hallway",
-				"south": "door",
+				"south": null,
 				"east": null,
 				"west": "stairs"
 			}
@@ -59,7 +59,7 @@
 			"id": "door",
 			"static": true,
 			"description": "It's hard to see because of the intricate patterns on the door, but there is a keyhole in the door's center.",
-			"rooms": [ "balcony", "cooling room" ],
+			"rooms": [ "balcony", "lobby" ],
 			"actions": {
 				"open": "open",
 				"unlock": "unlock"
@@ -79,7 +79,7 @@
 			"id": "grand door",
 			"static": true,
 			"description": "The grand door towers over you. Distributed across its surface are five inscrutable symbols.",
-			"rooms": [ "tower entrance", "final room" ],
+			"rooms": [ "lobby", "final room" ],
 			"actions": {
 			},
 			"display": {
@@ -95,7 +95,7 @@
 			"id": "stairs",
 			"static": true,
 			"description": "The stairs lead up to the east and disappear into darkness. A mist seems to descend, and there is a cold draft.",
-			"rooms": [ "tower entrance", "cooling room" ],
+			"rooms": [ "lobby", "cooling room" ],
 			"actions": {
 			},
 			"display": {
