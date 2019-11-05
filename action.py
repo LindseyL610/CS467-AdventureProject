@@ -42,8 +42,19 @@ class Action:
 			return True
 		elif item in game.objects[game.get_current_room()].state["items"]:
 			return True
+		elif Action.has_exit(game, item):
+			return True
 		else:
 			return False
+
+	#staticmethod
+	def has_exit(game, item):
+		cur_room = game.objects[game.get_current_room()]
+		for exit in cur_room.data["exits"]:
+			if cur_room.data["exits"][exit] == item:
+				return True
+
+		return False
 
 	#staticmethod
 	def verb_action(game, action_args):
@@ -103,6 +114,18 @@ class Action:
 		elif action_args[0] == "look":
 			if action_args[1] == "at":
 				print(game.objects[action_args[2]].data["description"])
+			else:
+				print("You cannot do that.")
+		elif action_args[0] == "take":
+			if action_args[1] == "up":
+				game.take_item(action_args[2])
+			else:
+				print("You cannot do that.")	
+		elif action_args[0] == "drop":
+			if action_args[1] == "down":
+				game.drop_item(action_args[2])
+			else:
+				print("You cannot do that.")
 		else:
 			print("You cannot do that.")	
 
