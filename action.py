@@ -58,7 +58,7 @@ class Action:
 
 	#staticmethod
 	def verb_action(game, action_args):
-		Action.default_verb_action(game, actionargs)
+		Action.default_verb(game, action_args)
 
 	#staticmethod	
 	def default_verb(game, action_args):
