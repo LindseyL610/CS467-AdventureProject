@@ -1,6 +1,7 @@
 from Game import say, Game
 from Create import all_things, all_rooms
 
+
 #Creating Game
 my_game = Game()
 
@@ -10,21 +11,23 @@ test_args = {"verb" : "give",
              "preposition" : "to",
              "iobj" : "mouse"}
 
-# Testing sign
+# Testing plaque
 say("\n")
-say("TESTING SIGN")
-sign = all_things["sign"]
-say("Testing sign.look:")
-sign.look(my_game, test_args)
+say("TESTING plaque")
+plaque = all_things["plaque"]
+say("Testing plaque.look:")
+plaque.look(my_game, test_args)
 
-say("Testing sign.read:")
-sign.read(my_game, test_args)
 
-say("Testing sign.take:")
-sign.take(my_game, test_args)
 
-say("Testing sign.drop:")
-sign.drop(my_game, test_args)
+say("Testing plaque.read:")
+plaque.read(my_game, test_args)
+
+say("Testing plaque.take:")
+plaque.take(my_game, test_args)
+
+say("Testing plaque.drop:")
+plaque.drop(my_game, test_args)
 
 # Testing cheese
 say("\n")
@@ -68,24 +71,24 @@ say("Testing book.go:")
 book.go(my_game, test_args)
 
 
-# Testing hallway
+# Testing hallwayS
 say("\n")
-say("TESTING HALLWAY")
-hallway = all_things["hallway"]
-say("Testing hallway.look:")
-hallway.look(my_game, test_args)
+say("TESTING hallwayS")
+hallwayS = all_things["hallwayS"]
+say("Testing hallwayS.look:")
+hallwayS.look(my_game, test_args)
 
-say("Testing hallway.read:")
-hallway.read(my_game, test_args)
+say("Testing hallwayS.read:")
+hallwayS.read(my_game, test_args)
 
-say("Testing hallway.take:")
-hallway.take(my_game, test_args)
+say("Testing hallwayS.take:")
+hallwayS.take(my_game, test_args)
 
-say("Testing hallway.drop:")
-hallway.drop(my_game, test_args)
+say("Testing hallwayS.drop:")
+hallwayS.drop(my_game, test_args)
 
-say("Testing hallway.go:")
-hallway.go(my_game, test_args)
+say("Testing hallwayS.go:")
+hallwayS.go(my_game, test_args)
 
 
 
@@ -96,8 +99,10 @@ roomD = all_rooms["roomD"]
 say("TESTING roomC to roomD")
 
 direction_args = {"verb" : "go",
-             "dobj" : "north",
-             "preposition" : None,
-             "iobj" : None}
+                  "dobj" : "north",
+                  "preposition" : None,
+                  "iobj" : None}
+
 roomC.go(my_game, direction_args)
+
 
