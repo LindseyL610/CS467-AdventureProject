@@ -196,7 +196,7 @@ secretWall.description = "A section of this brick wall looks discolored. " \
                          "But there is nothing else that appears out of the ordinary."
 secretWall.msg_go = ""
 secretWall.has_dynamic_description = True
-secretWall.dynamic_description_text = "There are discolored bricks on the west wall."
+secretWall.dynamic_description_text = "There are discolored bricks on the west wall. (DYNAMIC)"
 secretWall.adjectives.append("discolored")
 secretWall.alternate_names.append("wall")
 
@@ -260,8 +260,7 @@ roomD.long_description = "As you enter the room, the first thing you notice is t
                          "made of large stone bricks. On the west wall, " \
                          "some of the bricks appear discolored."
 roomD.short_description = "The floor is covered in hay and debris. In the corner sits a gigantic mouse. " \
-                          "It looks like there may be something on the wall behind the mouse. " \
-                          "There are discolored bricks on the west wall. "
+                          "It looks like there may be something on the wall behind the mouse."
 
 # Creating roomI
 say("Creating roomI")
@@ -335,6 +334,7 @@ roomC.exits["down"] = stairsE
 
 roomD.add_thing(mouse)
 roomD.add_thing(lever)
+roomD.add_thing(secretWall)
 
 hallwayN.destination = roomC
 

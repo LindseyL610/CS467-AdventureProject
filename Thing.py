@@ -27,7 +27,7 @@ class Thing:
 
         self.is_accessible = True
 
-        ## ID of room of current location
+        ## room or storage of current location
         self.current_location = None
 
         self.description = "This is a thing."
@@ -120,6 +120,7 @@ class Exit(Thing):
     def __init__(self, id, name):
         super().__init__(id, name)
         self.can_go = True
+        self.is_listed = False
 
         self.destination = None
 
