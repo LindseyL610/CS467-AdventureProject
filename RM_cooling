@@ -1,0 +1,18 @@
+{
+	"type": "room",
+	"data": {
+		"id": "cooling room",
+		"long_description": "You find yourself in a freezing cold room. You can see your breath. A giant fridge lies ahead. To the west, there is a staircase. Ahead of you to the north is a hallway.",
+		"short_description": "You are in the cold room with the fridge. The stairs are to the west. The hallway is to the north.",
+		"exits": {
+			"north": "hallway",
+			"south": null,
+			"east": null,
+			"west": "stairs"
+		}
+	},
+	"default_state": {
+		"visited": false,
+		"items": [ "fridge" ]
+	}
+}

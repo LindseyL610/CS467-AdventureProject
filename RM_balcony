@@ -1,0 +1,18 @@
+{
+	"type": "room",
+	"data": {
+		"id": "balcony",
+		"long_description": "You find yourself on a balcony on the side of a humongous tower extending as far down and up as you can see before vanishing in clouds. In front of you, to the north, lies a massive stone door. It doesn't look like you could open it very easily.",
+		"short_description": "You are on the balcony. There is a stone door on the north wall.",
+		"exits": {
+			"north": "door",
+			"south": null,
+			"east": null,
+			"west": null
+		}
+	},
+	"default_state": {
+		"visited": false,
+		"items": [ "book" ]
+	}
+}

@@ -1,17 +1,23 @@
 import Room
 import os
+import platform
+import shutil
 import json
 import datetime
 import sys
 import parser_class
 import Exit
 import Feature
+import textwrap
 
 OBJECTS = "OB"
 SAVES = "SV"
+ROOM_PREFIX = "RM_"
 
 DEBUG_MODE = False
-DEFAULT = "config"
+WIDTH = 100
+HEIGHT = 30
+
 
 def toggle_debug(input):
 	global DEBUG_MODE
@@ -37,19 +43,47 @@ def debug(output):
 	if DEBUG_MODE is True:
 		print(output)
 
+def valid_width():
+	valid_size = False
+
+	#NOTE: The following code is adapted from: http://granitosaurus.rocks/getting-terminal-size.html
+	columns, rows = shutil.get_terminal_size(fallback=(80, 24))
+
+	debug("Columns: " + str(columns))
+	debug("Rows: " + str(rows))
+
+	if columns >= WIDTH:
+		valid_size = True
+	else:
+		print("Minimum width: " + str(WIDTH))
+		print("Minimum height: " + str(HEIGHT))
+
+	return valid_size
+
+def get_path():
+	#NOTE: The following dir_path definition is adapted from: https://stackoverflow.com/questions/5137497/find-current-directory-and-files-directory#targetText=os.getcwd()%20(returns%20%22,current%20working%20directory%20to%20path%20%22)
+	#debug(os.getcwd())
+
+	dir_path = os.path.dirname(os.path.realpath(__file__))
+	#debug(dir_path)
+
+	return dir_path
 
 class Game:
 	def __init__(self):
+		self.quit_selected = False
 
 		self.parser = parser_class.Parser()
 
 		self.object_data = self.load_data_from_file(OBJECTS)
 		self.game_data = self.load_data_from_file(SAVES)
+		self.load_room_data()
 
-		#self.current_room = ""
+		self.game_loaded = self.load_menu(True)
 
-		self.load_menu(True)
+		self.wrapper = textwrap.TextWrapper()
 
+		self.new_room = True
 
 	def load_data_from_file(self, file_name):
 		file = open(file_name, "r")
@@ -162,6 +196,23 @@ class Game:
 		# Load up instances of all objects for a new game
 		self.construct_all_objects(True)
 
+	def load_room_data(self):
+		#get room file names
+		filenames = list()
+		files = os.listdir(get_path())
+
+		for name in files:
+			if name.find(ROOM_PREFIX) is 0:
+				filenames.append(name)
+
+		#for each room file
+		for room_file in filenames:
+			#retrieve data from room file
+			data = self.load_data_from_file(room_file)
+
+			#append data to object_data
+			self.object_data.append(data)
+
 	def construct_all_objects(self, new):
 		self.objects = dict()
 		
@@ -272,6 +323,7 @@ class Game:
 
 			self.state["current_room"] = destination
 			print("You travel " + direction + " through the " + exits[direction] + ".")
+			self.new_room = True
 
 		else:
 			print ("There is nowhere to go in that direction!")
@@ -313,12 +365,56 @@ class Game:
 		debug("room state: " + str(self.objects[self.get_current_room()].get_state_data()))
 		debug("game: " + str(self.state))
 
-		print(self.objects[self.get_current_room()].get_prompt(self))
+		if self.new_room:
+			#NOTE: The following clear screen code adapted from: https://stackoverflow.com/questions/18937058/clear-screen-in-shell/47296211
+			if platform.system() == "Windows":
+				os.system('cls')  # For Windows
+			elif platform.system() == "Linux" or platform.system() == "Darwin":
+				os.system('clear')  # For Linux/OS X
+			self.say(self.objects[self.get_current_room()].get_prompt(self))
+			self.new_room = False
+
 		input_str = input("> ")
 		self.parser.parse_input(self, input_str)
 
 
-game = Game()
+	def quit(self):
+		valid_input = False
+		input_str = ""
+
+		while not valid_input:
+			input_str = input("Do you want to save before you quit? (y/n) ")
+
+			if input_str == "y" or input_str == "yes":
+				input_str = "y"
+				valid_input = True
+			elif input_str == "n" or input_str == "no":
+				input_str = "n"
+				valid_input = True
+			else:
+				print("Invalid input!")
+
+		if input_str == "y":
+			self.save_game()
+
+		self.quit_selected = True
+
+	def play(self):
+		while not self.quit_selected:
+			self.prompt()
+
+	def say(self, text):
+		print(self.wrapper.fill(text))
+
+if valid_width():
+	game = Game()
+	if game.game_loaded:
+		game.play()
+
+
+
+
+#game = Game()
 #debug("game data= " + str(game.game_data))
 #debug("object data= " + str(game.object_data))
 #debug("player= " + str(game.player))
@@ -334,5 +430,4 @@ game = Game()
 #debug("state= " + str(game.state))
 #debug("objects= " + str(game.objects))
 
-while True:
-	game.prompt()
+#game.play()

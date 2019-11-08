@@ -41,15 +41,15 @@ class Parser:
 	def check_basic_verbs(self, game):
 		if self.user_input == "look":
 			current_room = game.objects[game.get_current_room()]
-			print(current_room.data["long_description"])
+			game.say(current_room.data["long_description"])
 			for itm in current_room.state["items"]:
 				obj = game.objects[itm]
 
 				if obj.data["static"] == False:
 					if obj.state["current_state"] in obj.data["message"]:
-						print(obj.data["message"][obj.state["current_state"]])
+						game.say(obj.data["message"][obj.state["current_state"]])
 					else:
-						print(obj.data["message"]["default"])
+						game.say(obj.data["message"]["default"])
 		elif self.user_input == "help":
 			print("I understand the following verbs:")
 			for verb in self.verbs_list:
@@ -62,6 +62,8 @@ class Parser:
 			game.load_menu(False)
 		elif self.user_input == "savegame":
 			game.save_game()
+		elif self.user_input == "quit":
+			game.quit()
 		else:
 			return 1
 	

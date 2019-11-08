@@ -63,9 +63,9 @@ class Action:
 	#staticmethod	
 	def default_verb(game, action_args):
 		if action_args[0] == "go":
-			print("I don't know where you want to go to.")
+			game.say("I don't know where you want to go to.")
 		else:
-			print("Nothing happens.")
+			game.say("Nothing happens.")
 
 	#staticmethod
 	def obj_action(game, action_args):
@@ -75,14 +75,14 @@ class Action:
 			action_args[0] = exit_direction
 			Action.go_action(game, action_args)
 		elif not Action.has_item(game, action_args[0]):
-			print("The " + action_args[0] + " is not in your bag or the current room.")
+			game.say("The " + action_args[0] + " is not in your bag or the current room.")
 		else:
-			print("I don't know what you want to do with the " + action_args[0])
+			game.say("I don't know what you want to do with the " + action_args[0])
 
 	#staticmethod
 	def verb_obj_action(game, action_args):
 		if not Action.has_item(game, action_args[1]):
-			print("The " + action_args[1] + " is not in your bag or the current room.")
+			game.say("The " + action_args[1] + " is not in your bag or the current room.")
 		elif action_args[0] == "go":
 			exit_direction = Action.get_exit_direction(game, action_args)
 		
@@ -90,18 +90,18 @@ class Action:
 				action_args[0] = exit_direction
 				Action.go_action(game, action_args)
 			else:
-				print("You cannot go there.")
+				game.say("You cannot go there.")
 		elif action_args[0] == "take":
 			if game.objects[action_args[1]].data["static"] == False:
 				game.take_item(action_args[1])
 			else:
-				print("You can't take the " + action_args[1] + "!")
+				game.say("You can't take the " + action_args[1] + "!")
 		elif action_args[0] == "drop":
 			game.drop_item(action_args[1])
 		elif Action.perform_special_action(game, action_args):
 			return
 		else:
-			print("You cannot " + action_args[0] + " the " + action_args[1] + ".")
+			game.say("You cannot " + action_args[0] + " the " + action_args[1] + ".")
 
 	#staticmethod
 	def go_action(game, action_args):
@@ -110,24 +110,24 @@ class Action:
 	#staticmethod
 	def verb_prep_obj_action(game, action_args):
 		if not Action.has_item(game, action_args[2]):
-			print("The " + action_args[2] + " is not in your bag or the current room.")
+			game.say("The " + action_args[2] + " is not in your bag or the current room.")
 		elif action_args[0] == "look":
 			if action_args[1] == "at":
-				print(game.objects[action_args[2]].data["description"])
+				game.say(game.objects[action_args[2]].data["description"])
 			else:
-				print("You cannot do that.")
+				game.say("You cannot do that.")
 		elif action_args[0] == "take":
 			if action_args[1] == "up":
 				game.take_item(action_args[2])
 			else:
-				print("You cannot do that.")	
+				game.say("You cannot do that.")	
 		elif action_args[0] == "drop":
 			if action_args[1] == "down":
 				game.drop_item(action_args[2])
 			else:
-				print("You cannot do that.")
+				game.say("You cannot do that.")
 		else:
-			print("You cannot do that.")	
+			game.say("You cannot do that.")	
 
 	#staticmethod
 	def perform_special_action(game, action_args):
