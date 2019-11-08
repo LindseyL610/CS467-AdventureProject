@@ -1,12 +1,5 @@
-import textwrap
-
-# basic function to display messages to the user. handles text wrapping and formatting
-# TODO this may be where we want to handle displaying text of different colors
-#  perhaps we come up with a key string (like <colorbegin:red>this text is red<colorend> or something)
-#  that this function can find and replace with the necessary output for formatted text
-def say(string):
-    print(textwrap.fill(string))
-    # print string
+from Utilities import say
+from Create import all_things, all_rooms
 
 # TODO its possible we will want the player class in it's own file
 # Temporary Player and Game classes for testing
@@ -58,8 +51,8 @@ class Game:
     def __init__(self):
         """initialized Game, creates player and loads in room_list and thing_list"""
         self.player = Player()
-        self.room_list = []
-        self.thing_list = []
+        self.room_list = all_rooms
+        self.thing_list = all_things
 
         # initialize starting location with roomA
         self.player.current_room = "roomA"

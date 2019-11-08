@@ -1,4 +1,4 @@
-from Game import say
+from Utilities import say
 
 
 class Thing:

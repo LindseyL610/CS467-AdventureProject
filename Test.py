@@ -1,4 +1,5 @@
-from Game import say, Game
+from Game import Game
+from Utilities import say
 from Create import all_things, all_rooms
 
 

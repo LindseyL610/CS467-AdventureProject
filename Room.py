@@ -1,4 +1,5 @@
-from Game import say
+from Utilities import say
+import Utilities
 
 
 class Room:
@@ -38,20 +39,10 @@ class Room:
                     listed_things.append(thing)
 
             num_listed_things = len(listed_things)
+
             if num_listed_things > 0:
                 list_string = " There is"
-                for i in range(num_listed_things):
-                    # if there are at least 2 items, add "and" to final item
-                    if i == (num_listed_things - 1) and num_listed_things >= 2:
-                        list_string += " and"
-
-                    # display "an item"
-                    # TODO display (accessible) contents of storage
-                    list_string += " " + listed_things[i].list_name
-
-                    # if there are at least 3 items, add comma to all but final item
-                    if i != (num_listed_things - 1) and num_listed_things >= 3:
-                        list_string += ","
+                list_string += Utilities.list_to_words([o.list_name for o in listed_things])
                 list_string += "."
                 description_string += list_string
 

@@ -1,9 +1,9 @@
-from Game import say, Game
+from Utilities import say
 import Thing
 import Room
 
 # TODO much of this can be greatly cleaned up, even with the basic names/ids of items/exits/rooms
-# of course we also have to add in the special functionality of many elements as well
+#  of course we also have to add in the special functionality of many elements as well
 #####################################
 ### CREATING ALL THINGS AND ROOMS ###
 #####################################
@@ -11,7 +11,7 @@ import Room
 all_things = {}
 
 # TODO looking at this, I'm not sure of the best format to store all_things and all_rooms
-# a list? a dict? looks like I originally set it up as a dict
+#  a list? a dict? looks like I originally set it up as a dict using object id's as keys
 def add_by_id(my_dict, new_thing):
     my_dict[new_thing.id] = new_thing
 
