@@ -409,27 +409,29 @@ class Game:
 			self.prompt()
 
 	def say(self, text):
-		#Color only supported on Linux/Mac
-		if self.os == "Linux" or self.os == "Darwin":
-			color_code = "\033[1;32;40m"
-			default_code = "\033[0m"
+		#if there is no string data, do nothing
+		if text is None or text == "":
+			#Color only supported on Linux/Mac
+			if self.os == "Linux" or self.os == "Darwin":
+				color_code = "\033[1;32;40m"
+				default_code = "\033[0m"
 
-			#find each instance of each key word
-			for word in self.keywords:
-				start_idx = 0
-				start = 0
+				#find each instance of each key word
+				for word in self.keywords:
+					start_idx = 0
+					start = 0
 
-				while start is not -1:
-					start = text.find(word, start_idx)
-					end = start + len(word) - 1
+					while start is not -1:
+						start = text.find(word, start_idx)
+						end = start + len(word) - 1
 
-					#insert color cords before and after each instance
-					if start is not -1:
-						text = text[0:start] + color_code + word + default_code + text[end+1:]
+						#insert color cords before and after each instance
+						if start is not -1:
+							text = text[0:start] + color_code + word + default_code + text[end+1:]
 
-					start_idx = text.find(word,start_idx) + len(word)
+						start_idx = text.find(word,start_idx) + len(word)
 
-		print(self.wrapper.fill(text))
+			print(self.wrapper.fill(text))
 
 
 if valid_width():
