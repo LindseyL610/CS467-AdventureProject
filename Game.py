@@ -416,7 +416,7 @@ if valid_width():
 		game.play()
 
 
-print("\033[1;32;40m Bright Green \033[1;39;49m back to white")
+print("\033[1;32;40m Bright Green \033[0m back to default")
 
 #game = Game()
 #debug("game data= " + str(game.game_data))
