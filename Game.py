@@ -404,6 +404,10 @@ class Game:
 			self.prompt()
 
 	def say(self, text):
+
+		#find each instance of each key word
+
+
 		print(self.wrapper.fill(text))
 
 if valid_width():
@@ -412,7 +416,7 @@ if valid_width():
 		game.play()
 
 
-print("\033[1;32;40m Bright Green  \n")
+print("\033[1;32;40m Bright Green \033[1;39;49m back to white")
 
 #game = Game()
 #debug("game data= " + str(game.game_data))
