@@ -30,7 +30,7 @@ class Parser:
 				if self.debug == True:
 					self.print_parsed()
 				else:
-					action.Action.perform_action(game, self.action_args, self.parts_of_speech)
+					game.say(action.Action.perform_action(game, self.action_args, self.parts_of_speech))
 
 
 		print("\n")

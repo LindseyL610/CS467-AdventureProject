@@ -159,7 +159,7 @@ class Action:
 		else:
 			for act in game.objects[ob].data["actions"]:
 				if act == action_args[0]:
-					game.objects[ob].perform_action(game, action_args[0])
+					game.say(game.objects[ob].perform_action(game, action_args[0]))
 					return True
 
 		return False

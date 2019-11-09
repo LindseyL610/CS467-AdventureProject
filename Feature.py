@@ -12,7 +12,7 @@ class Feature:
 			self.state["current_state"] = self.data["actions"][act]
 		
 			if self.state["current_state"] in self.data["display"]:
-				print(self.data["display"][self.state["current_state"]])
+				ret_str = self.data["display"][self.state["current_state"]]
 
 			if self.state["current_state"] in self.data["items"]:
 				game.objects[game.get_current_room()].add_dropped_item(self.data["items"][self.state["current_state"]])
@@ -27,11 +27,14 @@ class Feature:
 					game.objects[game.get_current_room()].state["items"].remove("cheese")
 
 		else:
-			print("You already did that.")
+			ret_str = "You already did that."
+
+		return ret_str
 
 
 	def unlock_door():
-		print("You unlocked the door.")
+		ret_str = "You unlocked the door."
+		return ret_str
 
 	def get_state_data(self):
 		return self.state
