@@ -71,6 +71,7 @@ def get_path():
 
 class Game:
 	def __init__(self):
+		self.os = platform.system()
 		self.quit_selected = False
 
 		self.parser = parser_class.Parser()
@@ -215,6 +216,7 @@ class Game:
 
 	def construct_all_objects(self, new):
 		self.objects = dict()
+		self.keywords = set()
 		
 		# for each object
 		for object in self.object_data:
@@ -224,8 +226,9 @@ class Game:
 			# get the object data
 			data = object["data"]
 
-			# get the object id
+			# get the object id (and add ID to ID index for color output)
 			id = data["id"]
+			self.keywords.add(id)
 
 			# if this is a new game
 			if new:
@@ -367,9 +370,9 @@ class Game:
 
 		if self.new_room:
 			#NOTE: The following clear screen code adapted from: https://stackoverflow.com/questions/18937058/clear-screen-in-shell/47296211
-			if platform.system() == "Windows":
+			if self.os == "Windows":
 				os.system('cls')  # For Windows
-			elif platform.system() == "Linux" or platform.system() == "Darwin":
+			elif self.os == "Linux" or self.os == "Darwin":
 				os.system('clear')  # For Linux/OS X
 			self.say(self.objects[self.get_current_room()].get_prompt(self))
 			self.new_room = False
@@ -403,40 +406,36 @@ class Game:
 		while not self.quit_selected:
 			self.prompt()
 
-#def say(self, text):
-def say(text):
+	def say(self, text):
+		#Color only supported on Linux/Mac
+		if self.os == "Linux" or self.os == "Darwin":
+			color_code = "\033[1;32;40m"
+			default_code = "\033[0m"
 
-	keywords = {"one", "two", "three"}
-		
-	color_code = "\033[1;32;40m"
-	default_code = "\033[0m"
+			#find each instance of each key word
+			for word in keywords:
+				start_idx = 0
+				start = 0
 
-	#find each instance of each key word
-	for word in keywords:
-		start_idx = 0
-		start = 0
+				while start is not -1:
+					start = text.find(word, start_idx)
+					end = start + len(word) - 1
 
-		while start is not -1:
-			start = text.find(word, start_idx)
-			end = start + len(word) - 1
+					#insert color cords before and after each instance
+					if start is not -1:
+						text = text[0:start] + color_code + word + default_code + text[end+1:]
 
-			#insert color cords before and after each instance
-			if start is not -1:
-				text = text[0:start] + color_code + word + default_code + text[end+1:]
+					start_idx = text.find(word,start_idx) + len(word)
 
-			start_idx = text.find(word,start_idx) + len(word)
+		print(self.wrapper.fill(text))
 
-	#print(self.wrapper.fill(text))
-	wrapper = textwrap.TextWrapper()
-	print(wrapper.fill(text))
 
-#if valid_width():
-#	game = Game()
-#	if game.game_loaded:
-#		game.play()
+if valid_width():
+	game = Game()
+	if game.game_loaded:
+		game.play()
 
-test_string = "This sentence has keyword one and keyword two. This next sentence has kewyord three. And here is a repeat of one."
-say(test_string)
+
 
 #game = Game()
 #debug("game data= " + str(game.game_data))
