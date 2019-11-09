@@ -6,7 +6,7 @@
 			"long_description": "You find yourself on a balcony on the side of a humongous tower extending as far down and up as you can see before vanishing in clouds. In front of you, to the north, lies a massive stone door. It doesn't look like you could open it very easily.",
 			"short_description": "You are on the balcony. There is a stone door on the north wall.",
 			"exits": {
-				"north": "door",
+				"north": "stone door",
 				"south": null,
 				"east": null,
 				"west": null
@@ -21,11 +21,11 @@
 		"type": "room",
 		"data": {
 			"id": "lobby",
-			"long_description": "You are inside the tower, in what looks like a lobby. Before you lies an enormous gate. You sense something important lies behind it. To the east are stairs.",
-			"short_description": "You are in the lobby. The gate is to the north. To the east are stairs. The door to the balcony is to the south.",
+			"long_description": "You are inside the tower, in what looks like a lobby. Before you lies an enormous door. You sense something important lies behind it. To the east are stairs.",
+			"short_description": "You are in the lobby. The grand door is to the north. To the east are stairs. The door to the balcony is to the south.",
 			"exits": {
-				"north": "gate",
-				"south": "door",
+				"north": "grand door",
+				"south": "stone door",
 				"east": "stairs",
 				"west": null
 			}
@@ -56,7 +56,7 @@
 	{
 		"type": "exit",
 		"data": {
-			"id": "door",
+			"id": "stone door",
 			"static": true,
 			"description": "It's hard to see because of the intricate patterns on the door, but there is a keyhole in the door's center.",
 			"rooms": [ "balcony", "lobby" ],
@@ -76,9 +76,9 @@
 	{
 		"type": "exit",
 		"data": {
-			"id": "gate",
+			"id": "grand door",
 			"static": true,
-			"description": "A metal gate towers over you. Distributed across its surface are five inscrutable symbols.",
+			"description": "The grand door towers over you. Distributed across its surface are five inscrutable symbols.",
 			"rooms": [ "lobby", "final room" ],
 			"actions": {
 			},

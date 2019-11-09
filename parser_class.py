@@ -8,6 +8,7 @@ class Parser:
 		self.action_args = []
 		self.parts_of_speech = []
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock"]
+		self.exits = ["door"]
 		self.debug = False # Temporary for debugging
 
 	# Temporary method for debugging
@@ -23,13 +24,14 @@ class Parser:
 		self.init_input(user_input)
 
 		if self.check_basic_verbs(game) == 1: 
-			if self.set_input() == 1:
+			if self.set_input(game) == 1:
 				return
 			else: 
 				if self.debug == True:
 					self.print_parsed()
 				else:
 					action.Action.perform_action(game, self.action_args, self.parts_of_speech)
+
 
 		print("\n")
 
@@ -65,7 +67,7 @@ class Parser:
 		else:
 			return 1
 	
-	def set_input(self):
+	def set_input(self, game):
 		self.tokenize_input()
 		self.remove_articles()
 
@@ -79,6 +81,8 @@ class Parser:
 				return 1
 
 			idx += 1
+
+		self.set_objects(game)
 
 	def tokenize_input(self):
 		self.user_input = self.user_input.lower()
@@ -116,6 +120,52 @@ class Parser:
 		else:
 			print("I don't understand. Please try a different command.")
 			return 1
+
+	def set_objects(self, game):
+		idx = 0
+
+		if "adjective" in self.parts_of_speech:
+			while idx < len(self.parts_of_speech) - 1:
+				if self.parts_of_speech[idx] == "adjective" and\
+				self.parts_of_speech[idx + 1] == "object":
+					self.action_args[idx + 1] = self.action_args[idx]\
+					+ " " + self.action_args[idx + 1]
+
+					self.action_args.pop(idx)
+					self.parts_of_speech.pop(idx)
+				
+				idx += 1
+		else:
+			while idx < len(self.action_args):
+				if self.action_args[idx] in self.exits:
+					possible_objs = list()
+					current_room = game.objects[game.get_current_room()]
+
+					for exit in current_room.data["exits"]:
+						if (current_room.data["exits"][exit] is not None) and (self.action_args[idx] in current_room.data["exits"][exit]):
+							possible_objs.append(current_room.data["exits"][exit])
+
+					if len(possible_objs) == 1:
+						self.action_args[idx] = possible_objs[0]
+					elif len(possible_objs) > 1:
+						obj = None
+
+						while(obj == None):
+							print("Which of the following " + self.action_args[idx] + "s: ")
+							
+							for possible_obj in possible_objs:
+								print(possible_obj)
+
+							obj = input("> ")
+
+							print()
+
+							if obj not in possible_objs:
+								print("That is not one of the options. Please try again.")
+								obj = None
+							else:
+								self.action_args[idx] = obj
+				idx += 1
 
 	def init_dictionary(self):
 		gamedict = {
@@ -171,7 +221,9 @@ class Parser:
 			"chew": "eat",
 			"devour": "eat",
 			"ingest": "eat",
-			"nibble": "eat"	
+			"nibble": "eat",
+			"grand": "grand",
+			"enormous": "grand"
 		}
 
 		return gamedict
@@ -200,7 +252,9 @@ class Parser:
 			"west": "direction",
 			"at": "preposition",
 			"up": "preposition",
-			"down": "preposition"
+			"down": "preposition",
+			"stone": "adjective",
+			"grand": "adjective"
 		}	
 
 		return parts_of_speech
