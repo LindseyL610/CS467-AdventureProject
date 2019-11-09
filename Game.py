@@ -414,6 +414,7 @@ def say(text):
 	#find each instance of each key word
 	for word in keywords:
 		start_idx = 0
+		start = 0
 
 		while start is not -1:
 			start = text.find(word, start_idx)
