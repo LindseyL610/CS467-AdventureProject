@@ -413,7 +413,7 @@ class Game:
 			default_code = "\033[0m"
 
 			#find each instance of each key word
-			for word in keywords:
+			for word in self.keywords:
 				start_idx = 0
 				start = 0
 
