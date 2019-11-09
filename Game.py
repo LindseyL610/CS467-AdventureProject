@@ -410,7 +410,7 @@ class Game:
 
 	def say(self, text):
 		#if there is no string data, do nothing
-		if text is None or text == "":
+		if text is not None or (text == "") is False:
 			#Color only supported on Linux/Mac
 			if self.os == "Linux" or self.os == "Darwin":
 				color_code = "\033[1;32;40m"
