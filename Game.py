@@ -55,8 +55,10 @@ def valid_width():
 	if columns >= WIDTH:
 		valid_size = True
 	else:
+		print("Game has the following console screen size requirements:")
 		print("Minimum width: " + str(WIDTH))
 		print("Minimum height: " + str(HEIGHT))
+		print("Please resize your screen and run the game again!")
 
 	return valid_size
 
@@ -306,7 +308,7 @@ class Game:
 		f.write(json.dumps(self.game_data))
 		f.close()
 	
-		print("Game saved!")
+		self.say("Game saved!")
 
 	def get_current_room(self):
 		return self.state["current_room"]
@@ -317,7 +319,7 @@ class Game:
 
 		if exits[direction] is not None:
 			if self.objects[exits[direction]].state["locked"]:
-				print("That exit is locked!")
+				self.say("That exit is locked!")
 				return
 
 			for room in self.objects[exits[direction]].data["rooms"]:
@@ -325,11 +327,11 @@ class Game:
 					destination = room
 
 			self.state["current_room"] = destination
-			print("You travel " + direction + " through the " + exits[direction] + ".")
+			self.say("You travel " + direction + " through the " + exits[direction] + ".")
 			self.new_room = True
 
 		else:
-			print ("There is nowhere to go in that direction!")
+			self.say("There is nowhere to go in that direction!")
 
 	# checks if item is in the room, and if so, removes it from the room and adds to the bag
 	def take_item(self, item):
@@ -340,12 +342,12 @@ class Game:
 			#put item in bag
 			self.state["bag"].append(item)
 
-			print("The " + item + " is now in your bag.")
+			self.say("The " + item + " is now in your bag.")
 
 			return True
 
 		else:
-			print("You can't take the " + item + "!")
+			self.say("You can't take the " + item + "!")
 
 			return False
 
@@ -354,12 +356,12 @@ class Game:
 		if item in self.state["bag"]:
 			self.objects[self.get_current_room()].add_dropped_item(item)
 			self.state["bag"].remove(item)
-			print("You dropped the " + item + " in the " + self.get_current_room() + ".")
+			self.say("You dropped the " + item + " in the " + self.get_current_room() + ".")
 
 			return True
 
 		else:
-			print("You don't have the " + item + "!")
+			self.say("You don't have the " + item + "!")
 
 			return False
 
@@ -395,7 +397,7 @@ class Game:
 				input_str = "n"
 				valid_input = True
 			else:
-				print("Invalid input!")
+				self.say("Invalid input!")
 
 		if input_str == "y":
 			self.save_game()
