@@ -426,12 +426,14 @@ def say(text):
 
 			start_idx = text.find(word,start_idx) + len(word)
 
-	print(self.wrapper.fill(text))
+	#print(self.wrapper.fill(text))
+	wrapper = textwrap.TextWrapper()
+	print(wrapper.fill(text))
 
-if valid_width():
-	game = Game()
-	if game.game_loaded:
-		game.play()
+#if valid_width():
+#	game = Game()
+#	if game.game_loaded:
+#		game.play()
 
 test_string = "This sentence has keyword one and keyword two. This next sentence has kewyord three. And here is a repeat of one."
 say(test_string)
