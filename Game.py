@@ -403,28 +403,28 @@ class Game:
 		while not self.quit_selected:
 			self.prompt()
 
-	def say(self, text):
+def say(self, text):
 
-		keywords = {"one", "two", "three"}
+	keywords = {"one", "two", "three"}
 		
-		color_code = "\033[1;32;40m"
-		default_code = "\033[0m"
+	color_code = "\033[1;32;40m"
+	default_code = "\033[0m"
 
-		#find each instance of each key word
-		for word in keywords:
-			start_idx = 0
+	#find each instance of each key word
+	for word in keywords:
+		start_idx = 0
 
-			while start is not -1:
-				start = text.find(word, start_idx)
-				end = start + len(word) - 1
+		while start is not -1:
+			start = text.find(word, start_idx)
+			end = start + len(word) - 1
 
-				#insert color cords before and after each instance
-				if start is not -1:
-					text = text[0:start-1] + color_code + word + default_code + text[end+1:]
+			#insert color cords before and after each instance
+			if start is not -1:
+				text = text[0:start-1] + color_code + word + default_code + text[end+1:]
 
-				start_idx = text.find(word,start_idx) + len(word)
+			start_idx = text.find(word,start_idx) + len(word)
 
-		print(self.wrapper.fill(text))
+	print(self.wrapper.fill(text))
 
 if valid_width():
 	game = Game()
