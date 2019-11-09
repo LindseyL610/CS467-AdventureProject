@@ -2,11 +2,11 @@
 	"type": "room",
 	"data": {
 		"id": "lobby",
-		"long_description": "You are inside the tower, in what looks like a lobby. Before you lies an enormous gate. You sense something important lies behind it. To the east are stairs.",
-		"short_description": "You are in the lobby. The gate is to the north. To the east are stairs. The door to the balcony is to the south.",
+		"long_description": "You are inside the tower, in what looks like a lobby. Before you lies an enormous door. You sense something important lies behind it. To the east are stairs.",
+		"short_description": "You are in the lobby. The grand door is to the north. To the east are stairs. The door to the balcony is to the south.",
 		"exits": {
-			"north": "gate",
-			"south": "door",
+			"north": "grand door",
+			"south": "stone door",
 			"east": "stairs",
 			"west": null
 		}

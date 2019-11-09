@@ -2,7 +2,7 @@
 	{
 		"type": "exit",
 		"data": {
-			"id": "stone door",
+			"id": "door",
 			"static": true,
 			"description": "It's hard to see because of the intricate patterns on the door, but there is a keyhole in the door's center.",
 			"rooms": [ "balcony", "lobby" ],
@@ -22,9 +22,9 @@
 	{
 		"type": "exit",
 		"data": {
-			"id": "grand door",
+			"id": "gate",
 			"static": true,
-			"description": "The grand door towers over you. Distributed across its surface are five inscrutable symbols.",
+			"description": "A metal gate towers over you. Distributed across its surface are five inscrutable symbols.",
 			"rooms": [ "lobby", "final room" ],
 			"actions": {
 			},
