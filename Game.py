@@ -403,7 +403,8 @@ class Game:
 		while not self.quit_selected:
 			self.prompt()
 
-def say(self, text):
+#def say(self, text):
+def say(text):
 
 	keywords = {"one", "two", "three"}
 		
