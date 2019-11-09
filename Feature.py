@@ -18,7 +18,7 @@ class Feature:
 				game.objects[game.get_current_room()].add_dropped_item(self.data["items"][self.state["current_state"]])
 
 			if self.data["id"] == "key" and act == "use":
-				game.objects["door"].state["locked"] = False
+				game.objects["stone door"].state["locked"] = False
 
 			if self.data["id"] == "cheese":
 				if "cheese" in game.state["bag"]:
