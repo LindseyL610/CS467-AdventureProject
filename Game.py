@@ -405,8 +405,24 @@ class Game:
 
 	def say(self, text):
 
-		#find each instance of each key word
+		keywords = {"one", "two", "three"}
+		
+		color_code = "\033[1;32;40m"
+		default_code = "\033[0m"
 
+		#find each instance of each key word
+		for word in keywords:
+			start_idx = 0
+
+			while start is not -1:
+				start = text.find(word, start_idx)
+				end = start + len(word) - 1
+
+				#insert color cords before and after each instance
+				if start is not -1:
+					text = text[0:start-1] + color_code + word + default_code + text[end+1:]
+
+				start_idx = text.find(word,start_idx) + len(word)
 
 		print(self.wrapper.fill(text))
 
@@ -415,8 +431,8 @@ if valid_width():
 	if game.game_loaded:
 		game.play()
 
-
-print("\033[1;32;40m Bright Green \033[0m back to default")
+test_string = "This sentence has keyword one and keyword two. This next sentence has kewyord three. And here is a repeat of one."
+say(test_string)
 
 #game = Game()
 #debug("game data= " + str(game.game_data))
