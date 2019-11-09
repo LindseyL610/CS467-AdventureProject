@@ -53,13 +53,13 @@ class Parser:
 					else:
 						game.say(obj.data["message"]["default"])
 		elif self.user_input == "help":
-			print("I understand the following verbs:")
+			game.say("I understand the following verbs:")
 			for verb in self.verbs_list:
-				print(verb)
+				game.say(verb)
 		elif self.user_input == "inventory":
-			print("Your bag contains the following items:")
+			game.say("Your bag contains the following items:")
 			for item in game.state["bag"]:
-				print(item)
+				game.say(item)
 		elif self.user_input == "loadgame":
 			game.load_menu(False)
 		elif self.user_input == "savegame":
@@ -120,7 +120,7 @@ class Parser:
 			self.action_args.append(self.user_input[idx])
 			self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])	
 		else:
-			print("I don't understand. Please try a different command.")
+			game.say("I don't understand. Please try a different command.")
 			return 1
 
 	def set_objects(self, game):
@@ -153,17 +153,17 @@ class Parser:
 						obj = None
 
 						while(obj == None):
-							print("Which of the following " + self.action_args[idx] + "s: ")
+							game.say("Which of the following " + self.action_args[idx] + "s: ")
 							
 							for possible_obj in possible_objs:
-								print(possible_obj)
+								game.say(possible_obj)
 
 							obj = input("> ")
 
 							print()
 
 							if obj not in possible_objs:
-								print("That is not one of the options. Please try again.")
+								game.say("That is not one of the options. Please try again.")
 								obj = None
 							else:
 								self.action_args[idx] = obj
