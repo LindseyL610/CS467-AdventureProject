@@ -422,7 +422,7 @@ def say(text):
 
 			#insert color cords before and after each instance
 			if start is not -1:
-				text = text[0:start-1] + color_code + word + default_code + text[end+1:]
+				text = text[0:start] + color_code + word + default_code + text[end+1:]
 
 			start_idx = text.find(word,start_idx) + len(word)
 
