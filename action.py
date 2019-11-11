@@ -91,13 +91,16 @@ class Action:
 				Action.go_action(game, action_args)
 			else:
 				game.say("You cannot go there.")
+		elif action_args[0] == "read":
+			game.objects[action_args[1]].read(game)	# Call read() method in the Feature class
+		elif action_args[0] == "unlock":
+			game.objects[action_args[1]].unlock(game) # Call unlock() method in the Feature or Exit class
 		elif action_args[0] == "take":
-			if game.objects[action_args[1]].data["static"] == False:
-				game.take_item(action_args[1])
-			else:
-				game.say("You can't take the " + action_args[1] + "!")
+			game.objects[action_args[1]].take(game) # Call take() method in the Feature class
 		elif action_args[0] == "drop":
-			game.drop_item(action_args[1])
+			game.objects[action_args[1]].drop(game) # Call drop() method in the Feature class
+		elif action_args[0] == "eat":
+			game.objects[action_args[1]].eat(game) # CAll eat() method in the Feature class
 		elif Action.perform_special_action(game, action_args):
 			return
 		else:

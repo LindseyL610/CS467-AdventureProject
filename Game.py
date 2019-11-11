@@ -354,12 +354,16 @@ class Game:
 	# checks if item is in inventory and if so, removes it and adds it to the current room
 	def drop_item(self, item):
 		if item in self.state["bag"]:
-			self.objects[self.get_current_room()].add_dropped_item(item)
-			self.state["bag"].remove(item)
-			self.say("You dropped the " + item + " in the " + self.get_current_room() + ".")
+			if self.objects[item].data["can_be_dropped"]:
+				self.objects[self.get_current_room()].add_dropped_item(item)
+				self.state["bag"].remove(item)
+				self.say("You dropped the " + item + " in the " + self.get_current_room() + ".")
 
-			return True
+				return True
+			else:
+				self.say(self.objects[item].data["msg_cannot_drop"])
 
+				return False
 		else:
 			self.say("You don't have the " + item + "!")
 

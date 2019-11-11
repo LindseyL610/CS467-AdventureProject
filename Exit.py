@@ -1,7 +1,8 @@
 import os
 import json
+import Feature
 
-class Exit:
+class Exit(Feature.Feature):
 	def __init__(self, data, state):
 		self.data = data.copy()
 		self.state = state.copy()
@@ -31,6 +32,23 @@ class Exit:
 				self.state["locked"] = False
 
 			return ret_str
+
+	def unlock(self, game):
+		unlock = False
+
+		if self.data["can_be_unlocked"] == False:
+			game.say ("The " + self.data["id"] + " does not need to be unlocked.")
+		elif self.state["locked"] == False:
+			game.say("You already unlocked the " + self.data["id"] + ".")
+		elif self.data["id"] == "stone door":
+			if "key" not in game.state["bag"]:
+				game.say( "The door needs a key to be unlocked.")
+			else:
+				unlock = True
+
+		if unlock == True:
+			self.state["locked"] = False
+			game.say( self.data["unlocked_msg"])
 
 	def get_state_data(self):
 		return self.state

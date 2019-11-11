@@ -18,7 +18,7 @@ class Room:
 		for itm in self.state["items"]:
 			obj = game.objects[itm]
 
-			if obj.data["static"] == False:
+			if obj.data["can_be_taken"] == True:
 				if obj.state["current_state"] in obj.data["message"]:
 					prompt += ("\n" + obj.data["message"][obj.state["current_state"]])
 				else:

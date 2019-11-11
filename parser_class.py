@@ -7,7 +7,7 @@ class Parser:
 		self.speech_dict = self.init_parts_of_speech()
 		self.action_args = []
 		self.parts_of_speech = []
-		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock"]
+		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
 		self.exits = ["door"]
 		self.debug = False # Temporary for debugging
 
@@ -47,7 +47,7 @@ class Parser:
 			for itm in current_room.state["items"]:
 				obj = game.objects[itm]
 
-				if obj.data["static"] == False:
+				if obj.data["can_be_taken"] == True:
 					if obj.state["current_state"] in obj.data["message"]:
 						game.say(obj.data["message"][obj.state["current_state"]])
 					else:
@@ -79,7 +79,7 @@ class Parser:
 			self.remove_punctuation(idx)
 			self.stem_input(idx)
 			self.get_synonyms(idx)
-			if self.set_parts_of_speech(idx) == 1:
+			if self.set_parts_of_speech(idx, game) == 1:
 				return 1
 
 			idx += 1
@@ -103,7 +103,8 @@ class Parser:
 		prefixes = ["re"]
 		suffixes = ["ing", "s"]
 
-		if(self.dictionary.get(self.user_input[idx], None) == None):
+		if(self.dictionary.get(self.user_input[idx], None) == None)\
+		and (self.user_input[idx] not in self.speech_dict):
 			for prefix in prefixes:
 				if self.user_input[idx].startswith(prefix):
 					self.user_input[idx] = self.user_input[idx][len(prefix):len(self.user_input[idx])]
@@ -115,7 +116,7 @@ class Parser:
 	def get_synonyms(self, idx):
 		self.user_input[idx] = self.dictionary.get(self.user_input[idx], self.user_input[idx])
 
-	def set_parts_of_speech(self, idx):
+	def set_parts_of_speech(self, idx, game):
 		if self.user_input[idx] in self.speech_dict:
 			self.action_args.append(self.user_input[idx])
 			self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])	
@@ -240,6 +241,7 @@ class Parser:
 			"use": "verb",
 			"unlock": "verb",
 			"eat": "verb",
+			"read": "verb",
 			"book": "object",
 			"door": "object",
 			"fridge": "object",
