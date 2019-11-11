@@ -1,0 +1,194 @@
+[
+	{
+		"STATUS": [ ACTION, DOBJ, PREP, IOBJ ],
+	}
+
+
+
+	{
+		"type": "exit",
+		"data": {
+			"id": "stone door",
+			"status": "locked",
+			"actions": {
+				"lock": {
+					"locked": {},
+					"unlocked": {
+						""
+					}
+				},
+				"unlock": {
+					"locked": {
+						"local": {}
+					},
+					"unlocked":
+				},
+				"go": ""
+			}
+
+
+
+
+
+			"static": true,
+			"description": "It's hard to see because of the intricate patterns on the door, but there is a keyhole in the door's center.",
+			"rooms": [ "balcony", "lobby" ],
+			"actions": {
+				"open": "open",
+				"unlock": "unlock"
+			},
+			"display": {
+				"open": "You opened the door.",
+				"unlock": "You unlocked the door."
+			}
+		},
+		"default_state": {
+			"locked": true
+		}
+	},
+	{
+		"type": "exit",
+		"data": {
+			"id": "grand door",
+			"static": true,
+			"description": "The grand door towers over you. Distributed across its surface are five inscrutable symbols.",
+			"rooms": [ "lobby", "final room" ],
+			"actions": {
+			},
+			"display": {
+			}
+		},
+		"default_state": {
+			"locked": true
+		}
+	},
+	{
+		"type": "exit",
+		"data": {
+			"id": "stairs",
+			"static": true,
+			"description": "The stairs lead up to the east and disappear into darkness. A mist seems to descend, and there is a cold draft.",
+			"rooms": [ "lobby", "cooling room" ],
+			"actions": {
+			},
+			"display": {
+			}
+		},
+		"default_state": {
+			"locked": false
+		}
+	},
+	{
+		"type": "exit",
+		"data": {
+			"id": "hallway",
+			"static": true,
+			"description": "The hallway appears to be blocked.",
+			"rooms": [ "cooling room", "mouse pad" ],
+			"actions": {
+			},
+			"display": {
+			}
+		},
+		"default_state": {
+			"locked": true
+		}
+	},
+	{
+		"type": "feature",
+		"data": {
+			"id": "book",
+			"static": false,
+			"description": "The book is old and thick. The pages seem weathered and brittle. There is nothing on the cover, but along the spine it says 'Documentation.'",
+			"actions": {
+				"open": "opened"
+			},
+			"items": {
+				"opened": "key"
+			},
+			"display": {
+				"default": "There is a thick book lying unopened on a table in the center of the balcony.",
+				"opened": "A key fell on the ground."
+			},
+			"message": {
+				"default": "There is a thick book lying unopened on a table in the center of the balcony.",
+				"opened": "There is a book in the room."
+			}
+		},
+		"default_state": {
+			"current_state": "default"
+		}
+	},
+	{
+		"type": "feature",
+		"data": {
+			"id": "key",
+			"static": false,
+			"description": "The key is heavy and metal, crudely shaped but unmistakably a key.",
+			"actions": {
+				"use": "used"
+			},
+			"items": {
+			},
+			"display": {
+				"default": "There is a key lying on the ground.",
+				"used": "You unlocked the door."
+			},
+			"message": {
+				"default": "There is a key lying on the ground."
+			}
+		},
+		"default_state": {
+			"current_state": "default"
+		}
+	},
+	{
+		"type": "feature",
+		"data": {
+			"id": "fridge",
+			"static": true,
+			"description": "The fridge is huge and towers over you. It seems way too big to be used merely for storing (human) food.",
+			"actions": {
+				"open": "opened"
+			},
+			"items": {
+				"opened": "cheese"
+			},
+			"display": {
+				"default": "A giant fridge towers over you.",
+				"opened": "A piece of cheese tumbles out."
+			},
+			"message": {
+				"default": "A giant fridge towers over you.",
+				"opened": "A giant fridge towers over you. It is open."
+			}
+		},
+		"default_state": {
+			"current_state": "default"
+		}
+	},
+	{
+		"type": "feature",
+		"data": {
+			"id": "cheese",
+			"static": false,
+			"description": "The cheese is actually pretty big. A wedge about the size of your head. A cold mist seeps out of the holes in the cheese.",
+			"actions": {
+				"eat": "ate"
+			},
+			"items": {
+			},
+			"display": {
+				"default": "There is a piece of cheese lying on the ground.",
+				"ate": "You ate the cheese."
+			},
+			"message": {
+				"default": "There is a piece of cheese lying on the ground.",
+				"used": null
+			}
+		},
+		"default_state": {
+			"current_state": "default"
+		}
+	}
+]
