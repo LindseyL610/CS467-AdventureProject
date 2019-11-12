@@ -7,17 +7,16 @@ class Parser:
 		self.speech_dict = self.init_parts_of_speech()
 		self.action_args = []
 		self.parts_of_speech = []
+		self.action_dict = dict()
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
 		self.exits = ["door"]
-		self.debug = False # Temporary for debugging
+		self.debug = True # Temporary for debugging
 
 	# Temporary method for debugging
 	def print_parsed(self):
-		print("\nParsed input:")
-		print(self.action_args)
-		print("\nParts of speech:")
-		print(self.parts_of_speech)
-		print("\n")
+		print("action_dict:")
+		for item in self.action_dict:
+			print(item + ": " + self.action_dict[item])
 
 	def parse_input(self, game, user_input):
 		print("\n")
@@ -39,6 +38,7 @@ class Parser:
 		self.user_input = user_input
 		self.action_args = []
 		self.parts_of_speech = []
+		self.action_dict.clear()
 
 	def check_basic_verbs(self, game):
 		if self.user_input == "look":
@@ -85,6 +85,7 @@ class Parser:
 			idx += 1
 
 		self.set_objects(game)
+		self.set_action_dict()
 
 	def tokenize_input(self):
 		self.user_input = self.user_input.lower()
@@ -169,6 +170,40 @@ class Parser:
 							else:
 								self.action_args[idx] = obj
 				idx += 1
+
+	def set_action_dict(self):
+		verb = None
+		dobj = None
+		prep = None
+		iobj = None
+
+		idx = 0
+
+		while idx < len(self.parts_of_speech):
+			if self.parts_of_speech[idx] == "verb":
+				verb = self.action_args[idx]
+			elif (self.parts_of_speech[idx] == "object")\
+			and (self.parts_of_speech[idx - 1] == "verb"):
+				dobj = self.action_args[idx]
+			elif self.parts_of_speech[idx] == "preposition":
+				prep = self.action_args[idx]
+			elif (dobj is not None) and (self.parts_of_speech[idx] == "object")\
+			and (self.parts_of_speech[idx - 1] == "preposition"):
+				iobj = self.action_args[idx]
+
+			idx += 1
+
+		if verb is not None:
+			self.action_dict["verb"] = verb
+
+		if dobj is not None:
+			self.action_dict["dobj"] = dobj
+
+		if prep is not None:
+			self.action_dict["prep"] = prep
+
+		if iobj is not None:
+			self.action_dict["iobj"] = iobj
 
 	def init_dictionary(self):
 		gamedict = {
@@ -255,8 +290,10 @@ class Parser:
 			"east": "direction",
 			"west": "direction",
 			"at": "preposition",
-			"up": "preposition",
-			"down": "preposition",
+			"on": "preposition",
+			"in": "preposition",
+			"with": "preposition",
+			"under": "preposition",
 			"stone": "adjective",
 			"grand": "adjective"
 		}	
