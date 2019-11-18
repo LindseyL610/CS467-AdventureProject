@@ -40,27 +40,19 @@ class Parser:
 		self.action_dict.clear()
 
 	def check_basic_verbs(self, game):
-		return 1 # Remove this after integrating this method with the new Game class
-
 		if self.user_input == "look":
-			current_room = game.objects[game.get_current_room()]
-			print(current_room.data["long_description"])
-			for itm in current_room.state["items"]:
-				obj = game.objects[itm]
-
-				if obj.data["can_be_taken"] == True:
-					if obj.state["current_state"] in obj.data["message"]:
-						print(obj.data["message"][obj.state["current_state"]])
-					else:
-						print(obj.data["message"]["default"])
+			visited = game.player.current_room.has_been_visited
+			game.player.current_room.has_been_visited = False
+			game.player.current_room.get_description()
+			game.player.current_room.has_been_visted = visited
 		elif self.user_input == "help":
 			print("I understand the following verbs:")
 			for verb in self.verbs_list:
 				print(verb)
 		elif self.user_input == "inventory":
 			print("Your bag contains the following items:")
-			for item in game.state["bag"]:
-				print(item)
+			for item in game.player.inventory:
+				print(item.name)
 		elif self.user_input == "loadgame":
 			game.load_menu(False)
 		elif self.user_input == "savegame":
@@ -85,7 +77,7 @@ class Parser:
 
 			idx += 1
 
-		self.set_objects(game)
+		#self.set_objects(game)
 		self.set_action_dict()
 
 	def tokenize_input(self):
