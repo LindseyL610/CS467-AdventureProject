@@ -1,5 +1,5 @@
-[
-	{
+{
+	"book": {
 		"type": "item",
 		"data": {
 			"id": "book",
@@ -37,7 +37,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"pedestal": {
 		"type": "surface",
 		"data": {
 			"id": "pedestal",
@@ -78,7 +78,7 @@
 			"contents_accessible": true
 		}
 	},
-	{
+	"tower": {
 		"type": "feature",
 		"data": {
 			"id": "tower",
@@ -116,7 +116,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"refrigerator": {
 		"type": "container",
 		"data": {
 			"id": "refrigerator",
@@ -160,7 +160,7 @@
 			"is_open": true
 		}
 	},
-	{
+	"cheese": {
 		"type": "item",
 		"data": {
 			"id": "cheese",
@@ -198,7 +198,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"mouse": {
 		"type": "feature",
 		"data": {
 			"id": "mouse",
@@ -236,7 +236,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"lever": {
 		"type": "feature",
 		"data": {
 			"id": "lever",
@@ -274,7 +274,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"floppy1": {
 		"type": "item",
 		"data": {
 			"id": "floppy1",
@@ -312,7 +312,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"cobwebs": {
 		"type": "feature",
 		"data": {
 			"id": "cobwebs",
@@ -350,7 +350,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"plaque": {
 		"type": "sign",
 		"data": {
 			"id": "plaque",
@@ -388,7 +388,7 @@
 			"msg_cannot_pull": "You cannot pull that."
 		}
 	},
-	{
+	"stonedoorS": {
 		"type": "exit",
 		"data": {
 			"id": "stonedoorS",
@@ -428,7 +428,7 @@
 			"destination": "<R:roomB>"
 		}
 	},
-	{
+	"stonedoorN": {
 		"type": "exit",
 		"data": {
 			"id": "stonedoorN",
@@ -468,7 +468,7 @@
 			"destination": null
 		}
 	},
-	{
+	"ornatedoorS": {
 		"type": "exit",
 		"data": {
 			"id": "ornatedoorS",
@@ -508,7 +508,7 @@
 			"destination": "<R:roomMP>"
 		}
 	},
-	{
+	"ornatedoorN": {
 		"type": "exit",
 		"data": {
 			"id": "ornatedoorN",
@@ -547,7 +547,7 @@
 			"destination": null
 		}
 	},
-	{
+	"openingN": {
 		"type": "exit",
 		"data": {
 			"id": "openingN",
@@ -586,7 +586,7 @@
 			"destination": "<R:roomC>"
 		}
 	},
-	{
+	"openingS": {
 		"type": "exit",
 		"data": {
 			"id": "openingS",
@@ -625,7 +625,7 @@
 			"destination": "<R:roomC>"
 		}
 	},
-	{
+	"stairsW": {
 		"type": "exit",
 		"data": {
 			"id": "stairsW",
@@ -664,7 +664,7 @@
 			"destination": "<R:roomC>"
 		}
 	},
-	{
+	"stairsE": {
 		"type": "exit",
 		"data": {
 			"id": "stairsE",
@@ -703,7 +703,7 @@
 			"destination": "<R:roomB>"
 		}
 	},
-	{
+	"hallwayS": {
 		"type": "exit",
 		"data": {
 			"id": "hallwayS",
@@ -742,7 +742,7 @@
 			"destination": "<R:roomD>"
 		}
 	},
-	{
+	"hallwayN": {
 		"type": "exit",
 		"data": {
 			"id": "hallwayN",
@@ -781,7 +781,7 @@
 			"destination": "<R:roomC>"
 		}
 	},
-	{
+	"secretWall": {
 		"type": "exit",
 		"data": {
 			"id": "secretWall",
@@ -822,4 +822,4 @@
 			"destination": null
 		}
 	}
-]
+}

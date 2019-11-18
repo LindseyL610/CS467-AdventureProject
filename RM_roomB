@@ -1,17 +1,1 @@
-{
-	"id": "roomB",
-	"name": "Lobby",
-	"long_description": "In this large room, there is some type of large computer tower in the corner. A huge ornate door is to the north. Stairs ascend to the east. ",
-	"short_description": "In this large room, there is some type of large computer tower in the corner. A huge ornate door is to the north. Stairs ascend to the east. ",
-	"exits": {
-		"south": "<T:stonedoorN>",
-		"east": "<T:stairsW>",
-		"up": "<T:stairsW>",
-		"north": "<T:ornatedoorS>"
-	},
-	"has_been_visited": false,
-	"contents": [
-		"<T:tower>"
-	],
-	"msg_cannot_go_direction": "You cannot go that direction."
-}
+{"id": "roomB", "name": "Lobby", "long_description": "In this large room, there is some type of large computer tower in the corner. A huge ornate door is to the north. Stairs ascend to the east. ", "short_description": "In this large room, there is some type of large computer tower in the corner. A huge ornate door is to the north. Stairs ascend to the east. ", "exits": {"south": "<T:stonedoorN>", "east": "<T:stairsW>", "up": "<T:stairsW>", "north": "<T:ornatedoorS>"}, "has_been_visited": false, "contents": ["<T:tower>"], "msg_cannot_go_direction": "You cannot go that direction."}

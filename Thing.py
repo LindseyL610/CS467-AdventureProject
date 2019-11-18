@@ -97,16 +97,19 @@ class Thing:
 
 		# Returns the appropriate import value based on whether value is Room or Thing
 		def get_import_value(value, thing_list, room_list):
-			if value.find("<R:") == 0:
-				list = room_list
-			elif value.find("<T:") == 0:
-				list = thing_list
-			else:
-				list = None
+			list = None
 
-			if list is not None:
-				id = value[3:(value.find(">"))]
-				return list[id]
+			if isinstance(value, str):
+				if value.find("<R:") == 0:
+					list = room_list
+				elif value.find("<T:") == 0:
+					list = thing_list
+
+				if list is not None:
+					id = value[3:(value.find(">"))]
+					return list[id]
+			
+			return value
 
 		status_obj = json.loads(status)
 

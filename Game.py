@@ -17,7 +17,7 @@ SAVES = "SV"
 ROOM_PREFIX = "RM_"
 THINGS = "TH"
 
-DEBUG_MODE = False
+DEBUG_MODE = True
 WIDTH = 100
 HEIGHT = 30
 
@@ -78,6 +78,7 @@ class Game:
 		self.action_list = action_list
 		self.verb_list = verb_list
 		self.game_data = self.load_data_from_file(SAVES)
+
 		self.keywords = set()
 
 		self.quit_selected = False
@@ -87,8 +88,6 @@ class Game:
 		#self.load_room_data()
 
 		self.game_loaded = self.load_menu(True)
-
-
 
 		self.new_room = True
 
@@ -191,6 +190,14 @@ class Game:
 	def create_new_game(self):
 		self.load_rooms()
 		self.load_things()
+		
+		# Set default status for each room
+		for id in self.room_list:
+			self.room_list[id].set_status(json.dumps(self.default_rooms[id]), self.thing_list, self.room_list)
+
+		# Set default status for each thing
+		for id in self.thing_list:
+			self.thing_list[id].set_status(json.dumps(self.default_things[id]), self.thing_list, self.room_list)
 
 		# Create a new player --for now this is just a generic object
 		player_obj = self.game_data["default"]["player"].copy()		
@@ -207,6 +214,8 @@ class Game:
 		self.room_list = dict()
 
 		if rooms is None:
+			self.default_rooms = dict()
+
 			#get room file names
 			filenames = list()
 			files = os.listdir(get_path())
@@ -223,67 +232,88 @@ class Game:
 				id = data["id"]
 				name = data["name"]
 
+				self.default_rooms[id] = data
+
 				self.room_list[id] = Room.Room(id, name)
-		
+
+		else:
+			for room in rooms:
+				data = rooms[room]
+				id = data["id"]
+				name = data["name"]
+				self.room_list[id] = Room.Room(id, name)
 
 	def load_things(self, things=None):
 		self.thing_list = dict()
 
 		if things is None:
 			things = self.load_data_from_file(THINGS)
+			self.default_things = dict()
 
-			# for each object
-			for thing in things:
-				# get the object type
-				type = thing["type"]
+		else:
+			self.default_things = None
 
-				# get the object data
-				data = thing["data"]
+		# for each object
+		for thing in things:
+			# get the object type
+			type = things[thing]["type"]
 
-				# get the object id (and add ID to ID index for color output)
-				id = data["id"]
-				name = data["name"]
-				self.keywords.add(name)
+			# get the object data
+			data = things[thing]["data"]
 
-				# Call the appropriate constructor for the object type
-				if type == "exit":
-					self.thing_list["id"] = Thing.Exit(id, name)
-				elif type == "door":
-					self.thing_list["id"] = Thing.Door(id, name)
-				elif type == "item":
-					self.thing_list["id"] = Thing.Item(id, name)
-				elif type == "floppy":
-					self.thing_list["id"] = Thing.Floppy(id, name)
-				elif type == "feature":
-					self.thing_list["id"] = Thing.Feature(id, name)
-				elif type == "input":
-					self.thing_list["id"] = Thing.Input(id, name)
-				elif type == "sign":
-					self.thing_list["id"] = Thing.Sign(id, name)
-				elif type == "storage":
-					self.thing_list["id"] = Thing.Storage(id, name)
-				elif type == "container":
-					self.thing_list["id"] = Thing.Container(id, name)
-				elif type == "surface":
-					self.thing_list["id"] = Thing.Surface(id, name)
+			# get the object id (and add ID to ID index for color output)
+			id = data["id"]
+			name = data["name"]
+			self.keywords.add(name)
 
-		
+			if self.default_things is not None:
+				self.default_things[id] = data
+
+			# Call the appropriate constructor for the object type
+			if type == "exit":
+				self.thing_list[id] = Thing.Exit(id, name)
+			elif type == "door":
+				self.thing_list[id] = Thing.Door(id, name)
+			elif type == "item":
+				self.thing_list[id] = Thing.Item(id, name)
+			elif type == "floppy":
+				self.thing_list[id] = Thing.Floppy(id, name)
+			elif type == "feature":
+				self.thing_list[id] = Thing.Feature(id, name)
+			elif type == "input":
+				self.thing_list[id] = Thing.Input(id, name)
+			elif type == "sign":
+				self.thing_list[id] = Thing.Sign(id, name)
+			elif type == "storage":
+				self.thing_list[id] = Thing.Storage(id, name)
+			elif type == "container":
+				self.thing_list[id] = Thing.Container(id, name)
+			elif type == "surface":
+				self.thing_list[id] = Thing.Surface(id, name)
+
 
 	def load_saved_game(self, id):
 		debug("load_saved_game()")
 
+		self.load_rooms(self.game_data["saves"][id]["data"]["room_list"])
+		self.load_things(self.game_data["saves"][id]["data"]["thing_list"])
+
+		# Set status for each room
+		for room in self.room_list:
+			self.room_list[room].set_status(json.dumps(self.game_data["saves"][id]["data"]["room_list"][room]), self.thing_list, self.room_list)
+
+		# Set status for each thing
+		for thing in self.thing_list:
+			self.thing_list[thing].set_status(json.dumps(self.game_data["saves"][id]["data"]["thing_list"][thing]), self.thing_list, self.room_list)
+
 		# Load player object from saved game data based on ID
-		self.player = self.game_data["saves"][id]["data"]["player"].copy()
+		player_obj = self.game_data["saves"][id]["data"]["player"]
+		self.player = Player.Player()
+		self.player.set_status(json.dumps(player_obj), self.thing_list, self.room_list)
 
 		# These are data attributes for the saved game 
 		self.current_save = id #index of game in "saves" list
 		self.timestamp = self.game_data["saves"][id]["time"]
-		
-		# Here the saved game state data is loaded
-		self.state = self.game_data["saves"][id]["data"]["game_state"].copy()
-
-		# Load up instances of all objects for the saved game
-		self.construct_all_objects(False)
 
 	def save_game(self):
 		data = dict()
@@ -291,14 +321,15 @@ class Game:
 		new_save = dict()
 
 		# Get the game data that is going to be saved
-		data["player"] = self.player.copy()
-		data["game_state"] = self.state.copy()
-		data["object_state"] = {}
-
-		# For each object
-		for obj in self.objects:
-			# Add object state data
-			data["object_state"][obj] = self.objects[obj].get_state_data().copy()
+		data["player"] = json.loads(self.player.get_status())
+		
+		data["room_list"] = dict()
+		for id in self.room_list:
+			data["room_list"][id] = json.loads(self.room_list[id].get_status())
+		
+		data["thing_list"] = dict()
+		for id in self.thing_list:
+			data["thing_list"][id] = json.loads(self.thing_list[id].get_status())
 
 		# if this is a game that hasn't been previously saved
 		if self.current_save is None:
@@ -317,10 +348,10 @@ class Game:
 		f = open (SAVES, "w")
 
 		f.truncate(0)
-		f.write(json.dumps(self.game_data))
+		json.dump(self.game_data, f)
 		f.close()
 	
-		self.say("Game saved!")
+		say("Game saved!")
 
 	def prompt(self):
 		debug("\ncurrent room: " + str(self.player.current_room.id))
@@ -376,4 +407,8 @@ class Game:
 
 
 game = Game()
-print(game.__dict__)
+debug(game.__dict__)
+debug(game.player.__dict__)
+
+
+game.save_game()

@@ -1,17 +1,1 @@
-{
-	"id": "roomD",
-	"name": "Mouse Pad",
-	"long_description": "As you enter the room, the first thing you notice is the pungent smell. You are startled to see in the South East corner... a huge mouse! Scattered about the floor is bits of hay and... debris. This appears to be the mouse's... dwelling. It looks like there may be something on the wall behind the mouse, but it cannot be reached. The rest of the room is empty with walls made of large stone bricks. On the west wall, some of the bricks appear discolored.",
-	"short_description": "The floor is covered in hay and debris. In the corner sits a gigantic mouse. It looks like there may be something on the wall behind the mouse.",
-	"exits": {
-		"south": "<T:hallwayN>",
-		"west": "<T:secretWall>"
-	},
-	"has_been_visited": false,
-	"contents": [
-		"<T:mouse>",
-		"<T:lever>",
-		"<T:secretWall>"
-	],
-	"msg_cannot_go_direction": "You cannot go that direction."
-}
+{"id": "roomD", "name": "Mouse Pad", "long_description": "As you enter the room, the first thing you notice is the pungent smell. You are startled to see in the South East corner... a huge mouse! Scattered about the floor is bits of hay and... debris. This appears to be the mouse's... dwelling. It looks like there may be something on the wall behind the mouse, but it cannot be reached. The rest of the room is empty with walls made of large stone bricks. On the west wall, some of the bricks appear discolored.", "short_description": "The floor is covered in hay and debris. In the corner sits a gigantic mouse. It looks like there may be something on the wall behind the mouse.", "exits": {"south": "<T:hallwayN>", "west": "<T:secretWall>"}, "has_been_visited": false, "contents": ["<T:mouse>", "<T:lever>", "<T:secretWall>"], "msg_cannot_go_direction": "You cannot go that direction."}

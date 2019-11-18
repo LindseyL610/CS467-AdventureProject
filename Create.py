@@ -305,8 +305,8 @@ def generate_blank_save(thing_list, room_list):
 	
 	print(player_data)
 
-	save["defaults"] = dict()
-	save["defaults"]["player"] = player_data
+	save["default"] = dict()
+	save["default"]["player"] = player_data
 	save["saves"] = dict()
 	save["save_ctr"] = 0
 
@@ -318,11 +318,11 @@ def generate_blank_save(thing_list, room_list):
 def generate_data_files(thing_list, room_list):
 	print("Generating data files...")
 	
-	thing_data = list()
+	thing_data = dict()
 
 	# Put all Thing data into one file
 	for thing in thing_list:
-		thing_data.append(json.loads(thing_list[thing].get_status()))
+		thing_data[thing] = json.loads(thing_list[thing].get_status())
 	f = open (THINGS, "w")
 	f.truncate(0)
 	json.dump(thing_data, f)
@@ -343,7 +343,7 @@ def generate_data_files(thing_list, room_list):
 		print(room_obj)
 
 
-#generate_data_files(thing_list, room_list)
+generate_data_files(thing_list, room_list)
 generate_blank_save(thing_list, room_list)
 
 #TESTING#
