@@ -1,95 +1,153 @@
 from Utilities import say
 import Utilities
+import Thing
+import json
 
 
 class Room:
-    """Basic Room class"""
+	"""Basic Room class"""
 
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-        self.long_description = ""
-        self.short_description = ""
-        self.exits = {}
+	def __init__(self, id, name):
+		self.id = id
+		self.name = name
+		self.long_description = ""
+		self.short_description = ""
+		self.exits = {}
 
-        self.has_been_visited = False
-        self.contents = []
+		self.has_been_visited = False
+		self.contents = []
 
-        self.msg_cannot_go_direction = "You cannot go that direction."
+		self.msg_cannot_go_direction = "You cannot go that direction."
 
-    def get_status(self):
-        """returns the status of a thing in JSON format"""
-        pass
+	def get_status(self):
+		"""returns the status of a room in JSON format"""
+		
+		# Returns the appropriate export value based on whether value is a Room or Thing
+		def get_export_value(value):
+			if isinstance(value, Room):
+				return "<R:" + value.id + ">"
+			elif isinstance(value, Thing.Thing):
+				return "<T:" + value.id + ">"
+			else:
+				return value
 
-    def set_status(self, status):
-        """uses the JSON data in status to update the thing"""
-        pass
+		str_dict = self.__dict__
 
-    def get_description(self):
-        say(self.name)
-        if self.has_been_visited:
-            description_string = self.short_description
-            listed_things = []
-            # self.get_all_accessible_contents()
-            for thing in self.get_all_accessible_contents():
-                if thing.has_dynamic_description:
-                    description_string += " " + thing.get_dynamic_description()
+		#print ("str_dict before: " + str(str_dict))
 
-                if thing.is_listed:
-                    listed_things.append(thing)
+		for attr in str_dict:
+			if isinstance(str_dict[attr], list):
+				i = 0
+				for x in str_dict[attr]:
+					str_dict[attr][i] = get_export_value(x)
+					i += 1
+			elif isinstance(str_dict[attr], dict):
+				for i in str_dict[attr]:
+					str_dict[attr][i] = get_export_value(str_dict[attr][i])
+			else:
+				str_dict[attr] = get_export_value(str_dict[attr])
 
-            num_listed_things = len(listed_things)
+		#print ("str_dict after: " + str(str_dict))
 
-            if num_listed_things > 0:
-                list_string = " There is"
-                list_string += Utilities.list_to_words([o.list_name for o in listed_things])
-                list_string += "."
-                description_string += list_string
+		return json.dumps(str_dict)
 
-            say(description_string)
+	def set_status(self, status, thing_list, room_list):
+		"""uses the JSON data in status to update the thing"""
+
+		# Returns the appropriate import value based on whether value is Room or Thing
+		def get_import_value(value, thing_list, room_list):
+			if value.find("<R:") == 0:
+				list = room_list
+			elif value.find("<T:") == 0:
+				list = thing_list
+			else:
+				list = None
+
+			if list is not None:
+				id = value[3:(value.find(">"))]
+				return list[id]
+
+		status_obj = json.loads(status)
+
+		for attr in status_obj:
+			if isinstance(status_obj[attr], list):
+				imp_val = list()
+				for x in status_obj[attr]:
+					imp_val.append(get_import_value(x, thing_list, room_list))
+			elif isinstance(status_obj[attr], dict):
+				imp_val = dict()
+				for i in status_obj[attr]:
+					imp_val[i] = get_import_value(status_obj[attr][i], thing_list, room_list)
+			else:
+				imp_val = get_import_value(status_obj[attr], thing_list, room_list)
+		
+			setattr(self, attr, imp_val)
+
+	def get_description(self):
+		say(self.name)
+		if self.has_been_visited:
+			description_string = self.short_description
+			listed_things = []
+			# self.get_all_accessible_contents()
+			for thing in self.get_all_accessible_contents():
+				if thing.has_dynamic_description:
+					description_string += " " + thing.get_dynamic_description()
+
+				if thing.is_listed:
+					listed_things.append(thing)
+
+			num_listed_things = len(listed_things)
+
+			if num_listed_things > 0:
+				list_string = " There is"
+				list_string += Utilities.list_to_words([o.list_name for o in listed_things])
+				list_string += "."
+				description_string += list_string
+
+			say(description_string)
 
 
-        else:
-            say(self.long_description)
-            self.has_been_visited = True
+		else:
+			say(self.long_description)
+			self.has_been_visited = True
 
-    def look(self, game, actionargs):
-        self.get_description()
+	def look(self, game, actionargs):
+		self.get_description()
 
-    def go(self, game, actionargs):
+	def go(self, game, actionargs):
 
-        direction = actionargs.get("dobj")
-        if self.exits.get(direction):
-            self.exits[direction].go(game, actionargs)
-        else:
-            say(self.msg_cannot_go_direction)
+		direction = actionargs.get("dobj")
+		if self.exits.get(direction):
+			self.exits[direction].go(game, actionargs)
+		else:
+			say(self.msg_cannot_go_direction)
 
-    def add_thing(self, thing):
-        self.contents.append(thing)
+	def add_thing(self, thing):
+		self.contents.append(thing)
 
-    def remove_thing(self, thing):
-        self.contents.remove(thing)
+	def remove_thing(self, thing):
+		self.contents.remove(thing)
 
-    def get_all_contents(self):
-        """return ALL contents, including those that are not accessible"""
-        all_contents_list = self.contents.copy()
-        for item in self.contents:
-            if hasattr(item, "contents"):
-                all_contents_list.extend(item.contents)
+	def get_all_contents(self):
+		"""return ALL contents, including those that are not accessible"""
+		all_contents_list = self.contents.copy()
+		for item in self.contents:
+			if hasattr(item, "contents"):
+				all_contents_list.extend(item.contents)
 
-        return all_contents_list
+		return all_contents_list
 
-    def get_all_accessible_contents(self):
-        """return ALL contents, including those that are not accessible"""
-        all_contents_list = []
-        for item in self.contents:
-            if item.is_accessible:
-                all_contents_list.append(item)
-                if hasattr(item, "contents") and item.contents_accessible:
-                    for subitem in item.contents:
-                        if subitem.is_accessible:
-                            all_contents_list.append(subitem)
-        return all_contents_list
+	def get_all_accessible_contents(self):
+		"""return ALL contents, including those that are not accessible"""
+		all_contents_list = []
+		for item in self.contents:
+			if item.is_accessible:
+				all_contents_list.append(item)
+				if hasattr(item, "contents") and item.contents_accessible:
+					for subitem in item.contents:
+						if subitem.is_accessible:
+							all_contents_list.append(subitem)
+		return all_contents_list
 
 # OLD Room.py just in case
 #

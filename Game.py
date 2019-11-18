@@ -1,23 +1,25 @@
 import Room
 import os
-import platform
 import shutil
 import json
 import datetime
 import sys
 import parser_class
-import Exit
-import Feature
-import textwrap
+import Thing
+import Player
+from Utilities import say
+from Verbs_and_Actions import action_list, verb_list
+import platform
 
-OBJECTS = "OB"
+OS = platform.system()
+
 SAVES = "SV"
 ROOM_PREFIX = "RM_"
+THINGS = "TH"
 
 DEBUG_MODE = False
 WIDTH = 100
 HEIGHT = 30
-
 
 def toggle_debug(input):
 	global DEBUG_MODE
@@ -73,18 +75,20 @@ def get_path():
 
 class Game:
 	def __init__(self):
-		self.os = platform.system()
+		self.action_list = action_list
+		self.verb_list = verb_list
+		self.game_data = self.load_data_from_file(SAVES)
+		self.keywords = set()
+
 		self.quit_selected = False
 
 		self.parser = parser_class.Parser()
 
-		self.object_data = self.load_data_from_file(OBJECTS)
-		self.game_data = self.load_data_from_file(SAVES)
-		self.load_room_data()
+		#self.load_room_data()
 
 		self.game_loaded = self.load_menu(True)
 
-		self.wrapper = textwrap.TextWrapper()
+
 
 		self.new_room = True
 
@@ -185,77 +189,85 @@ class Game:
 		return selection
 
 	def create_new_game(self):
+		self.load_rooms()
+		self.load_things()
+
 		# Create a new player --for now this is just a generic object
-		self.player = {}
-		self.player["name"] = input("Enter your name: ")
+		player_obj = self.game_data["default"]["player"].copy()		
+		player_obj["name"] = input("Enter your name: ")
+		self.player = Player.Player()
+		self.player.set_status(json.dumps(player_obj), self.thing_list, self.room_list)
 
 		# These are data attributes for the saved game --currently not saved
 		self.current_save = None #index of game in "saves" list
-		self.timestamp = None #timestamp for when game was last saved
+		self.timestamp = None #timestamp for when game was last saved		
+
+
+	def load_rooms(self, rooms=None):
+		self.room_list = dict()
+
+		if rooms is None:
+			#get room file names
+			filenames = list()
+			files = os.listdir(get_path())
+
+			for name in files:
+				if name.find(ROOM_PREFIX) is 0:
+					filenames.append(name)
+
+			#for each room file
+			for room_file in filenames:
+				#retrieve data from room file
+				data = self.load_data_from_file(room_file)
+
+				id = data["id"]
+				name = data["name"]
+
+				self.room_list[id] = Room.Room(id, name)
 		
-		# Here the default game state data is loaded
-		self.state = self.game_data["default"].copy()
 
-		# Load up instances of all objects for a new game
-		self.construct_all_objects(True)
+	def load_things(self, things=None):
+		self.thing_list = dict()
 
-	def load_room_data(self):
-		#get room file names
-		filenames = list()
-		files = os.listdir(get_path())
+		if things is None:
+			things = self.load_data_from_file(THINGS)
 
-		for name in files:
-			if name.find(ROOM_PREFIX) is 0:
-				filenames.append(name)
+			# for each object
+			for thing in things:
+				# get the object type
+				type = thing["type"]
 
-		#for each room file
-		for room_file in filenames:
-			#retrieve data from room file
-			data = self.load_data_from_file(room_file)
+				# get the object data
+				data = thing["data"]
 
-			#append data to object_data
-			self.object_data.append(data)
+				# get the object id (and add ID to ID index for color output)
+				id = data["id"]
+				name = data["name"]
+				self.keywords.add(name)
 
-	def construct_all_objects(self, new):
-		self.objects = dict()
-		self.keywords = set()
+				# Call the appropriate constructor for the object type
+				if type == "exit":
+					self.thing_list["id"] = Thing.Exit(id, name)
+				elif type == "door":
+					self.thing_list["id"] = Thing.Door(id, name)
+				elif type == "item":
+					self.thing_list["id"] = Thing.Item(id, name)
+				elif type == "floppy":
+					self.thing_list["id"] = Thing.Floppy(id, name)
+				elif type == "feature":
+					self.thing_list["id"] = Thing.Feature(id, name)
+				elif type == "input":
+					self.thing_list["id"] = Thing.Input(id, name)
+				elif type == "sign":
+					self.thing_list["id"] = Thing.Sign(id, name)
+				elif type == "storage":
+					self.thing_list["id"] = Thing.Storage(id, name)
+				elif type == "container":
+					self.thing_list["id"] = Thing.Container(id, name)
+				elif type == "surface":
+					self.thing_list["id"] = Thing.Surface(id, name)
+
 		
-		# for each object
-		for object in self.object_data:
-			# get the object type
-			type = object["type"]
-
-			# get the object data
-			data = object["data"]
-
-			# get the object id (and add ID to ID index for color output)
-			id = data["id"]
-			self.keywords.add(id)
-
-			# if this is a new game
-			if new:
-				# use the default state provided in the object data
-				state = object["default_state"]
-			# if this game is loaded from a saved game
-			else:
-				# use the saved state data
-				state = self.game_data["saves"][self.current_save]["data"]["object_state"][id].copy()
-
-			# construct an instance of that object
-			self.objects[id] = self.construct_single_object(type, data, state)
-
-	def construct_single_object(self, type, data, state):
-		ret_obj = None
-		
-		# Call the appropriate constructor for the object type
-		if type == "room":
-			ret_obj = Room.Room(data, state)
-		elif type == "exit":
-			ret_obj = Exit.Exit(data, state)
-		elif type == "feature":
-			ret_obj = Feature.Feature(data, state)
-
-		return ret_obj
 
 	def load_saved_game(self, id):
 		debug("load_saved_game()")
@@ -310,73 +322,19 @@ class Game:
 	
 		self.say("Game saved!")
 
-	def get_current_room(self):
-		return self.state["current_room"]
-
-	def go(self, direction):
-		origin = self.get_current_room()
-		exits = self.objects[origin].data["exits"].copy()
-
-		if exits[direction] is not None:
-			if self.objects[exits[direction]].state["locked"]:
-				self.say("That exit is locked!")
-				return
-
-			for room in self.objects[exits[direction]].data["rooms"]:
-				if not (room == origin):
-					destination = room
-
-			self.state["current_room"] = destination
-			self.say("You travel " + direction + " through the " + exits[direction] + ".")
-			self.new_room = True
-
-		else:
-			self.say("There is nowhere to go in that direction!")
-
-	# checks if item is in the room, and if so, removes it from the room and adds to the bag
-	def take_item(self, item):
-		if self.objects[self.get_current_room()].check_item(item):
-			#remove item from room
-			self.objects[self.get_current_room()].remove_item(item)
-
-			#put item in bag
-			self.state["bag"].append(item)
-
-			self.say("The " + item + " is now in your bag.")
-
-			return True
-
-		else:
-			self.say("You can't take the " + item + "!")
-
-			return False
-
-	# checks if item is in inventory and if so, removes it and adds it to the current room
-	def drop_item(self, item):
-		if item in self.state["bag"]:
-			self.objects[self.get_current_room()].add_dropped_item(item)
-			self.state["bag"].remove(item)
-			self.say("You dropped the " + item + " in the " + self.get_current_room() + ".")
-
-			return True
-
-		else:
-			self.say("You don't have the " + item + "!")
-
-			return False
-
 	def prompt(self):
-		debug("\ncurrent room: " + str(self.get_current_room()))
-		debug("room state: " + str(self.objects[self.get_current_room()].get_state_data()))
-		debug("game: " + str(self.state))
+		debug("\ncurrent room: " + str(self.player.current_room.id))
+		debug("room state: " + str(self.room_list[self.player.current_room.id].get_status()))
+		debug("player: " + str(self.player.get_status()))
 
 		if self.new_room:
 			#NOTE: The following clear screen code adapted from: https://stackoverflow.com/questions/18937058/clear-screen-in-shell/47296211
-			if self.os == "Windows":
+			if OS == "Windows":
 				os.system('cls')  # For Windows
-			elif self.os == "Linux" or self.os == "Darwin":
+			elif OS == "Linux" or OS == "Darwin":
 				os.system('clear')  # For Linux/OS X
-			self.say(self.objects[self.get_current_room()].get_prompt(self))
+			
+			self.room_list[self.player.current_room.id].get_description()
 			self.new_room = False
 
 		input_str = input("> ")
@@ -408,53 +366,14 @@ class Game:
 		while not self.quit_selected:
 			self.prompt()
 
-	def say(self, text):
-		#if there is no string data, do nothing
-		if text is not None and (text == "") is False:
-			#Color only supported on Linux/Mac
-			if self.os == "Linux" or self.os == "Darwin":
-				color_code = "\033[1;32;40m"
-				default_code = "\033[0m"
-
-				#find each instance of each key word
-				for word in self.keywords:
-					start_idx = 0
-					start = 0
-
-					while start is not -1:
-						start = text.find(word, start_idx)
-						end = start + len(word) - 1
-
-						#insert color cords before and after each instance
-						if start is not -1:
-							text = text[0:start] + color_code + word + default_code + text[end+1:]
-
-						start_idx = text.find(word,start_idx) + len(word)
-
-			print(self.wrapper.fill(text))
-
-
-if valid_width():
-	game = Game()
-	if game.game_loaded:
-		game.play()
 
 
 
-#game = Game()
-#debug("game data= " + str(game.game_data))
-#debug("object data= " + str(game.object_data))
-#debug("player= " + str(game.player))
-#debug("current save= " + str(game.current_save))
-#debug("state= " + str(game.state))
-#debug("objects= " + str(game.objects))
+#if valid_width():
+#	game = Game()
+#	if game.game_loaded:
+#		game.play()
 
-#game.save_game()
-#debug("game data= " + str(game.game_data))
-#debug("object data= " + str(game.object_data))
-#debug("player= " + str(game.player))
-#debug("current save= " + str(game.current_save))
-#debug("state= " + str(game.state))
-#debug("objects= " + str(game.objects))
 
-#game.play()
+game = Game()
+print(game.__dict__)

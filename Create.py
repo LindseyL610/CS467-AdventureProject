@@ -1,6 +1,14 @@
 from Utilities import say
+import Utilities
 import Thing
 import Room
+import json
+import Player
+
+ROOM_PREFIX = "RM_"
+THINGS = "TH"
+SAVE = "SV"
+STARTING_ROOM = "roomA"
 
 # TODO much of this can be greatly cleaned up, even with the basic names/ids of items/exits/rooms
 #  of course we also have to add in the special functionality of many elements as well
@@ -284,6 +292,59 @@ room_list["roomI"].exits["north"] = thing_list["openingS"]
 
 room_list["roomMP"].exits["south"] = thing_list["ornatedoorN"]
 
+
+def generate_blank_save(thing_list, room_list):
+	print("Generating blank save file...")
+	
+	save = dict()
+
+	p = Player.Player()
+	p.current_room = room_list[STARTING_ROOM]
+
+	player_data = json.loads(p.get_status())
+	
+	print(player_data)
+
+	save["defaults"] = dict()
+	save["defaults"]["player"] = player_data
+	save["saves"] = dict()
+	save["save_ctr"] = 0
+
+	f = open(SAVE, "w")
+	f.truncate(0)
+	json.dump(save, f)
+	f.close()
+
+def generate_data_files(thing_list, room_list):
+	print("Generating data files...")
+	
+	thing_data = list()
+
+	# Put all Thing data into one file
+	for thing in thing_list:
+		thing_data.append(json.loads(thing_list[thing].get_status()))
+	f = open (THINGS, "w")
+	f.truncate(0)
+	json.dump(thing_data, f)
+	f.close()
+
+	print(thing_data)
+
+	# Put Room data into separate files
+	for room in room_list:
+		room_obj = json.loads(room_list[room].get_status())
+
+		file_name = ROOM_PREFIX + room_obj["id"]
+		f = open (file_name, "w")
+		f.truncate(0)
+		json.dump(room_obj, f)
+		f.close()
+		
+		print(room_obj)
+
+
+#generate_data_files(thing_list, room_list)
+generate_blank_save(thing_list, room_list)
 
 #TESTING#
 

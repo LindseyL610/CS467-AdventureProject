@@ -1,0 +1,15 @@
+{
+	"id": "roomP1",
+	"name": "Monitor Station",
+	"long_description": "Monitors everywhere.",
+	"short_description": "So many monitors.",
+	"exits": {
+		"north": "<T:openingS>"
+	},
+	"has_been_visited": false,
+	"contents": [
+		"<T:cobwebs>",
+		"<T:floppy1>"
+	],
+	"msg_cannot_go_direction": "You cannot go that direction."
+}

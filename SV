@@ -1,8 +1,13 @@
 {
 	"default": {
-		"current_room": "balcony",
-		"bag": []
+		"player": {
+			"name": "NAME",
+			"inventory": [
+			],
+			"current_room": "<R:roomA>"
+		}
 	},
-	"saves": {},
+	"saves": {
+	},
 	"save_ctr": 0
 }

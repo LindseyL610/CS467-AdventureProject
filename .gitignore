@@ -24,3 +24,10 @@ Tower Escape/.vs/slnx.sqlite
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+.vs/PythonSettings.json
+*.pyc
+__pycache__/action.cpython-36.pyc
+__pycache__/Exit.cpython-36.pyc
+__pycache__/Feature.cpython-36.pyc
+__pycache__/parser_class.cpython-36.pyc
+__pycache__/Room.cpython-36.pyc
