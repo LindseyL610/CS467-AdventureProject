@@ -1,4 +1,5 @@
 from Utilities import say
+import Utilities
 from Create import thing_list, room_list
 from Verbs_and_Actions import action_list, verb_list
 
@@ -23,7 +24,7 @@ class Player:
     def add_to_inventory(self, thing):
         """removes an item from the player inventory"""
         # place holder message
-        say("[[player removes {} from inventory]]".format(thing.name))
+        say("[[player adds {} to inventory]]".format(thing.name))
         # remove thing from inventory
         self.inventory.append(thing)
 
@@ -40,6 +41,12 @@ class Player:
         say("[[player takes {}]]".format(thing.name))
 
         # remove thing from its current location (room or storage)
+        print("Here are current room contents for {}".format(self.current_room.name))
+        for content in self.current_room.contents:
+            print (content.list_name)
+        print("that is all.")
+
+
         self.current_room.remove_thing(thing)
         # add thing to inventory
         self.add_to_inventory(thing)
@@ -77,10 +84,34 @@ class GameData:
         self.thing_list = thing_list
         self.action_list = action_list
         self.verb_list = verb_list
+        self.direction_list = ["north", "east", "south", "west", "up", "down"]
 
         # initialize starting location with roomA
         self.player.current_room = self.room_list["roomA"]
 
+    def get_thing_by_name(self, thing_name, must_be_in_inventory):
+        # first, look for thing with given name in player inventory
+        # default_thing = Utilities.find_by_name()
+        thing_in_inventory = Utilities.find_by_name(thing_name, self.player.inventory)
+        if (thing_in_inventory != None):
+            # found it
+            return thing_in_inventory
+        else:
+            if (must_be_in_inventory):
+                # Todo make this more specific...
+                print("You don't have that...")
+                return None
+            else:
+                # look in room's accessible contents:
+                thing_in_room = Utilities.find_by_name(
+                    thing_name,self.player.current_room.get_all_accessible_contents())
+                if (thing_in_room != None):
+                    #found it
+                    return thing_in_room
+                else:
+                    # Todo make this more specific...
+                    print("You don't see that...")
+                    return None
 
 # TODO
 #  Game can get all_things and all_rooms from Create.py

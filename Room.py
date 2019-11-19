@@ -41,7 +41,7 @@ class Room:
             num_listed_things = len(listed_things)
 
             if num_listed_things > 0:
-                list_string = " There is"
+                list_string = " You see"
                 list_string += Utilities.list_to_words([o.list_name for o in listed_things])
                 list_string += "."
                 description_string += list_string
@@ -68,19 +68,22 @@ class Room:
         self.contents.append(thing)
 
     def remove_thing(self, thing):
+        # TODO also handle removing thing from a storage object in the room
         self.contents.remove(thing)
 
     def get_all_contents(self):
-        """return ALL contents, including those that are not accessible"""
+        """return everything in a room (accessible or not) from contents, storage, and exits"""
         all_contents_list = self.contents.copy()
         for item in self.contents:
             if hasattr(item, "contents"):
                 all_contents_list.extend(item.contents)
+        for exit in self.exits.values():
+            all_contents_list.append(exit)
 
         return all_contents_list
 
     def get_all_accessible_contents(self):
-        """return ALL contents, including those that are not accessible"""
+        """return everything in a room that IS accessible, from contents, storage, and exits"""
         all_contents_list = []
         for item in self.contents:
             if item.is_accessible:
@@ -89,6 +92,9 @@ class Room:
                     for subitem in item.contents:
                         if subitem.is_accessible:
                             all_contents_list.append(subitem)
+        for exit in self.exits.values():
+            if exit.is_accessible:
+                all_contents_list.append(exit)
         return all_contents_list
 
 # OLD Room.py just in case

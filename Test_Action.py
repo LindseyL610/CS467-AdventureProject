@@ -20,10 +20,10 @@ run_test(
     {"verb" : "look"})
 
 say("\n\n")
-say("testing 'look at'")
+say("testing 'read plaque'")
 run_test(
-    {"verb" : "look",
-     "prep" : "at"})
+    {"verb": "read",
+     "dobj": "plaque"})
 
 say("\n\n")
 say("testing 'look at book'")
@@ -33,11 +33,15 @@ run_test(
      "prep" : "at"})
 
 say("\n\n")
+say("testing take")
+run_test(
+    {"verb" : "take"})
+
+say("\n\n")
 say("testing take book")
 run_test(
     {"verb" : "take",
      "dobj" : "book"})
-
 
 say("\n\n")
 say("testing take book again")
@@ -45,16 +49,12 @@ run_test(
     {"verb" : "take",
      "dobj" : "book"})
 
+
 say("\n\n")
 say("testing take cheese")
 run_test(
     {"verb" : "take",
      "dobj" : "cheese"})
-
-say("\n\n")
-say("testing take")
-run_test(
-    {"verb" : "take"})
 
 say("\n\n")
 say("testing read book")
@@ -71,28 +71,78 @@ run_test(
      "iobj" : "door"})
 
 say("\n\n")
-say("testing 'read plaque'")
-run_test(
-    {"verb": "read",
-     "dobj": "plaque"})
-
-say("\n\n")
 say("testing 'drop book'")
 run_test(
     {"verb": "drop",
      "dobj": "book"})
 
 say("\n\n")
-say("testing 'put book on cheese'")
+say("testing 'go north'")
 run_test(
-    {"verb": "put",
-     "dobj": "book",
-     "prep": "on",
-     "iobj": "cheese"})
-
+    {"verb": "go",
+     "dobj": "north"})
 
 say("\n\n")
-say("testing 'pull lever'")
+say("testing 'look'")
 run_test(
-    {"verb": "pull",
-     "dobj": "lever"})
+    {"verb": "look"})
+
+say("\n\n")
+say("testing 'go south'")
+run_test(
+    {"verb": "go",
+     "dobj": "south"})
+
+say("\n\n")
+say("testing 'look tower'")
+run_test(
+    {"verb": "look",
+     "dobj": "tower"})
+
+say("\n\n")
+say("testing 'go stairs'")
+run_test(
+    {"verb": "go",
+     "dobj": "stairs"})
+
+say("\n\n")
+say("testing 'go down'")
+run_test(
+    {"verb": "go",
+     "dobj": "down"})
+
+say("\n\n")
+say("testing 'go up stairs'")
+run_test(
+    {"verb": "go",
+     "dobj": "stairs",
+     "prep": "up"})
+
+print("current room is " + my_game.player.current_room.name)
+for thing in my_game.player.current_room.contents:
+    print("there is " + thing.list_name)
+print("that is all")
+say("\n\n")
+say("testing 'drop cheese'")
+run_test(
+    {"verb": "drop",
+     "dobj": "cheese"})
+
+say("\n\n")
+say("testing 'take cheese'")
+run_test(
+    {"verb": "take",
+     "dobj": "cheese"})
+
+say("\n\n")
+say("testing 'go south'")
+run_test(
+    {"verb": "go",
+     "dobj": "south"})
+
+say("\n\n")
+say("testing 'go in opening'")
+run_test(
+    {"verb": "go",
+     "dobj": "opening",
+     "prep": "in"})
