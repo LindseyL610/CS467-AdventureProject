@@ -92,7 +92,7 @@ class Game:
 		self.new_room = True
 
 	def get_game_dictionary(self):
-		dictionary = dict()	
+		dictionary = self.add_directions(0)
 
 		# for each verb
 		for verb in verb_list:
@@ -130,7 +130,7 @@ class Game:
 		return dictionary
 
 	def get_parts_of_speech_dictionary(self):
-		dictionary = dict()
+		dictionary = self.add_directions(1)
 
 		# for each verb
 		for verb in verb_list:
@@ -155,6 +155,18 @@ class Game:
 			for adj in things[thing]["data"]["adjectives"]:
 				if adj not in dictionary:
 					dictionary[adj] = "adjective" # add adj to dict with value "adjective"
+
+		return dictionary
+
+	def add_directions(self, speech_dict):
+		directions = [ "north", "south", "east", "west" ]
+		dictionary = dict()
+
+		for direction in directions:
+			if speech_dict == 0:
+				dictionary[direction] = direction
+			else:
+				dictionary[direction] = "direction"
 
 		return dictionary
 
