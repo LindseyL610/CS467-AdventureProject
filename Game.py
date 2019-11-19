@@ -8,7 +8,7 @@ import parser_class
 import Thing
 import Player
 from Utilities import say
-from Verbs_and_Actions import action_list, verb_list
+from Verbs_and_Actions import verb_list, action_list, prep_list
 import platform
 
 OS = platform.system()
@@ -90,6 +90,73 @@ class Game:
 		self.game_loaded = self.load_menu(True)
 
 		self.new_room = True
+
+	def get_game_dictionary(self):
+		dictionary = dict()	
+
+		# for each verb
+		for verb in verb_list:
+			if verb not in dictionary:
+				dictionary[verb] = verb # add the verb to the dict
+
+			for alt_name in verb_list[verb].alternate_names:
+				if alt_name not in dictionary:
+					dictionary[alt_name] = verb # add each alternate word for the verb to the dict
+
+		# for each preposition
+		for prep in prep_list:
+			if prep not in dictionary:
+				dictionary[prep] = prep # add the preposition to the dict
+
+		things = self.load_data_from_file(THINGS)
+
+		# for each thing
+		for thing in things:
+			name = things[thing]["data"]["name"] # get the thing's name
+
+			if name not in dictionary:
+				dictionary[name] = name # add the name to the dict
+
+			# for each alternate name of the thing
+			for alt_name in things[thing]["data"]["alternate_names"]:
+				if alt_name not in dictionary:
+					dictionary[alt_name] = name # add the alternate name to the dict
+
+			# for each adjective
+			for adj in things[thing]["data"]["adjectives"]:
+				if adj not in dictionary:
+					dictionary[adj] = adj # add the adjective to the dict
+
+		return dictionary
+
+	def get_parts_of_speech_dictionary(self):
+		dictionary = dict()
+
+		# for each verb
+		for verb in verb_list:
+			if verb not in dictionary:
+				dictionary[verb] = "verb" # add verb to dict with value "verb"
+
+		# for each preposition
+		for prep in prep_list:
+			if prep not in dictionary:
+				dictionary[prep] = "preposition" # add prep to dict with value "preposition"
+
+		things = self.load_data_from_file(THINGS)
+
+		# for each thing
+		for thing in things:
+			name = things[thing]["data"]["name"] # get the thing's name
+
+			if name not in dictionary:
+				dictionary[name] = "object" # add thing to dict with value "object"
+
+			# for each adjective
+			for adj in things[thing]["data"]["adjectives"]:
+				if adj not in dictionary:
+					dictionary[adj] = "adjective" # add adj to dict with value "adjective"
+
+		return dictionary
 
 	def load_data_from_file(self, file_name):
 		file = open(file_name, "r")
@@ -354,9 +421,9 @@ class Game:
 		say("Game saved!")
 
 	def prompt(self):
-		debug("\ncurrent room: " + str(self.player.current_room.id))
-		debug("room state: " + str(self.room_list[self.player.current_room.id].get_status()))
-		debug("player: " + str(self.player.get_status()))
+		#debug("\ncurrent room: " + str(self.player.current_room.id))
+		#debug("room state: " + str(self.room_list[self.player.current_room.id].get_status()))
+		#debug("player: " + str(self.player.get_status()))
 
 		if self.new_room:
 			#NOTE: The following clear screen code adapted from: https://stackoverflow.com/questions/18937058/clear-screen-in-shell/47296211
@@ -400,15 +467,23 @@ class Game:
 
 
 
-#if valid_width():
-#	game = Game()
-#	if game.game_loaded:
-#		game.play()
+if valid_width():
+	game = Game()
+	if game.game_loaded:
+		game_dict = game.get_game_dictionary()
+		speech_dict = game.get_parts_of_speech_dictionary()
+
+		print("\nGame dictionary:")
+		for x, y in game_dict.items():
+			print(x, y)
+
+		print("\nParts of speech dictionary:")
+		for x, y in speech_dict.items():
+			print(x, y)
+
+#game = Game()
+#debug(game.__dict__)
+#debug(game.player.__dict__)
 
 
-game = Game()
-debug(game.__dict__)
-debug(game.player.__dict__)
-
-
-game.save_game()
+#game.save_game()
