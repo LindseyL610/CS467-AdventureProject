@@ -1,4 +1,5 @@
 from Verbs_and_Actions import verb_list, action_list
+from Utilities import say
 
 class Parser:
 	def __init__(self, game):
@@ -19,19 +20,20 @@ class Parser:
 			print(item + ": " + self.action_dict[item])
 
 	def parse_input(self, game, user_input):
-		print("\n")
+		print()
 		self.init_input(user_input)
 
 		if self.check_basic_verbs(game) == 1: 
 			if self.set_input(game) == 1:
+				print()
 				return
 			else: 
 				if self.debug == True:
 					self.print_parsed()
 				else:
-					print(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
+					game.say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
 
-		print("\n")
+		print()
 
 	def init_input(self, user_input):
 		self.user_input = user_input
@@ -41,18 +43,16 @@ class Parser:
 
 	def check_basic_verbs(self, game):
 		if self.user_input == "look":
-			visited = game.player.current_room.has_been_visited
-			game.player.current_room.has_been_visited = False
-			game.player.current_room.get_description()
-			game.player.current_room.has_been_visted = visited
+			self.action_dict["verb"] = "look"
+			game.say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
 		elif self.user_input == "help":
-			print("I understand the following verbs:")
+			game.say("I understand the following verbs:")
 			for verb in self.verbs_list:
-				print(verb)
+				game.say(verb)
 		elif self.user_input == "inventory":
-			print("Your bag contains the following items:")
+			game.say("Your bag contains the following items:")
 			for item in game.player.inventory:
-				print(item.name)
+				game.say(item.name)
 		elif self.user_input == "loadgame":
 			game.load_menu(False)
 		elif self.user_input == "savegame":
@@ -77,7 +77,7 @@ class Parser:
 
 			idx += 1
 
-		#self.set_objects(game)
+		#self.set_objects(game) # Commented out since we aren't currently using multiple objects of same general type in one room
 		self.set_action_dict()
 
 	def tokenize_input(self):
@@ -114,9 +114,10 @@ class Parser:
 		if self.user_input[idx] in self.speech_dict:
 			self.action_args.append(self.user_input[idx])
 			self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])	
-		else:
-			print("I don't understand. Please try a different command.")
-			return 1
+		# Commented out so it just ignores any unrecognized words
+		#else:
+			#game.say("I don't understand. Please try a different command.")
+			#return 1
 
 	def set_objects(self, game):
 		idx = 0
@@ -173,14 +174,14 @@ class Parser:
 		idx = 0
 
 		while idx < len(self.parts_of_speech):
-			if self.parts_of_speech[idx] == "verb":
+			if (self.parts_of_speech[idx] == "verb") and (verb == None):
 				verb = self.action_args[idx]
 			elif self.parts_of_speech[idx] == "object":
 				if dobj == None:
 					dobj = self.action_args[idx]
-				else:
+				elif iobj == None:
 					iboj = self.action_args[idx]
-			elif self.parts_of_speech[idx] == "preposition":
+			elif (self.parts_of_speech[idx] == "preposition") and (prep == None):
 				prep = self.action_args[idx]
 
 			idx += 1

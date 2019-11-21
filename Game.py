@@ -7,7 +7,7 @@ import sys
 import parser_class
 import Thing
 import Player
-from Utilities import say
+from Utilities import say, find_by_name
 from Verbs_and_Actions import verb_list, action_list, prep_list
 import platform
 
@@ -90,6 +90,35 @@ class Game:
 		self.game_loaded = self.load_menu(True)
 
 		self.new_room = True
+
+		self.direction_list = ["north", "east", "south", "west", "up", "down"]
+
+		self.say = say
+
+		self.find_by_name = find_by_name
+
+	def get_thing_by_name(self, thing_name, must_be_in_inventory):
+		# first, look for thing with given name in player inventory
+		# default_thing = Utilities.find_by_name()
+		thing_in_inventory = self.find_by_name(thing_name, self.player.inventory)
+		if(thing_in_inventory != None):
+			#found it
+			return thing_in_inventory
+		else:
+			if(must_be_in_inventory):
+				# TODO make this more specific...
+				game.say("You don't have that...")
+				return None
+			else:
+				# look in room's accessible contents:
+				thing_in_room = self.find_by_name(thing_name, self.player.current_room.get_all_accessible_contents())
+				if(thing_in_room != None):
+					# found it
+					return thing_in_room
+				else:
+					# TODO make this more specific...
+					game.say("You don't see that....")
+					return None	
 
 	def get_game_dictionary(self):
 		dictionary = self.add_directions(0)
