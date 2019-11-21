@@ -60,3 +60,23 @@ def list_to_words(object_list):
 # print(list_to_words(test_list1))
 # print(list_to_words(test_list2))
 # print(list_to_words(test_list3))
+
+def find_by_name(name, group_to_search):
+  # for dicts, search all values
+  if type(group_to_search) is dict:
+    for thing in group_to_search.values():
+      if thing.name == name:
+        return thing
+  # for set or list, just search all elements
+  else:
+    for thing in group_to_search:
+      if thing.name == name:
+        return thing
+  return None
+
+
+# def find_by_name(name, dict_to_search):
+#   for thing in dict_to_search.values():
+#     if thing.name == name:
+#       return thing
+#   return None

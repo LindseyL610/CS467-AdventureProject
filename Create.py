@@ -57,6 +57,7 @@ thing_list["refrigerator"].description = "A refrigerator"
 # Creating cheese
 thing_list["cheese"] = Thing.Item("cheese", "cheese")
 thing_list["cheese"].description = "The block of cheese smells quite potent."
+thing_list["cheese"].list_name = "some cheese"
 
 # Creating mouse
 thing_list["mouse"] = Thing.Feature("mouse", "mouse")
@@ -76,6 +77,7 @@ thing_list["floppy1"].description = "This is some type of ancient storage device
 thing_list["cobwebs"] = Thing.Feature("cobwebs", "cobwebs")
 thing_list["cobwebs"].description = "Sticky cobwebs cover the walls, celing, " \
                       "and floors, only getting denser further into the darkness."
+thing_list["cobwebs"].list_name = "some cobwebs"
 
 # Creating plaque
 thing_list["plaque"] = Thing.Sign("plaque", "plaque")
@@ -213,9 +215,9 @@ room_list["roomI"].long_description = "A dark room... with webs."
 room_list["roomI"].short_description = "A dark room with webs."
 
 # Creating roomP1
-room_list["roomI"] = Room.Room("roomP1", "Monitor Station")
-room_list["roomI"].long_description = "Monitors everywhere."
-room_list["roomI"].short_description = "So many monitors."
+room_list["roomP1"] = Room.Room("roomP1", "Monitor Station")
+room_list["roomP1"].long_description = "Monitors everywhere."
+room_list["roomP1"].short_description = "So many monitors."
 
 # Creating roomMP
 room_list["roomMP"] = Room.Room("roomMP", "Motherboard")
@@ -255,13 +257,15 @@ room_list["roomB"].exits["north"] = thing_list["ornatedoorS"]
 
 # linking roomC stuff
 
-thing_list["refrigerator"]._add_item(thing_list["cheese"])
+# When storage is implemented, something like this will put the cheese in the fridge
+# thing_list["refrigerator"]._add_item(thing_list["cheese"])
 
 room_list["roomC"].add_thing(thing_list["refrigerator"])
+room_list["roomC"].add_thing(thing_list["cheese"])
 
 thing_list["stairsE"].destination = room_list["roomB"]
 thing_list["hallwayS"].destination = room_list["roomD"]
-thing_list["openingN"].destination = room_list["roomC"]
+thing_list["openingN"].destination = room_list["roomI"]
 
 room_list["roomC"].exits["north"] = thing_list["hallwayS"]
 room_list["roomC"].exits["south"] = thing_list["openingN"]
