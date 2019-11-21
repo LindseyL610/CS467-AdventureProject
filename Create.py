@@ -347,8 +347,8 @@ def generate_data_files(thing_list, room_list):
 		print(room_obj)
 
 
-generate_data_files(thing_list, room_list)
-generate_blank_save(thing_list, room_list)
+#generate_data_files(thing_list, room_list)
+#generate_blank_save(thing_list, room_list)
 
 #TESTING#
 
