@@ -83,7 +83,7 @@ class Game:
 
 		self.quit_selected = False
 
-		self.parser = parser_class.Parser()
+		self.parser = parser_class.Parser(self)
 
 		#self.load_room_data()
 
@@ -482,16 +482,7 @@ class Game:
 if valid_width():
 	game = Game()
 	if game.game_loaded:
-		game_dict = game.get_game_dictionary()
-		speech_dict = game.get_parts_of_speech_dictionary()
-
-		print("\nGame dictionary:")
-		for x, y in game_dict.items():
-			print(x, y)
-
-		print("\nParts of speech dictionary:")
-		for x, y in speech_dict.items():
-			print(x, y)
+		game.play()
 
 #game = Game()
 #debug(game.__dict__)

@@ -1,10 +1,10 @@
 from Verbs_and_Actions import verb_list, action_list
 
 class Parser:
-	def __init__(self):
+	def __init__(self, game):
 		self.user_input = ""
-		self.dictionary = self.init_dictionary()
-		self.speech_dict = self.init_parts_of_speech()
+		self.dictionary = game.get_game_dictionary()
+		self.speech_dict = game.get_parts_of_speech_dictionary()
 		self.action_args = []
 		self.parts_of_speech = []
 		self.action_dict = dict()
