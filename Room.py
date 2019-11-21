@@ -89,33 +89,50 @@ class Room:
 	def get_description(self):
 		say(self.name)
 		if self.has_been_visited:
-			description_string = self.short_description
-			listed_things = []
-			# self.get_all_accessible_contents()
-			for thing in self.get_all_accessible_contents():
-				if thing.has_dynamic_description:
-					description_string += " " + thing.get_dynamic_description()
-
-				if thing.is_listed:
-					listed_things.append(thing)
-
-			num_listed_things = len(listed_things)
-
-			if num_listed_things > 0:
-				list_string = " You see"
-				list_string += Utilities.list_to_words([o.list_name for o in listed_things])
-				list_string += "."
-				description_string += list_string
-
-			say(description_string)
-
+			self.get_short_description()
 
 		else:
-			say(self.long_description)
+			self.get_long_description()
 			self.has_been_visited = True
 
+	def get_long_description(self):
+		description_string = self.long_description	
+
+		description_string += self.get_object_descriptions()
+
+		say(description_string)
+
+	def get_short_description(self):
+		description_string = self.short_description
+
+		description_string += self.get_object_descriptions()
+
+		say(description_string)
+
+	def get_object_descriptions(self):
+		description_string = ""
+		listed_things = []
+
+		# self.get_all_accessible_contents()
+		for thing in self.get_all_accessible_contents():
+			if thing.has_dynamic_description:
+				description_string += " " + thing.get_dynamic_description()
+
+			if thing.is_listed:
+				listed_things.append(thing)
+
+		num_listed_things = len(listed_things)
+
+		if num_listed_things > 0:
+			list_string = " You see"
+			list_string += Utilities.list_to_words([o.list_name for o in listed_things])
+			list_string += "."
+			description_string += list_string
+
+		return description_string
+
 	def look(self, game, actionargs):
-		self.get_description()
+		self.get_long_description()
 
 	def go(self, game, actionargs):
 

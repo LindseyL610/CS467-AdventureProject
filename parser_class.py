@@ -186,6 +186,11 @@ class Parser:
 
 			idx += 1
 
+		if (prep is not None) and (dobj is None):
+			if (prep is "up") or (prep is "down"):
+				dobj = prep
+				prep = None	
+
 		if verb is not None:
 			self.action_dict["verb"] = verb
 

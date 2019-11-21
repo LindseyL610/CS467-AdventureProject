@@ -195,7 +195,7 @@ class Game:
 			if speech_dict == 0:
 				dictionary[direction] = direction
 			else:
-				dictionary[direction] = "direction"
+				dictionary[direction] = "object"
 
 		return dictionary
 
