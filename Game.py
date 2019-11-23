@@ -97,6 +97,8 @@ class Game:
 
 		self.find_by_name = find_by_name
 
+
+
 	def get_thing_by_name(self, thing_name, must_be_in_inventory):
 		# first, look for thing with given name in player inventory
 		# default_thing = Utilities.find_by_name()
@@ -155,6 +157,26 @@ class Game:
 			for adj in things[thing]["data"]["adjectives"]:
 				if adj not in dictionary:
 					dictionary[adj] = adj # add the adjective to the dict
+
+		# for each room
+
+		#get room file names
+		filenames = list()
+		files = os.listdir(get_path())
+
+		for name in files:
+			if name.find(ROOM_PREFIX) is 0:
+				filenames.append(name)
+
+		#for each room file
+		for room_file in filenames:
+			#retrieve data from room file
+			data = self.load_data_from_file(room_file)
+
+			room_name = data["name"]
+
+			if room_name not in dictionary:
+				dictionary[room_name] = room_name
 
 		return dictionary
 
@@ -315,8 +337,21 @@ class Game:
 
 		# These are data attributes for the saved game --currently not saved
 		self.current_save = None #index of game in "saves" list
-		self.timestamp = None #timestamp for when game was last saved		
+		self.timestamp = None #timestamp for when game was last saved
+		
+		self.game_time = None
 
+	def advance_time(self):
+		time = self.game_time
+
+		if time is None:
+			time = 0
+		else:
+			time += 1
+			if time > 11:
+				time = 0
+
+		self.game_time = time
 
 	def load_rooms(self, rooms=None):
 		self.room_list = dict()
@@ -392,6 +427,8 @@ class Game:
 				self.thing_list[id] = Thing.Input(id, name)
 			elif type == "sign":
 				self.thing_list[id] = Thing.Sign(id, name)
+			elif type == "clock":
+				self.thing_list[id] = Thing.Clock(id, name)
 			elif type == "storage":
 				self.thing_list[id] = Thing.Storage(id, name)
 			elif type == "container":
@@ -423,6 +460,9 @@ class Game:
 		self.current_save = id #index of game in "saves" list
 		self.timestamp = self.game_data["saves"][id]["time"]
 
+		# Load game time
+		self.game_time = self.game_data["saves"][id]["game_time"]
+
 	def save_game(self):
 		data = dict()
 
@@ -450,7 +490,8 @@ class Game:
 		# write or overwrite the game data into the saves list
 		self.game_data["saves"][str(self.current_save)] = {}
 		self.game_data["saves"][str(self.current_save)]["data"] = data.copy()
-		self.game_data["saves"][str(self.current_save)]["time"] = str(datetime.datetime.now()).replace(":", "-")
+		self.game_data["saves"][str(self.current_save)]["timestamp"] = str(datetime.datetime.now()).replace(":", "-")
+		self.game_data["saves"][str(self.current_save)]["game_time"] = self.game_time
 	
 		# write the game data to the save file
 		f = open (SAVES, "w")
@@ -474,6 +515,7 @@ class Game:
 				os.system('clear')  # For Linux/OS X
 			
 			self.room_list[self.player.current_room.id].get_description()
+			self.advance_time()
 			self.new_room = False
 
 		input_str = input("> ")
