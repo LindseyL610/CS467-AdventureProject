@@ -1,1 +1,1 @@
-{"default": {"player": {"name": "NAME", "inventory": [], "current_room": "<R:roomA>"}}, "saves": {}, "save_ctr": 0}
+{"default": {"player": {"name": "NAME", "inventory": [], "current_room": "<R:A>"}}, "saves": {}, "save_ctr": 0}

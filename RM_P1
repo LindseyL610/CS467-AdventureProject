@@ -1,0 +1,1 @@
+{"id": "P1", "name": "puzzle 1", "long_description": "You are in puzzle 1 (long description).", "short_description": "You are in puzzle 1 (short description).", "exits": {"east": "<T:P1-D>"}, "has_been_visited": false, "contents": [], "msg_cannot_go_direction": "You cannot go that direction."}

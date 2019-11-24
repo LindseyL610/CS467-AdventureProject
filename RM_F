@@ -1,0 +1,1 @@
+{"id": "F", "name": "room F", "long_description": "You are in room F (long description).", "short_description": "You are in room F (short description).", "exits": {"south": "<T:F-P3>", "west": "<T:F-G>"}, "has_been_visited": false, "contents": [], "msg_cannot_go_direction": "You cannot go that direction."}

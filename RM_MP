@@ -1,0 +1,1 @@
+{"id": "MP", "name": "meta puzzle", "long_description": "You are in the meta puzzle (long description).", "short_description": "You are in the meta puzzle (short description).", "exits": {"south": "<T:MP-B>"}, "has_been_visited": false, "contents": [], "msg_cannot_go_direction": "You cannot go that direction."}

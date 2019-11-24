@@ -1,0 +1,1 @@
+{"id": "P3", "name": "puzzle 3", "long_description": "You are in puzzle 3 (long description).", "short_description": "You are in puzzle 3 (short description).", "exits": {"north": "<T:P3-F>"}, "has_been_visited": false, "contents": [], "msg_cannot_go_direction": "You cannot go that direction."}
