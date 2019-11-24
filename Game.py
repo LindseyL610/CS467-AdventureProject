@@ -260,6 +260,25 @@ class Game:
 		if initial:
 			print("Select a saved game to load, or create a new game.")
 		else:
+			# If this is not the first game being loaded, ask user if they are sure
+			valid_input = False
+			input_str = ""
+
+			while not valid_input:
+				input_str = input("Any unsaved progress will be lost. Are you sure you want to load a different game? (y/n) ")
+
+				if input_str == "y" or input_str == "yes":
+					input_str = "y"
+					valid_input = True
+				elif input_str == "n" or input_str == "no":
+					input_str = "n"
+					valid_input = True
+				else:
+					self.say("Invalid input!")
+
+			if input_str != "y":
+				return False
+
 			print("Select a saved game to load.")
 
 		for i in load_names:
