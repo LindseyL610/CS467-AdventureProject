@@ -5,19 +5,28 @@ class Parser:
 	def __init__(self, game):
 		self.user_input = ""
 		self.dictionary = game.get_game_dictionary()
+		self.lc_dictionary = self.get_lc_dictionary()
 		self.speech_dict = game.get_parts_of_speech_dictionary()
 		self.action_args = []
 		self.parts_of_speech = []
 		self.action_dict = dict()
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
 		self.exits = ["door"]
-		self.debug = True # Temporary for debugging
+		self.debug = False # Temporary for debugging
 
 	# Temporary method for debugging
 	def print_parsed(self):
 		print("action_dict:")
 		for item in self.action_dict:
 			print(item + ": " + self.action_dict[item])
+
+	def get_lc_dictionary(self):
+		lc_dictionary = dict()
+
+		for word in self.dictionary:
+			lc_dictionary[word.lower()] = word
+
+		return lc_dictionary
 
 	def parse_input(self, game, user_input):
 		print()
@@ -96,8 +105,7 @@ class Parser:
 		prefixes = ["re"]
 		suffixes = ["ing", "s"]
 
-		if(self.dictionary.get(self.user_input[idx], None) == None)\
-		and (self.user_input[idx] not in self.speech_dict):
+		if(self.lc_dictionary.get(self.user_input[idx], None) == None):
 			for prefix in prefixes:
 				if self.user_input[idx].startswith(prefix):
 					self.user_input[idx] = self.user_input[idx][len(prefix):len(self.user_input[idx])]
@@ -107,16 +115,13 @@ class Parser:
 					self.user_input[idx] = self.user_input[idx][0:len(suffix)+1]
 
 	def get_synonyms(self, idx):
-		self.user_input[idx] = self.dictionary.get(self.user_input[idx], self.user_input[idx])
+		word = self.lc_dictionary.get(self.user_input[idx], self.user_input[idx])
+		self.user_input[idx] = self.dictionary.get(word, word)
 
 	def set_parts_of_speech(self, idx, game):
-		for word in self.speech_dict:
-			lower_case = word.lower()
-
-			if lower_case == self.user_input[idx]:
-				self.action_args.append(word)
-				self.parts_of_speech.append(self.speech_dict[word])
-				return
+		if self.user_input[idx] in self.dictionary:
+			self.action_args.append(self.user_input[idx])
+			self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])
 
 	def set_objects(self, game):
 		idx = 0
@@ -186,7 +191,7 @@ class Parser:
 			idx += 1
 
 		if (prep is not None) and (dobj is None):
-			if (prep == "up") or (prep == "down"):
+			if (prep is "up") or (prep is "down"):
 				dobj = prep
 				prep = None	
 
