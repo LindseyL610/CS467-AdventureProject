@@ -184,7 +184,7 @@ class Parser:
 				if dobj == None:
 					dobj = self.action_args[idx]
 				elif iobj == None:
-					iboj = self.action_args[idx]
+					iobj = self.action_args[idx]
 			elif (self.parts_of_speech[idx] == "preposition") and (prep == None):
 				prep = self.action_args[idx]
 
