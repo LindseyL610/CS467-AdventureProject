@@ -19,49 +19,49 @@ from Utilities import say
 # Note that when calling the method the arguments should be the current game object
 #  (containing player and room/thing lists) and arguments, e.g. Thing.look(game, actionargs)
 class Verb():
-    def __init__(self, name):
-        self.name = name
-        self.alternate_names = []
+	def __init__(self, name):
+		self.name = name
+		self.alternate_names = []
 
-        # Presposition key:value pairs-
-        # The *key* is the string for the preposition itself.
-        # If the verb supports using no preposition, the key is "None"
-        # The *value* is the name of the "default" preposition used for that action.
-        #  This is a way to have "alternate names" for prepositions that can be specific to which verb is used.
-        self.supported_prepositions = {}
+		# Presposition key:value pairs-
+		# The *key* is the string for the preposition itself.
+		# If the verb supports using no preposition, the key is "None"
+		# The *value* is the name of the "default" preposition used for that action.
+		#  This is a way to have "alternate names" for prepositions that can be specific to which verb is used.
+		self.supported_prepositions = {}
 
-        #TODO Come up with better general wording
-        self.msg_improper_use = "That is not how to use the verb \"{}\".".format(self.name)
+		#TODO Come up with better general wording
+		self.msg_improper_use = "That is not how to use the verb \"{}\".".format(self.name)
 
-    def execute(self, game, actionargs):
-        ### DEBUG
-        print("actionargs: verb={} dobj={} prep={} iobj={}".format(
-            actionargs.get("verb"),actionargs.get("dobj"),actionargs.get("prep"),actionargs.get("iobj") ))
-        ###
+	def execute(self, game, actionargs):
+		### DEBUG
+		print("actionargs: verb={} dobj={} prep={} iobj={}".format(
+			actionargs.get("verb"),actionargs.get("dobj"),actionargs.get("prep"),actionargs.get("iobj") ))
+		###
 
-        verb_string = actionargs["verb"]
-        if actionargs.get("prep") == None:
-            prep_string = "NONE"
-        else:
-            prep_string = actionargs["prep"]
+		verb_string = actionargs["verb"]
+		if actionargs.get("prep") == None:
+			prep_string = "NONE"
+		else:
+			prep_string = actionargs["prep"]
 
-        if prep_string in self.supported_prepositions:
-            # gets the "effective" preposition from supported_prepositions
-            effective_prep = self.supported_prepositions[prep_string]
+		if prep_string in self.supported_prepositions:
+			# gets the "effective" preposition from supported_prepositions
+			effective_prep = self.supported_prepositions[prep_string]
 
-            # prepares the extra string to add to the verb
-            #  if the prep is "NONE" nothing is added, so the final call will be to "verb"
-            #  otherwise, an underscore and the prep name are added; the final call will be to "verb_prep"
-            if effective_prep == "NONE":
-                prep_extra = ""
-            else:
-                prep_extra = "_" + effective_prep
+			# prepares the extra string to add to the verb
+			#  if the prep is "NONE" nothing is added, so the final call will be to "verb"
+			#  otherwise, an underscore and the prep name are added; the final call will be to "verb_prep"
+			if effective_prep == "NONE":
+				prep_extra = ""
+			else:
+				prep_extra = "_" + effective_prep
 
-            # sending the game and action args to the proper action
-            game.action_list[verb_string + prep_extra].execute(game, actionargs)
+			# sending the game and action args to the proper action
+			game.action_list[verb_string + prep_extra].execute(game, actionargs)
 
-        else:
-            say(self.msg_improper_use)
+		else:
+			say(self.msg_improper_use)
 
 verb_list = {}
 
@@ -96,144 +96,131 @@ verb_list["pull"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
 verb_list["go"] = Verb("go")
 verb_list["go"].alternate_names.extend(["walk", "run", "proceed"])
 verb_list["go"].supported_prepositions.update(
-    {"NONE":"NONE", "in":"NONE", "into":"NONE", "through":"NONE", "up":"NONE", "down":"NONE"})
+	{"NONE":"NONE", "in":"NONE", "into":"NONE", "through":"NONE", "up":"NONE", "down":"NONE"})
+
+verb_list["use"] = Verb("use")
+verb_list["use"].alternate_names.extend(["activate"])
+verb_list["use"].supported_prepositions.update({"NONE":"NONE"})
+
+verb_list["open"] = Verb("open")
+verb_list["open"].supported_prepositions.update({"NONE":"NONE", "up":"NONE"})
 
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "through", "up", "down"]
 
 
 class Action():
-    """This class defines the unique characteristics for specific actions."""
+	"""This class defines the unique characteristics for specific actions."""
 
-    def __init__(self, name):
-        self.name = name
-        
-        # get "base" verb (before the "_"), and steal the default improper use message.
-        self.msg_improper_use = verb_list[self.name.split("_")[0]].msg_improper_use
-        
-        # do the dobj or iobj have to be in the inventory?
-        self.dobj_must_be_in_inventory = False
-        self.iobj_must_be_in_inventory = False
+	def __init__(self, name):
+		self.name = name
 
-    def thing_is_accessible(self, game, thing, must_be_in_inventory):
-        # Does it have to be in the inventory?
-        if must_be_in_inventory:
-            if thing in game.player.inventory:
-                return True
-            else:
-                say("You don't have {}.".format(thing.list_name))
-                return False
+		# get "base" verb (before the "_"), and steal the default improper use message.
+		self.msg_improper_use = verb_list[self.name.split("_")[0]].msg_improper_use
 
-        # is it in either the inventory or the room?
-        else:
-            if thing in game.player.inventory or thing in game.player.current_room.get_all_accessible_contents():
-                return True
-            else:
-                say("You don't see {}.".format(thing.list_name))
-                return False
-    
-    
-    def execute(self, game, actionargs):
-        pass
+		# do the dobj or iobj have to be in the inventory?
+		self.dobj_must_be_in_inventory = False
+		self.iobj_must_be_in_inventory = False
+
+	def thing_is_accessible(self, game, thing, must_be_in_inventory):
+		# Does it have to be in the inventory?
+		if must_be_in_inventory:
+			if thing in game.player.inventory:
+				return True
+			else:
+				say("You don't have {}.".format(thing.list_name))
+				return False
+
+		# is it in either the inventory or the room?
+		else:
+			if thing in game.player.inventory or thing in game.player.current_room.get_all_accessible_contents():
+				return True
+			else:
+				say("You don't see {}.".format(thing.list_name))
+				return False
+
+
+	def execute(self, game, actionargs):
+		pass
 
 
 class ActionVerbOnly(Action):
-    """this action can only be used with a verb only"""
-    def execute(self, game, actionargs):
-        if  "dobj" in actionargs.keys() or "iobj" in actionargs.keys():
-            say(self.msg_improper_use)
-        else:
-            # send action to ROOM
-            getattr(game.player.current_room,self.name)(game, actionargs)
+	"""this action can only be used with a verb only"""
+	def execute(self, game, actionargs):
+		if  "dobj" in actionargs.keys() or "iobj" in actionargs.keys():
+			say(self.msg_improper_use)
+		else:
+			# send action to ROOM
+			getattr(game.player.current_room,self.name)(game, actionargs)
 
 class ActionDirect(Action):
-    """this action can be used only with a verb + direct object"""
-    def execute(self, game, actionargs):
-        if  "dobj" not in actionargs.keys() or "iobj" in actionargs.keys():
-            say(self.msg_improper_use)
-        else:
+	"""this action can be used only with a verb + direct object"""
+	def execute(self, game, actionargs):
+		if  "dobj" not in actionargs.keys() or "iobj" in actionargs.keys():
+			say(self.msg_improper_use)
+		else:
 
-            # get the dobj by name, if available
-            dobj_thing = game.get_thing_by_name(actionargs["dobj"],self.dobj_must_be_in_inventory)
-            if dobj_thing != None:
-                #self.name is the name of the action, e.g. put_in
-                # so this calls dobj.action
-                getattr(dobj_thing, self.name)(game, actionargs)
-
-            # OLD METHOD
-            # dobj = game.thing_list[actionargs["dobj"]]
-            # # check if dobj is accessible
-            # if self.thing_is_accessible(game, dobj, self.dobj_must_be_in_inventory):
-            #     # send action to THING
-            #     getattr(dobj,self.name)(game, actionargs)
+			# get the dobj by name, if available
+			dobj_thing = game.get_thing_by_name(actionargs["dobj"],self.dobj_must_be_in_inventory)
+			if dobj_thing != None:
+				#self.name is the name of the action, e.g. put_in
+				# so this calls dobj.action
+				getattr(dobj_thing, self.name)(game, actionargs)
 
 
 class ActionDirectGo(Action):
-    """a modified version of ActionDirect for Go that checks for direction vs Thing"""
+	"""a modified version of ActionDirect for Go that checks for direction vs Thing"""
 
-    def execute(self, game, actionargs):
-        if "dobj" not in actionargs.keys() or "iobj" in actionargs.keys():
-            say(self.msg_improper_use)
-        else:
+	def execute(self, game, actionargs):
+		if "dobj" not in actionargs.keys() or "iobj" in actionargs.keys():
+			say(self.msg_improper_use)
+		else:
 
-            if actionargs["dobj"] in game.direction_list:
-                getattr(game.player.current_room, self.name)(game, actionargs)
-            else:
-                # get the dobj by name, if available
-                dobj_thing = game.get_thing_by_name(actionargs["dobj"], self.dobj_must_be_in_inventory)
-                if dobj_thing != None:
-                    # self.name is the name of the action, e.g. put_in
-                    # so this calls dobj.action
-                    getattr(dobj_thing, self.name)(game, actionargs)
+			if actionargs["dobj"] in game.direction_list:
+				getattr(game.player.current_room, self.name)(game, actionargs)
+			else:
+				# get the dobj by name, if available
+				dobj_thing = game.get_thing_by_name(actionargs["dobj"], self.dobj_must_be_in_inventory)
+				if dobj_thing != None:
+					# self.name is the name of the action, e.g. put_in
+					# so this calls dobj.action
+					getattr(dobj_thing, self.name)(game, actionargs)
 
 class ActionDirectAndIndirect(Action):
-    """this action can be used only with a verb, direct object, and indirect object"""
-    def execute(self, game, actionargs):
-        if "dobj" not in actionargs.keys() or "iobj" not in actionargs.keys():
-            say(self.msg_improper_use)
-        else:
+	"""this action can be used only with a verb, direct object, and indirect object"""
+	def execute(self, game, actionargs):
+		if "dobj" not in actionargs.keys() or "iobj" not in actionargs.keys():
+			say(self.msg_improper_use)
 
-            # get the dobj by name, if available
-            dobj_thing = game.get_thing_by_name(actionargs["dobj"],self.dobj_must_be_in_inventory)
-            if dobj_thing != None:
+		else:
 
-                # get the iobj by name, if available
-                iobj_thing = game.get_thing_by_name(actionargs["iobj"], self.iobj_must_be_in_inventory)
-                if iobj_thing != None:
-                    # note: self.name is the name of the action, e.g. put_in
-                    # so this calls dobj.action
-                    getattr(dobj_thing, self.name)(game, actionargs)
+			# get the dobj by name, if available
+			dobj_thing = game.get_thing_by_name(actionargs["dobj"],self.dobj_must_be_in_inventory)
+			if dobj_thing != None:
 
-
-            dobj = game.thing_list[actionargs["dobj"]]
-            # check if dobj is accessible
-            if self.thing_is_accessible(game, dobj, self.dobj_must_be_in_inventory):
-
-                # check if iobj is accessible
-                iobj = game.thing_list[actionargs["iobj"]]
-                if self.thing_is_accessible(game, iobj, self.iobj_must_be_in_inventory):
-
-                    # send action to THING
-                    getattr(dobj,self.name)(game, actionargs)
+				# get the iobj by name, if available
+				iobj_thing = game.get_thing_by_name(actionargs["iobj"], self.iobj_must_be_in_inventory)
+				if iobj_thing != None:
+					# note: self.name is the name of the action, e.g. put_in
+					# so this calls dobj.action
+					getattr(dobj_thing, self.name)(game, actionargs)
 
 
 class ActionVerbOnlyOrDirect(Action):
-    """This action can be used either as a verb only, or with a direct object"""
-    def execute(self, game, actionargs):
+	"""This action can be used either as a verb only, or with a direct object"""
+	def execute(self, game, actionargs):
 
-        # TODO check both cases
-        if "iobj" in actionargs.keys():
-            say(self.msg_improper_use)
+		# TODO check both cases
+		if "iobj" in actionargs.keys():
+			say(self.msg_improper_use)
 
-        elif "dobj" in actionargs.keys():
-            dobj = game.thing_list[actionargs["dobj"]]
-            # check if dobj is accessible
-            if self.thing_is_accessible(game, dobj, self.dobj_must_be_in_inventory):
-                # send action to THING
-                getattr(dobj,self.name)(game, actionargs)
-        else:
-            # send action to ROOM
-            getattr(game.player.current_room,self.name)(game, actionargs)
+		elif "dobj" in actionargs.keys():
+			# get the dobj by name, if available
+			dobj_thing = game.get_thing_by_name(actionargs["dobj"],self.dobj_must_be_in_inventory)
+			getattr(dobj_thing,self.name)(game, actionargs)
+		else:
+			# send action to ROOM
+			getattr(game.player.current_room,self.name)(game, actionargs)
 
 
 # create actions
@@ -283,3 +270,11 @@ action_list["give_to"].dobj_must_be_in_inventory = True
 # pull
 # verb + dobj(ANYWHERE) "pull lever" -> Thing.pull()
 action_list["pull"] = ActionDirect("pull")
+
+# use
+# verb + dobj(ANYWHERE) "use lever" -> Thing.use()
+action_list["use"] = ActionDirect("use")
+
+# open
+# verb + dobj(ANYWHERE) "open door" -> Thing.open()
+action_list["open"] = ActionDirect("open")

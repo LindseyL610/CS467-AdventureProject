@@ -82,7 +82,7 @@ class Player:
 	def add_to_inventory(self, thing):
 		"""removes an item from the player inventory"""
 		# place holder message
-		say("[[player removes {} from inventory]]".format(thing.name))
+		say("[[player adds {} to inventory]]".format(thing.name))
 		# remove thing from inventory
 		self.inventory.append(thing)
 

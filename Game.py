@@ -97,6 +97,24 @@ class Game:
 
 		self.find_by_name = find_by_name
 
+	def get_word_answer(self, prompt, answer):
+		# displays the prompt
+		# gets input from player
+		# compares input to answer, and returns True or False if it matches
+		# matches should ignore case? or extra whitespace?
+		# NOTE I included the prompt in case we want to re-display the prompt after an invalid input
+		say(prompt)
+		return True
+
+	def get_yn_answer(self, prompt):
+		# displays the prompt
+		# gets a yes or no from the player
+		# returns True for yes, False for no
+		# NOTE I included the prompt in case we want to re-display the prompt after an invalid input
+		# NOTE2 it would probably make sense to have the other y/n questions in the game options use the same method
+		say(prompt)
+		return True
+
 	def get_thing_by_name(self, thing_name, must_be_in_inventory):
 		# first, look for thing with given name in player inventory
 		# default_thing = Utilities.find_by_name()
@@ -202,7 +220,7 @@ class Game:
 	def load_data_from_file(self, file_name):
 		file = open(file_name, "r")
 		
-		if file.mode is 'r':
+		if file.mode == 'r':
 			data = json.load(file)
 
 		file.close()
@@ -228,7 +246,7 @@ class Game:
 			load_names[str(i)] = display_obj.copy()
 			i += 1
 
-		if not initial and len(load_names) is 0:
+		if not initial and len(load_names) == 0:
 			print("No saved games found!")
 			return
 
@@ -329,7 +347,7 @@ class Game:
 			files = os.listdir(get_path())
 
 			for name in files:
-				if name.find(ROOM_PREFIX) is 0:
+				if name.find(ROOM_PREFIX) == 0:
 					filenames.append(name)
 
 			#for each room file
@@ -378,26 +396,31 @@ class Game:
 				self.default_things[id] = data
 
 			# Call the appropriate constructor for the object type
-			if type == "exit":
-				self.thing_list[id] = Thing.Exit(id, name)
-			elif type == "door":
-				self.thing_list[id] = Thing.Door(id, name)
-			elif type == "item":
-				self.thing_list[id] = Thing.Item(id, name)
-			elif type == "floppy":
-				self.thing_list[id] = Thing.Floppy(id, name)
-			elif type == "feature":
-				self.thing_list[id] = Thing.Feature(id, name)
-			elif type == "input":
-				self.thing_list[id] = Thing.Input(id, name)
-			elif type == "sign":
-				self.thing_list[id] = Thing.Sign(id, name)
-			elif type == "storage":
-				self.thing_list[id] = Thing.Storage(id, name)
-			elif type == "container":
-				self.thing_list[id] = Thing.Container(id, name)
-			elif type == "surface":
-				self.thing_list[id] = Thing.Surface(id, name)
+			# if type == "exit":
+			# 	self.thing_list[id] = Thing.Exit(id, name)
+			# elif type == "door":
+			# 	self.thing_list[id] = Thing.Door(id, name)
+			# elif type == "item":
+			# 	self.thing_list[id] = Thing.Item(id, name)
+			# elif type == "floppy":
+			# 	self.thing_list[id] = Thing.Floppy(id, name)
+			# elif type == "feature":
+			# 	self.thing_list[id] = Thing.Feature(id, name)
+			# elif type == "input":
+			# 	self.thing_list[id] = Thing.Input(id, name)
+			# elif type == "sign":
+			# 	self.thing_list[id] = Thing.Sign(id, name)
+			# elif type == "storage":
+			# 	self.thing_list[id] = Thing.Storage(id, name)
+			# elif type == "container":
+			# 	self.thing_list[id] = Thing.Container(id, name)
+			# elif type == "surface":
+			# 	self.thing_list[id] = Thing.Surface(id, name)
+
+			# This line assumes "type" is the exact name of the constructor for the Thing
+			# NOTE this will fail if the type does not match a constructor;
+			# we could consider using hasattr to verify an existing type
+			self.thing_list[id] = getattr(Thing, type)(id, name)
 
 
 	def load_saved_game(self, id):

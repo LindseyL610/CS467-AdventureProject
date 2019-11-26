@@ -22,12 +22,12 @@ def say(text, game = None):
 					start_idx = 0
 					start = 0
 
-					while start is not -1:
+					while start != -1:
 						start = text.find(word, start_idx)
 						end = start + len(word) - 1
 
 						#insert color cords before and after each instance
-						if start is not -1:
+						if start != -1:
 							text = text[0:start] + COLOR + word + DEFAULT + text[end+1:]
 
 						start_idx = text.find(word,start_idx) + len(word)

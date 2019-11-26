@@ -3,6 +3,7 @@ import Utilities
 import json
 import Room
 
+
 class Thing:
 	"""The basic class for all non-Room objects in the game"""
 
@@ -15,7 +16,7 @@ class Thing:
 		self.list_name = "a " + name
 
 		# Starting Location is a Room
-		self.starting_location = None			#Room
+		self.starting_location = None
 
 		self.can_be_taken = False
 		self.can_be_read = False
@@ -30,7 +31,7 @@ class Thing:
 		self.is_accessible = True
 
 		## room or storage of current location
-		self.current_location = None			#Room
+		self.current_location = None  # Room
 
 		self.description = "This is a thing."
 		self.dynamic_description_text = "There is a thing."
@@ -58,7 +59,7 @@ class Thing:
 
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
-		
+
 		# Returns the appropriate export value based on whether value is a Room or Thing
 		def get_export_value(value):
 			if isinstance(value, Room.Room):
@@ -70,7 +71,7 @@ class Thing:
 
 		str_dict = self.__dict__
 
-		#print ("str_dict before: " + str(str_dict))
+		# print ("str_dict before: " + str(str_dict))
 
 		for attr in str_dict:
 			if isinstance(str_dict[attr], list):
@@ -84,7 +85,7 @@ class Thing:
 			else:
 				str_dict[attr] = get_export_value(str_dict[attr])
 
-		#print ("str_dict after: " + str(str_dict))
+		# print ("str_dict after: " + str(str_dict))
 
 		ret_val = dict()
 		ret_val["type"] = type
@@ -108,7 +109,7 @@ class Thing:
 				if list is not None:
 					id = value[3:(value.find(">"))]
 					return list[id]
-			
+
 			return value
 
 		status_obj = json.loads(status)
@@ -124,7 +125,7 @@ class Thing:
 					imp_val[i] = get_import_value(status_obj[attr][i], thing_list, room_list)
 			else:
 				imp_val = get_import_value(status_obj[attr], thing_list, room_list)
-		
+
 			setattr(self, attr, imp_val)
 
 	def get_desc(self):
@@ -174,6 +175,17 @@ class Thing:
 		else:
 			say(self.msg_cannot_drop)
 
+	def give_to(self, game, actionargs):
+		if self.can_be_dropped:
+			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			if thing_to_receive.can_receive:
+				# TODO better define default action?
+				say("")
+			else:
+				say("You cannot give anything to the {}".format(thing_to_receive.name))
+		else:
+			say("You cannot give the {}.".format(self.name))
+
 	def go(self, game, actionargs):
 		"""Default response for "cannot go" """
 		say(self.msg_cannot_go)
@@ -188,7 +200,6 @@ class Thing:
 	def pull(self, game, actionargs):
 		say(self.msg_cannot_pull)
 
-
 class Exit(Thing):
 	"""Class for object that transports the player to another room."""
 
@@ -197,7 +208,7 @@ class Exit(Thing):
 		self.can_go = True
 		self.is_listed = False
 
-		self.destination = None					#Room
+		self.destination = None  # Room
 
 	def go(self, game, actionargs):
 		if self.can_go:
@@ -209,14 +220,15 @@ class Exit(Thing):
 
 	def get_status(self, type=None):
 		if type is None:
-			type = "exit"
+			type = "Exit"
 		return super().get_status(type)
+
 
 class Door(Exit):
 	"""A special Exit, doors can be closed, locked, and unlocked"""
 
 	def get_status(self):
-		return super().get_status("door")
+		return super().get_status("Door")
 
 	pass
 
@@ -276,13 +288,72 @@ class Item(Thing):
 
 	def get_status(self, type=None):
 		if type is None:
-			type = "item"
+			type = "Item"
 		return super().get_status(type)
+
+class Book(Item):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_read = True
+		self.can_be_dropped = False
+		self.msg_cannot_drop = "This book of documentation seems too important to leave behind."
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Book"
+		return super().get_status(type)
+
+	def read(self, game, actionargs):
+		contents = "The book reads:"
+		contents += "\n"
+		contents += "To gain entrance, enter \"Hello World\""
+		say(contents)
+
+	def open(self, game, actionargs):
+		self.read(game, actionargs)
+
+
+class Cheese(Item):
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Cheese"
+		return super().get_status(type)
+
+	def give_to(self, game, actionargs):
+		thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+		if thing_to_receive is game.thing_list["hungryMouse"]:
+			message = "As you hold out the cheese, the mosue's eyes widen." \
+						 "It snatches it from your hand, and runs to the opposite corner of the room." \
+						 "It begins nibbling away."
+			say(message)
+			self.mouse_eats_cheese(game, actionargs)
+		else:
+			Thing.give_to(self, game, actionargs)
+		pass
+
+	def drop(self, game, actionargs):
+		if game.player.current_room is game.room_list["roomD"]:
+			message = "You drop the cheese, and the mouses's eyes widen." \
+						 "It quickly darts over, grabs the cheese, and runs to the opposite corner of the room." \
+						 "It begins nibbling away"
+			say(message)
+			self.mouse_eats_cheese(game, actionargs)
+		else:
+			Thing.drop(self, game, actionargs)
+
+	def mouse_eats_cheese(self, game, actionargs):
+		game.player.remove_from_inventory(self)
+		game.room_list["roomD"].remove_thing(game.thing_list["hungryMouse"])
+		game.room_list["roomD"].add_thing(game.thing_list["eatingMouse"])
+		game.thing_list["lever"].become_reachable()
 
 class Floppy(Item):
 	"""Floppys will need special functionality to handle multiple instances"""
+
 	def get_status(self):
-		return super().get_status("item")
+		return super().get_status("Floppy")
 
 	pass
 
@@ -296,23 +367,65 @@ class Feature(Thing):
 		self.can_be_dropped = False
 		self.msg_cannot_take = "The {} is fixed in place.".format(self.name)
 
-	def get_status(self, type = None):
+	def get_status(self, type=None):
 		if type is None:
-			type = "feature"
+			type = "Feature"
 		return super().get_status(type)
 
 
 class Input(Feature):
-	"""A feature that you can input text into (like a keyboard)"""
-	# NOTE: We need to decide how we want input to work.
-	# Will it just be something you can do at any time with a certain action?
-	# Like: "input ANSWER", or "type ANSWER"
-	# Or will interacting with an input object give a special prompt?
-	# Like: "look at keyboard" -> "this looks like something to type into. What do you want to type?" "ANSWER"
-	def get_status(self):
-		return super().get_status("input")
+	"""A feature that you can input text into (like a keyboard)
+	By default they have one correct answer which performs one function.
+	"""
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		# True if the input only functions once
+		self.one_time_use = True
+		# True if the correct answer has already been triggered
+		self.triggered = False
 
-	pass
+		self.msg_prompt = "What do you input?"
+		self.answer = "ANSWER"
+		self.msg_correct_answer = "Correct!"
+		self.msg_incorrect_answer = "Nothing happens."
+		self.msg_already_triggered = "Nothing happens."
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Input"
+		return super().get_status(type)
+
+	def use(self, game, actionargs):
+		response = game.get_word_answer(self.msg_prompt, self.answer)
+		if (response):
+			if self.one_time_use and self.triggered:
+				print("[[already triggered...]]")
+				say(self.msg_already_triggered)
+			else:
+				self.triggered = True
+				print("[[doing aciton...]]")
+				say(self.msg_correct_answer)
+				self.carry_out_action(game, actionargs)
+		else:
+			print("[[wrong answer...]]")
+			say(self.msg_incorrect_answer)
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		print("[[default action...]]")
+
+class InputBalconyWindow(Input):
+	"""the class for the input device on the balcony that opens the window"""
+
+	# This status function is not working on its own
+	def get_status(self):
+		return super().get_status("InputBalconyWindow")
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		# Open window...
+		game.room_list["roomA"].remove_exit(game.thing_list["balconyWindowClosed"])
+		game.room_list["roomA"].add_exit(game.thing_list["balconyWindowOpen"], "north")
 
 
 class Sign(Feature):
@@ -323,7 +436,39 @@ class Sign(Feature):
 		self.can_be_read = True
 
 	def get_status(self):
-		return super().get_status("sign")
+		return super().get_status("Sign")
+
+
+class Lever(Feature):
+	"""Readable Feature"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.is_reachable = False
+
+	def get_status(self):
+		return super().get_status("Lever")
+
+	def use(self, game, actionargs):
+		#send to pull
+		pass
+
+	def pull(self, game, actionargs):
+		if self.is_reachable:
+			say("You pull the lever.")
+		else:
+			say("You cannot reach the lever.")
+
+	def become_reachable(self):
+		print("[[lever becomes reachable]]")
+		self.is_reachable = True
+
+	def get_desc(self):
+		if self.is_reachable:
+			say("A large lever is attatched to the wall. It is not clear what it is connected to.")
+		else:
+			say("Some kind of lever is attached to the wall. You can't get a closer look with the mouse in the way.")
+
 
 
 class Storage(Feature):
@@ -339,7 +484,7 @@ class Storage(Feature):
 
 	def get_status(self, type=None):
 		if type is None:
-			type = "storage"
+			type = "Storage"
 		return super().get_status(type)
 
 
@@ -361,7 +506,7 @@ class Container(Storage):
 		self._add_item(item)
 
 	def get_status(self):
-		return super().get_status("container")
+		return super().get_status("Container")
 
 
 class Surface(Storage):
@@ -375,4 +520,4 @@ class Surface(Storage):
 		say("you put the thing on the thing.")
 
 	def get_status(self):
-		return super().get_status("surface")
+		return super().get_status("Surface")

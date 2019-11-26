@@ -10,7 +10,7 @@ class Parser:
 		self.parts_of_speech = []
 		self.action_dict = dict()
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
-		self.exits = ["door"]
+		self.exits = ["door","window"]
 		self.debug = False # Temporary for debugging
 
 	# Temporary method for debugging
@@ -187,7 +187,7 @@ class Parser:
 			idx += 1
 
 		if (prep is not None) and (dobj is None):
-			if (prep is "up") or (prep is "down"):
+			if (prep == "up") or (prep == "down"):
 				dobj = prep
 				prep = None	
 

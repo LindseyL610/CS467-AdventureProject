@@ -89,50 +89,33 @@ class Room:
 	def get_description(self):
 		say(self.name)
 		if self.has_been_visited:
-			self.get_short_description()
+			description_string = self.short_description
+			listed_things = []
+			# self.get_all_accessible_contents()
+			for thing in self.get_all_accessible_contents():
+				if thing.has_dynamic_description:
+					description_string += " " + thing.get_dynamic_description()
+
+				if thing.is_listed:
+					listed_things.append(thing)
+
+			num_listed_things = len(listed_things)
+
+			if num_listed_things > 0:
+				list_string = " You see"
+				list_string += Utilities.list_to_words([o.list_name for o in listed_things])
+				list_string += "."
+				description_string += list_string
+
+			say(description_string)
+
 
 		else:
-			self.get_long_description()
+			say(self.long_description)
 			self.has_been_visited = True
 
-	def get_long_description(self):
-		description_string = self.long_description	
-
-		description_string += self.get_object_descriptions()
-
-		say(description_string)
-
-	def get_short_description(self):
-		description_string = self.short_description
-
-		description_string += self.get_object_descriptions()
-
-		say(description_string)
-
-	def get_object_descriptions(self):
-		description_string = ""
-		listed_things = []
-
-		# self.get_all_accessible_contents()
-		for thing in self.get_all_accessible_contents():
-			if thing.has_dynamic_description:
-				description_string += " " + thing.get_dynamic_description()
-
-			if thing.is_listed:
-				listed_things.append(thing)
-
-		num_listed_things = len(listed_things)
-
-		if num_listed_things > 0:
-			list_string = " You see"
-			list_string += Utilities.list_to_words([o.list_name for o in listed_things])
-			list_string += "."
-			description_string += list_string
-
-		return description_string
-
 	def look(self, game, actionargs):
-		self.get_long_description()
+		self.get_description()
 
 	def go(self, game, actionargs):
 
@@ -148,6 +131,18 @@ class Room:
 	def remove_thing(self, thing):
 		# TODO also handle removing thing from a storage object in the room
 		self.contents.remove(thing)
+	def add_exit(self, exit, direction):
+		if direction not in self.exits.keys():
+			self.exits[direction] = exit
+		else:
+			say("ERROR: THAT DIRECTION ALREADY HAS AN EXIT")
+
+	def remove_exit(self, exit_to_remove):
+		# redefine exits without exit_to_remove
+		# self.exits = {dir: ex for dir, ex in self.exits if ex is not exit_to_remove}
+
+		remove_exits = [dir for dir in self.exits if self.exits[dir] == exit_to_remove]
+		for dir in remove_exits: del self.exits[dir]
 
 	def get_all_contents(self):
 		"""return everything in a room (accessible or not) from contents, storage, and exits"""
