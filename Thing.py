@@ -24,6 +24,7 @@ class Thing:
 		self.has_been_taken = False
 		self.can_go = False
 		self.has_contents = False
+		self.clock = False
 
 		self.has_dynamic_description = False
 		self.is_listed = True
@@ -138,7 +139,10 @@ class Thing:
 
 	# ACTION for look (and look at)
 	def look(self, game, actionargs):
-		say(self.get_desc())
+		if self.clock:
+			say("The time is t=" + str(game.game_time))
+		else:
+			say(self.get_desc())
 
 	# ACTION for read
 	def read(self, game, actionargs):
@@ -470,6 +474,16 @@ class Lever(Feature):
 			say("Some kind of lever is attached to the wall. You can't get a closer look with the mouse in the way.")
 
 
+class Clock(Feature):
+	"""Readable Feature that can tell game time"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_read = True
+		self.clock = True
+
+	def get_status(self):
+		return super().get_status("clock")
 
 class Storage(Feature):
 	"""Thing that can store other things"""

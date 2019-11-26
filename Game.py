@@ -174,6 +174,26 @@ class Game:
 				if adj not in dictionary:
 					dictionary[adj] = adj # add the adjective to the dict
 
+		# for each room
+
+		#get room file names
+		filenames = list()
+		files = os.listdir(get_path())
+
+		for name in files:
+			if name.find(ROOM_PREFIX) is 0:
+				filenames.append(name)
+
+		#for each room file
+		for room_file in filenames:
+			#retrieve data from room file
+			data = self.load_data_from_file(room_file)
+
+			room_name = data["name"]
+
+			if room_name not in dictionary:
+				dictionary[room_name] = room_name
+
 		return dictionary
 
 	def get_parts_of_speech_dictionary(self):
@@ -256,6 +276,25 @@ class Game:
 		if initial:
 			print("Select a saved game to load, or create a new game.")
 		else:
+			# If this is not the first game being loaded, ask user if they are sure
+			valid_input = False
+			input_str = ""
+
+			while not valid_input:
+				input_str = input("Any unsaved progress will be lost. Are you sure you want to load a different game? (y/n) ")
+
+				if input_str == "y" or input_str == "yes":
+					input_str = "y"
+					valid_input = True
+				elif input_str == "n" or input_str == "no":
+					input_str = "n"
+					valid_input = True
+				else:
+					self.say("Invalid input!")
+
+			if input_str != "y":
+				return False
+
 			print("Select a saved game to load.")
 
 		for i in load_names:
@@ -333,8 +372,21 @@ class Game:
 
 		# These are data attributes for the saved game --currently not saved
 		self.current_save = None #index of game in "saves" list
-		self.timestamp = None #timestamp for when game was last saved		
+		self.timestamp = None #timestamp for when game was last saved
+		
+		self.game_time = None
 
+	def advance_time(self):
+		time = self.game_time
+
+		if time is None:
+			time = 0
+		else:
+			time += 1
+			if time > 11:
+				time = 0
+
+		self.game_time = time
 
 	def load_rooms(self, rooms=None):
 		self.room_list = dict()
@@ -396,6 +448,7 @@ class Game:
 				self.default_things[id] = data
 
 			# Call the appropriate constructor for the object type
+
 			# if type == "exit":
 			# 	self.thing_list[id] = Thing.Exit(id, name)
 			# elif type == "door":
@@ -422,7 +475,6 @@ class Game:
 			# we could consider using hasattr to verify an existing type
 			self.thing_list[id] = getattr(Thing, type)(id, name)
 
-
 	def load_saved_game(self, id):
 		debug("load_saved_game()")
 
@@ -445,6 +497,9 @@ class Game:
 		# These are data attributes for the saved game 
 		self.current_save = id #index of game in "saves" list
 		self.timestamp = self.game_data["saves"][id]["time"]
+
+		# Load game time
+		self.game_time = self.game_data["saves"][id]["game_time"]
 
 	def save_game(self):
 		data = dict()
@@ -473,7 +528,8 @@ class Game:
 		# write or overwrite the game data into the saves list
 		self.game_data["saves"][str(self.current_save)] = {}
 		self.game_data["saves"][str(self.current_save)]["data"] = data.copy()
-		self.game_data["saves"][str(self.current_save)]["time"] = str(datetime.datetime.now()).replace(":", "-")
+		self.game_data["saves"][str(self.current_save)]["timestamp"] = str(datetime.datetime.now()).replace(":", "-")
+		self.game_data["saves"][str(self.current_save)]["game_time"] = self.game_time
 	
 		# write the game data to the save file
 		f = open (SAVES, "w")
@@ -497,6 +553,7 @@ class Game:
 				os.system('clear')  # For Linux/OS X
 			
 			self.room_list[self.player.current_room.id].get_description()
+			self.advance_time()
 			self.new_room = False
 
 		input_str = input("> ")

@@ -10,8 +10,8 @@ class Parser:
 		self.parts_of_speech = []
 		self.action_dict = dict()
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
-		self.exits = ["door","window"]
-		self.debug = False # Temporary for debugging
+		self.exits = ["door"]
+		self.debug = True # Temporary for debugging
 
 	# Temporary method for debugging
 	def print_parsed(self):
@@ -36,7 +36,7 @@ class Parser:
 		print()
 
 	def init_input(self, user_input):
-		self.user_input = user_input
+		self.user_input = user_input.lower()
 		self.action_args = []
 		self.parts_of_speech = []
 		self.action_dict.clear()
@@ -81,7 +81,6 @@ class Parser:
 		self.set_action_dict()
 
 	def tokenize_input(self):
-		self.user_input = self.user_input.lower()
 		self.user_input = self.user_input.split()
 
 	def remove_articles(self):
@@ -111,13 +110,13 @@ class Parser:
 		self.user_input[idx] = self.dictionary.get(self.user_input[idx], self.user_input[idx])
 
 	def set_parts_of_speech(self, idx, game):
-		if self.user_input[idx] in self.speech_dict:
-			self.action_args.append(self.user_input[idx])
-			self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])	
-		# Commented out so it just ignores any unrecognized words
-		#else:
-			#game.say("I don't understand. Please try a different command.")
-			#return 1
+		for word in self.speech_dict:
+			lower_case = word.lower()
+
+			if lower_case == self.user_input[idx]:
+				self.action_args.append(word)
+				self.parts_of_speech.append(self.speech_dict[word])
+				return
 
 	def set_objects(self, game):
 		idx = 0
