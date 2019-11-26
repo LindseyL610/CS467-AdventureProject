@@ -12,7 +12,7 @@ DEFAULT = "\033[0m"
 #  that this function can find and replace with the necessary output for formatted text
 def say(text, game = None):
 	#if there is no string data, do nothing
-	if text is not None and (text == "") is False:
+	if text is not None and (text == "") is False and isinstance(text, str):
 		#see if game object was passed (for color)
 		if game is not None:
 			#Color only supported on Linux/Mac

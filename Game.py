@@ -104,7 +104,21 @@ class Game:
 		# matches should ignore case? or extra whitespace?
 		# NOTE I included the prompt in case we want to re-display the prompt after an invalid input
 		say(prompt)
-		return True
+		input_str = input("> ")
+
+		input_str_lc = input_str.lower()
+		answer_lc = answer.lower()
+
+		input_words = input_str_lc.split()
+		answer_words = answer_lc.split()
+
+		
+
+		if input_words == answer_words:
+			return True
+		else:
+			return False
+
 
 	def get_yn_answer(self, prompt):
 		# displays the prompt
@@ -112,8 +126,23 @@ class Game:
 		# returns True for yes, False for no
 		# NOTE I included the prompt in case we want to re-display the prompt after an invalid input
 		# NOTE2 it would probably make sense to have the other y/n questions in the game options use the same method
-		say(prompt)
-		return True
+		valid_input = False
+		input_str = ""
+
+		while not valid_input:
+			say(prompt)
+			input_str = input("> ")
+
+			if input_str.lower() == "y" or input_str.lower() == "yes":
+				ret_val = True
+				valid_input = True
+			elif input_str.lower() == "n" or input_str.lower() == "no":
+				ret_val = False
+				valid_input = True
+			else:
+				self.say("Invalid input!")
+		
+		return ret_val
 
 	def get_thing_by_name(self, thing_name, must_be_in_inventory):
 		# first, look for thing with given name in player inventory
@@ -125,7 +154,7 @@ class Game:
 		else:
 			if(must_be_in_inventory):
 				# TODO make this more specific...
-				game.say("You don't have that...")
+				say("You don't have that...")
 				return None
 			else:
 				# look in room's accessible contents:
@@ -135,7 +164,7 @@ class Game:
 					return thing_in_room
 				else:
 					# TODO make this more specific...
-					game.say("You don't see that....")
+					say("You don't see that....")
 					return None	
 
 	def get_game_dictionary(self):
@@ -277,22 +306,7 @@ class Game:
 			print("Select a saved game to load, or create a new game.")
 		else:
 			# If this is not the first game being loaded, ask user if they are sure
-			valid_input = False
-			input_str = ""
-
-			while not valid_input:
-				input_str = input("Any unsaved progress will be lost. Are you sure you want to load a different game? (y/n) ")
-
-				if input_str == "y" or input_str == "yes":
-					input_str = "y"
-					valid_input = True
-				elif input_str == "n" or input_str == "no":
-					input_str = "n"
-					valid_input = True
-				else:
-					self.say("Invalid input!")
-
-			if input_str != "y":
+			if not self.get_yn_answer("Any unsaved progress will be lost. Are you sure you want to load a different game? (y/n) "):
 				return False
 
 			print("Select a saved game to load.")
@@ -561,22 +575,7 @@ class Game:
 
 
 	def quit(self):
-		valid_input = False
-		input_str = ""
-
-		while not valid_input:
-			input_str = input("Do you want to save before you quit? (y/n) ")
-
-			if input_str == "y" or input_str == "yes":
-				input_str = "y"
-				valid_input = True
-			elif input_str == "n" or input_str == "no":
-				input_str = "n"
-				valid_input = True
-			else:
-				self.say("Invalid input!")
-
-		if input_str == "y":
+		if self.get_yn_answer("Do you want to save before you quit? (y/n) "):
 			self.save_game()
 
 		self.quit_selected = True
@@ -584,9 +583,7 @@ class Game:
 	def play(self):
 		while not self.quit_selected:
 			self.prompt()
-
-
-
+		
 
 if valid_width():
 	game = Game()
