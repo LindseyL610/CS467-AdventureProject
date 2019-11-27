@@ -266,6 +266,30 @@ class Game:
 
 		return dictionary
 
+	# Gets a list containing the name and alternate names of each exit
+	def get_all_exits(self):
+		exits = list()
+
+		things = self.load_data_from_file(THINGS)
+
+		# For each thing
+		for thing in things:
+			thing_type = things[thing]["type"] # Get the type of the thing
+
+			# If the thing is an exit
+			if thing_type.lower() == "exit":
+				name = things[thing]["data"]["name"] # Get the thing's name
+				
+				if name not in exits:
+					exits.append(name) # Add the name of the exit to "exits"
+
+				# For each alternate name of the exit
+				for alternate_name in things[thing]["data"]["alternate_names"]:
+					if alternate_name not in exits:
+						exits.append(alternate_name) # Add the alternate name to "exits"
+
+		return exits
+
 	def load_data_from_file(self, file_name):
 		file = open(file_name, "r")
 		

@@ -11,7 +11,7 @@ class Parser:
 		self.parts_of_speech = []
 		self.action_dict = dict()
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
-		self.exits = ["door"]
+		self.exits = game.get_all_exits()
 		self.debug = False # Temporary for debugging
 
 	# Temporary method for debugging
@@ -39,8 +39,10 @@ class Parser:
 			else: 
 				if self.debug == True:
 					self.print_parsed()
-				else:
+				elif self.action_dict.get("verb", None) != None:
 					game.say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
+				else:
+					game.say("I don't understand that. Please try a different command.")
 
 		print()
 
@@ -87,7 +89,7 @@ class Parser:
 			idx += 1
 
 		#self.set_objects(game) # Commented out since we aren't currently using multiple objects of same general type in one room
-		self.set_action_dict()
+		self.set_action_dict(game)
 
 	def tokenize_input(self):
 		self.user_input = self.user_input.split()
@@ -120,8 +122,9 @@ class Parser:
 
 	def set_parts_of_speech(self, idx, game):
 		if self.user_input[idx] in self.dictionary:
-			self.action_args.append(self.user_input[idx])
-			self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])
+			if self.speech_dict[self.user_input[idx]] != "adjective":
+				self.action_args.append(self.user_input[idx])
+				self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])
 
 	def set_objects(self, game):
 		idx = 0
@@ -169,7 +172,7 @@ class Parser:
 								self.action_args[idx] = obj
 				idx += 1
 
-	def set_action_dict(self):
+	def set_action_dict(self, game):
 		verb = None
 		dobj = None
 		prep = None
@@ -194,6 +197,10 @@ class Parser:
 			if (prep is "up") or (prep is "down"):
 				dobj = prep
 				prep = None	
+
+		if (verb is None) and (dobj is not None):
+			if (dobj in self.exits) or (dobj in game.direction_list):
+				verb = "go"
 
 		if verb is not None:
 			self.action_dict["verb"] = verb
