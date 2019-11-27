@@ -39,7 +39,7 @@ thing_list["book"].alternate_names.append("tome")
 
 # Creating pedestal
 thing_list["pedestal"] = Thing.Surface("pedestal", "pedestal")
-thing_list["pedestal"].description = "A pedestal"
+thing_list["pedestal"].description = "A pedestal."
 
 # Creating balcony keyboard
 thing_list["balconyKeypad"] = Thing.InputBalconyWindow("balconyKeypad", "keypad")
@@ -61,6 +61,20 @@ thing_list["tower"].description = "It appears to be a humongous computer tower. 
 # Creating fridge
 thing_list["refrigerator"] = Thing.Container("refrigerator", "refrigerator")
 thing_list["refrigerator"].description = "A refrigerator"
+thing_list["refrigerator"].alternate_names.append("fridge")
+
+# Creating test table FOR TESTING
+thing_list["testTable"] = Thing.Surface("testTable", "table")
+thing_list["testTable"].description = "A table (for testing purposes)."
+
+
+# Creating coin FOR TESTING
+thing_list["coin"] = Thing.Item("coin", "coin")
+thing_list["coin"].description = "A gold coin."
+
+# Creating key FOR TESTING
+thing_list["key"] = Thing.Item("key", "key")
+thing_list["key"].description = "A brass key."
 
 # Creating cheese
 thing_list["cheese"] = Thing.Cheese("cheese", "cheese")
@@ -81,9 +95,9 @@ thing_list["lever"] = Thing.Lever("lever", "lever")
 thing_list["lever"].description = "There is some kind of lever on the wall." \
                                   "You cannot reach it with the mouse in the way."
 
-# Creating Floppy1
-thing_list["floppy1"] = Thing.Floppy("floppy1", "floppy")
-thing_list["floppy1"].description = "This is some type of ancient storage device. It is a thin rectangle of plastic, " \
+# Creating Floppy
+thing_list["floppy"] = Thing.Item("floppy", "floppy")
+thing_list["floppy"].description = "This is some type of ancient storage device. It is a thin rectangle of plastic, " \
                                     "with some unkown language written across the top."
 
 # Creating cobwebs
@@ -261,12 +275,13 @@ say("Linking things and rooms...")
 # linking roomA stuff
 
 # TODO once storage is set up, put book on pedestal
-# thing_list["pedestal"]._add_item(thing_list["book"])
-room_list["roomA"].add_thing(thing_list["book"])
+thing_list["pedestal"].add_item(thing_list["book"])
+# room_list["roomA"].add_thing(thing_list["book"])
 
 room_list["roomA"].add_thing(thing_list["pedestal"])
 room_list["roomA"].add_thing(thing_list["plaque"])
 room_list["roomA"].add_thing(thing_list["balconyKeypad"])
+
 
 # thing_list["balconyWindowClosed"].destination = room_list["roomB"]
 room_list["roomA"].exits["north"] = thing_list["balconyWindowClosed"]
@@ -288,10 +303,17 @@ room_list["roomB"].exits["north"] = thing_list["ornatedoorS"]
 # linking roomC stuff
 
 # When storage is implemented, something like this will put the cheese in the fridge
-# thing_list["refrigerator"]._add_item(thing_list["cheese"])
-
+# room_list["roomC"].add_thing(thing_list["cheese"])
 room_list["roomC"].add_thing(thing_list["refrigerator"])
-room_list["roomC"].add_thing(thing_list["cheese"])
+thing_list["refrigerator"].add_item(thing_list["cheese"])
+
+# !!!! BEGIN EXTRA STUFF FOR TESTING !!!!
+room_list["roomC"].add_thing(thing_list["testTable"])
+thing_list["testTable"].add_item(thing_list["key"])
+room_list["roomC"].add_thing(thing_list["coin"])
+# END TESTING
+# !!!! END EXTRA STUFF FOR TESTING !!!!
+
 
 thing_list["stairsE"].destination = room_list["roomB"]
 thing_list["hallwayS"].destination = room_list["roomD"]
@@ -316,7 +338,7 @@ room_list["roomD"].exits["west"] = thing_list["secretWall"]
 # linking roomI stuff
 
 room_list["roomI"].add_thing(thing_list["cobwebs"])
-room_list["roomI"].add_thing(thing_list["floppy1"])
+room_list["roomI"].add_thing(thing_list["floppy"])
 
 thing_list["openingS"].destination = room_list["roomC"]
 
@@ -378,8 +400,8 @@ def generate_data_files(thing_list, room_list):
         print(room_obj)
 
 
-#generate_data_files(thing_list, room_list)
-#generate_blank_save(thing_list, room_list)
+generate_data_files(thing_list, room_list)
+generate_blank_save(thing_list, room_list)
 
 # TESTING#
 

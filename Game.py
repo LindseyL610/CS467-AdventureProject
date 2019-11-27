@@ -153,8 +153,8 @@ class Game:
 			return thing_in_inventory
 		else:
 			if(must_be_in_inventory):
-				# TODO make this more specific...
-				say("You don't have that...")
+				default_thing = self.find_by_name(thing_name, self.thing_list)
+				say("You don't have {}.".format(default_thing.list_name))
 				return None
 			else:
 				# look in room's accessible contents:
@@ -163,8 +163,8 @@ class Game:
 					# found it
 					return thing_in_room
 				else:
-					# TODO make this more specific...
-					say("You don't see that....")
+					default_thing = self.find_by_name(thing_name, self.thing_list)
+					say("You don't see {}.".format(default_thing.list_name))
 					return None	
 
 	def get_game_dictionary(self):
@@ -584,8 +584,9 @@ class Game:
 		while not self.quit_selected:
 			self.prompt()
 		
-
-if valid_width():
+# Temporarily turning off width validation for ease of use in my IDE
+# if valid_width():
+if valid_width() or True:
 	game = Game()
 	if game.game_loaded:
 		game.play()

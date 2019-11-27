@@ -82,7 +82,7 @@ verb_list["drop"].alternate_names.extend(["leave"])
 verb_list["drop"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["put"] = Verb("put")
-verb_list["put"].alternate_names.extend(["place", "set"])
+verb_list["put"].alternate_names.extend(["place", "set", "store"])
 verb_list["put"].supported_prepositions.update({"on":"on", "in":"in"})
 
 verb_list["give"] = Verb("give")
@@ -105,6 +105,9 @@ verb_list["use"].supported_prepositions.update({"NONE":"NONE"})
 verb_list["open"] = Verb("open")
 verb_list["open"].supported_prepositions.update({"NONE":"NONE", "up":"NONE"})
 
+verb_list["close"] = Verb("close")
+verb_list["close"].supported_prepositions.update({"NONE":"NONE"})
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "through", "up", "down"]
 
@@ -121,24 +124,6 @@ class Action():
 		# do the dobj or iobj have to be in the inventory?
 		self.dobj_must_be_in_inventory = False
 		self.iobj_must_be_in_inventory = False
-
-	def thing_is_accessible(self, game, thing, must_be_in_inventory):
-		# Does it have to be in the inventory?
-		if must_be_in_inventory:
-			if thing in game.player.inventory:
-				return True
-			else:
-				say("You don't have {}.".format(thing.list_name))
-				return False
-
-		# is it in either the inventory or the room?
-		else:
-			if thing in game.player.inventory or thing in game.player.current_room.get_all_accessible_contents():
-				return True
-			else:
-				say("You don't see {}.".format(thing.list_name))
-				return False
-
 
 	def execute(self, game, actionargs):
 		pass
@@ -278,3 +263,7 @@ action_list["use"] = ActionDirect("use")
 # open
 # verb + dobj(ANYWHERE) "open door" -> Thing.open()
 action_list["open"] = ActionDirect("open")
+
+# close
+# verb + dobj(ANYWHERE) "close door" -> Thing.close()
+action_list["close"] = ActionDirect("close")

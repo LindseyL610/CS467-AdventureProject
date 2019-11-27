@@ -26,6 +26,7 @@ class Thing:
 		self.has_contents = False
 		self.clock = False
 
+		self.can_be_opened = False
 		self.has_dynamic_description = False
 		self.is_listed = True
 
@@ -57,6 +58,8 @@ class Thing:
 		self.msg_cannot_put_on = "You cannot do that."
 
 		self.msg_cannot_pull = "You cannot pull that."
+
+		self.msg_has_no_contents = "The {} can't store anything.".format(self.name)
 
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
@@ -137,12 +140,12 @@ class Thing:
 		"""returns the description to be used when looking at the room"""
 		return self.dynamic_description_text
 
+	def get_list_name(self):
+		return self.list_name
+
 	# ACTION for look (and look at)
 	def look(self, game, actionargs):
-		if self.clock:
-			say("The time is t=" + str(game.game_time))
-		else:
-			say(self.get_desc())
+		say(self.get_desc())
 
 	# ACTION for read
 	def read(self, game, actionargs):
@@ -160,7 +163,6 @@ class Thing:
 			if game.player.is_in_inventory(self):
 				say(self.msg_already_in_inventory)
 			else:
-				# TODO make sure game function is used properly
 				game.player.take(self)
 				if not self.has_been_taken:
 					self.has_been_taken = True
@@ -195,14 +197,25 @@ class Thing:
 		say(self.msg_cannot_go)
 
 	def put_in(self, game, actionargs):
-		say(self.msg_cannot_put_in)
+		if not self.can_be_dropped:
+			say(self.msg_cannot_drop)
+		else:
+			storage_object = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			storage_object.receive_item(game, self, "in")
 
 	def put_on(self, game, actionargs):
-		say(self.msg_cannot_put_on)
-		say(self.msg_cannot_put_in)
+		if not self.can_be_dropped:
+			say(self.msg_cannot_drop)
+		else:
+			storage_object = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			storage_object.receive_item(game, self, "on")
 
 	def pull(self, game, actionargs):
 		say(self.msg_cannot_pull)
+
+	def receive_item(self, game, item, prep):
+		say("You can't put things {} the {}.".format(prep, self.name))
+
 
 class Exit(Thing):
 	"""Class for object that transports the player to another room."""
@@ -353,15 +366,6 @@ class Cheese(Item):
 		game.room_list["roomD"].add_thing(game.thing_list["eatingMouse"])
 		game.thing_list["lever"].become_reachable()
 
-class Floppy(Item):
-	"""Floppys will need special functionality to handle multiple instances"""
-
-	def get_status(self):
-		return super().get_status("Floppy")
-
-	pass
-
-
 class Feature(Thing):
 	"""Not-Takable, Not-Dropable thing"""
 
@@ -389,6 +393,7 @@ class Input(Feature):
 		self.triggered = False
 
 		self.msg_prompt = "What do you input?"
+		self.msg_yn_prompt = "Would you like to input something?"
 		self.answer = "ANSWER"
 		self.msg_correct_answer = "Correct!"
 		self.msg_incorrect_answer = "Nothing happens."
@@ -398,6 +403,12 @@ class Input(Feature):
 		if type is None:
 			type = "Input"
 		return super().get_status(type)
+
+	def look(self, game, actionargs):
+		say(self.get_desc())
+		yes_or_no = game.get_yn_answer(self.msg_yn_prompt)
+		if yes_or_no:
+			self.use(game, actionargs)
 
 	def use(self, game, actionargs):
 		response = game.get_word_answer(self.msg_prompt, self.answer)
@@ -480,26 +491,120 @@ class Clock(Feature):
 	def __init__(self, id, name):
 		super().__init__(id, name)
 		self.can_be_read = True
-		self.clock = True
 
 	def get_status(self):
 		return super().get_status("clock")
+
+	def look(self, game, actionargs):
+		say("The time is t=" + str(game.game_time))
+
 
 class Storage(Feature):
 	"""Thing that can store other things"""
 
 	def __init__(self, id, name):
 		super().__init__(id, name)
+		self.has_contents = True
 		self.contents = []
 		self.contents_accessible = True
+		self.receive_preps = []
+		self.contents_accessible_iff_open = True
+		self.can_be_opened = False
+		self.is_open = True
 
-	def _add_item(self, item):
-		self.contents.append(item)
+		self.msg_already_opened = "The {} is already open.".format(self.name)
+		self.msg_already_closed = "The {} is already closed.".format(self.name)
+		self.msg_open = "You open the {}.".format(self.name)
+		self.msg_close = "You close the {}.".format(self.name)
+		self.msg_is_closed = "The {} is closed.".format(self.name)
 
 	def get_status(self, type=None):
 		if type is None:
 			type = "Storage"
 		return super().get_status(type)
+
+	def receive_item(self, game, item, prep):
+		if self.has_contents and prep in self.receive_preps:
+			if self.can_be_opened and not self.is_open:
+				say(self.msg_is_closed)
+			else:
+				game.player.remove_from_inventory(item)
+				self.add_item(item)
+				say("You put the {} {} the {}.".format(item.name, prep, self.name))
+		else:
+			say("You can't put things {} the {}.".format(prep, self.name))
+
+	def add_item(self, item):
+		self.contents.append(item)
+
+	def remove_item(self, item):
+		self.contents.remove(item)
+
+	def get_desc(self):
+		desc_string = self.description
+
+		if self.receive_preps:
+			prep = self.receive_preps[0]
+		else:
+			prep = "in"
+
+		# if contents is not empty it returns "True"
+		if self.contents and self.contents_accessible:
+			extra_sentence = "{} it you see".format(prep).capitalize()
+			extra_sentence = " " + extra_sentence
+			extra_sentence += Utilities.list_to_words([o.get_list_name() for o in self.contents])
+			extra_sentence += "."
+			desc_string += extra_sentence
+
+		say(desc_string)
+
+
+	def get_list_name(self):
+		list_string = self.list_name
+
+		if self.receive_preps:
+			prep = self.receive_preps[0]
+		else:
+			prep = "in"
+
+		# if contents is not empty it returns "True"
+		if self.contents and self.contents_accessible:
+			list_string += " ({} which is".format(prep)
+			list_string += Utilities.list_to_words([o.get_list_name() for o in self.contents])
+			list_string += ")"
+
+		return list_string
+
+	def open(self, game, actionargs):
+		if not self.can_be_opened:
+			say(self.msg_cannot_be_opened)
+		else:
+			if self.is_open:
+				say(self.msg_already_opened)
+			else:
+				self.set_open()
+				say(self.msg_open)
+
+	def set_open(self):
+		self.is_open = True
+		if self.contents_accessible_iff_open:
+			self.contents_accessible = True
+
+	def close(self, game, actionargs):
+		if not self.can_be_opened:
+			say(self.msg_cannot_be_opened)
+		else:
+			if not self.is_open:
+				say(self.msg_already_closed)
+			else:
+				self.set_closed()
+				say(self.msg_close)
+
+	def set_closed(self):
+		self.is_open = False
+		if self.contents_accessible_iff_open:
+			self.contents_accessible = False
+
 
 
 class Container(Storage):
@@ -512,12 +617,10 @@ class Container(Storage):
 	def __init__(self, id, name):
 		super().__init__(id, name)
 		self.can_be_opened = True
-		self.is_open = True
-
-	def put_in(self, game, actionargs):
-		item = actionargs["dobj"]
-		game.player.remove_from_inventory(item)
-		self._add_item(item)
+		self.is_open = False
+		self.receive_preps = ["in"]
+		self.contents_accessible = False
+		self.contents_accessible_iff_open = True
 
 	def get_status(self):
 		return super().get_status("Container")
@@ -528,10 +631,10 @@ class Surface(Storage):
 	Things ARE accessible when on the surface
 	EXAMPLES: Table, Shelf"""
 
-	def put_on(self, item):
-		# game.player.remove_from_inventory(item)
-		self._add_item(item)
-		say("you put the thing on the thing.")
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_opened = False
+		self.receive_preps = ["on"]
 
 	def get_status(self):
 		return super().get_status("Surface")
