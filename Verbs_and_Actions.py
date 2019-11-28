@@ -108,6 +108,13 @@ verb_list["open"].supported_prepositions.update({"NONE":"NONE", "up":"NONE"})
 verb_list["close"] = Verb("close")
 verb_list["close"].supported_prepositions.update({"NONE":"NONE"})
 
+verb_list["call"] = Verb("call")
+verb_list["call"].alternate_names.extend(["cast"])
+verb_list["call"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
+
+verb_list["eat"] = Verb("eat")
+verb_list["eat"].supported_prepositions.update({"NONE":"NONE"})
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "through", "up", "down"]
 
@@ -202,11 +209,32 @@ class ActionVerbOnlyOrDirect(Action):
 		elif "dobj" in actionargs.keys():
 			# get the dobj by name, if available
 			dobj_thing = game.get_thing_by_name(actionargs["dobj"],self.dobj_must_be_in_inventory)
-			getattr(dobj_thing,self.name)(game, actionargs)
+			if dobj_thing != None:
+				getattr(dobj_thing,self.name)(game, actionargs)
 		else:
 			# send action to ROOM
 			getattr(game.player.current_room,self.name)(game, actionargs)
 
+class callAction(Action):
+	"""this is the unique action for "call" to use with special functions"""
+	def execute(self, game, actionargs):
+		func = game.player.special_functions[actionargs["dobj"]]
+		if func["action"] == "verb_only":
+			if "iobj" in actionargs.keys() or "prep" in actionargs.keys():
+				say(self.msg_improper_use)
+			else:
+				# send action to ROOM
+				getattr(game.player.current_room, func["name"])(game, actionargs)
+
+		elif func["action"] == "direct_object":
+			if "iobj" not in actionargs.keys() or actionargs["prep"] != "on":
+				say(self.msg_improper_use)
+			else:
+				# get the iobj by name, if available
+				iobj_thing = game.get_thing_by_name(actionargs["iobj"],self.iobj_must_be_in_inventory)
+				if iobj_thing != None:
+					# so this calls dobj.action
+					getattr(iobj_thing, func["name"])(game, actionargs)
 
 # create actions
 action_list = {}
@@ -267,3 +295,12 @@ action_list["open"] = ActionDirect("open")
 # close
 # verb + dobj(ANYWHERE) "close door" -> Thing.close()
 action_list["close"] = ActionDirect("close")
+
+# close
+# verb + dobj(ANYWHERE) "close door" -> Thing.close()
+action_list["call"] = callAction("call")
+
+# eat
+# verb + dobj(ANYWHERE) "eat cheese" -> Thing.eat()
+action_list["eat"] = ActionDirect("eat")
+

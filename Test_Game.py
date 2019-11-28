@@ -6,21 +6,39 @@ from Verbs_and_Actions import action_list, verb_list
 # TODO its possible we will want the player class in it's own file
 # Temporary Player and Game classes for testing
 class Player:
-    """This class stores and manages all data related to the player."""
+
     def __init__(self):
         """Initialize player"""
         self.name = "NAME"
         self.inventory = []
+        # Room object
         self.current_room = None
-
-    def get_status(self):
-        """returns the status of the player in JSON format"""
-        pass
-
-    def set_status(self, status):
-        """uses the JSON data in status to update the player"""
-        pass
-
+        self.special_functions = {"pro":
+                                      {"name": "pro",
+                                       "learned": False,
+                                       "description": "Gain extreme coordination.",
+                                       "action": "verb_only"},
+                                  "ram":
+                                      {"name": "ram",
+                                       "learned": False,
+                                       "description": "Applies a great force.",
+                                       "action": "direct_object"},
+                                  "kin":
+                                      {"name": "kin",
+                                       "learned": False,
+                                       "description": "Duplicates something.",
+                                       "action": "direct_object"},
+                                  "tic":
+                                      {"name": "tic",
+                                       "learned": False,
+                                       "description": "Make a machine malfucntion.",
+                                       "action": "direct_object"},
+                                  "led":
+                                      {"name": "led",
+                                       "learned": False,
+                                       "description": "Powers a room's lights.",
+                                       "action": "verb_only"}
+                                  }
     def add_to_inventory(self, thing):
         """removes an item from the player inventory"""
         # place holder message
@@ -41,12 +59,6 @@ class Player:
         say("[[player takes {}]]".format(thing.name))
 
         # remove thing from its current location (room or storage)
-        print("Here are current room contents for {}".format(self.current_room.name))
-        for content in self.current_room.contents:
-            print (content.list_name)
-        print("that is all.")
-
-
         self.current_room.remove_thing(thing)
         # add thing to inventory
         self.add_to_inventory(thing)
@@ -62,17 +74,16 @@ class Player:
 
     def go(self, destination):
         """changes the location of the player, and displays description
-        of new destination"""
+		of new destination"""
         # place holder message
         say("[[player goes to room {}]]".format(destination.name))
         self.current_room = destination
         destination.get_description()
 
-
     def is_in_inventory(self, thing):
         """returns whether or not the given thing is in the Player's inventory
-        thing: the object itself (not the id?)
-        """
+		thing: the object itself (not the id?)
+		"""
         return thing in self.inventory
 
 
@@ -88,30 +99,86 @@ class GameData:
 
         # initialize starting location with roomA
         self.player.current_room = self.room_list["roomA"]
+        self.game_time = None
 
     def get_thing_by_name(self, thing_name, must_be_in_inventory):
         # first, look for thing with given name in player inventory
         # default_thing = Utilities.find_by_name()
-        thing_in_inventory = Utilities.find_by_name(thing_name, self.player.inventory)
+        thing_in_inventory = self.find_by_name(thing_name, self.player.inventory)
         if (thing_in_inventory != None):
             # found it
             return thing_in_inventory
         else:
             if (must_be_in_inventory):
-                # Todo make this more specific...
-                print("You don't have that...")
+                default_thing = self.find_by_name(thing_name, self.thing_list)
+                say("You don't have {}.".format(default_thing.list_name))
                 return None
             else:
                 # look in room's accessible contents:
-                thing_in_room = Utilities.find_by_name(
-                    thing_name,self.player.current_room.get_all_accessible_contents())
+                thing_in_room = self.find_by_name(thing_name, self.player.current_room.get_all_accessible_contents())
                 if (thing_in_room != None):
-                    #found it
+                    # found it
                     return thing_in_room
                 else:
-                    # Todo make this more specific...
-                    print("You don't see that...")
+                    default_thing = self.find_by_name(thing_name, self.thing_list)
+                    say("You don't see {}.".format(default_thing.list_name))
                     return None
+
+        def advance_time(self):
+            time = self.game_time
+
+            if time is None:
+                time = 0
+            else:
+                time += 1
+                if time > 11:
+                    time = 0
+
+            self.game_time = time
+
+        def get_word_answer(self, prompt, answer):
+            # displays the prompt
+            # gets input from player
+            # compares input to answer, and returns True or False if it matches
+            # matches should ignore case? or extra whitespace?
+            # NOTE I included the prompt in case we want to re-display the prompt after an invalid input
+            say(prompt)
+            input_str = input("> ")
+
+            input_str_lc = input_str.lower()
+            answer_lc = answer.lower()
+
+            input_words = input_str_lc.split()
+            answer_words = answer_lc.split()
+
+            if input_words == answer_words:
+                return True
+            else:
+                return False
+
+        def get_yn_answer(self, prompt):
+            # displays the prompt
+            # gets a yes or no from the player
+            # returns True for yes, False for no
+            # NOTE I included the prompt in case we want to re-display the prompt after an invalid input
+            # NOTE2 it would probably make sense to have the other y/n questions in the game options use the same method
+            valid_input = False
+            input_str = ""
+
+            while not valid_input:
+                say(prompt)
+                input_str = input("> ")
+
+                if input_str.lower() == "y" or input_str.lower() == "yes":
+                    ret_val = True
+                    valid_input = True
+                elif input_str.lower() == "n" or input_str.lower() == "no":
+                    ret_val = False
+                    valid_input = True
+                else:
+                    self.say("Invalid input!")
+
+            return ret_val
 
 # TODO
 #  Game can get all_things and all_rooms from Create.py

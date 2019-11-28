@@ -61,6 +61,10 @@ class Thing:
 
 		self.msg_has_no_contents = "The {} can't store anything.".format(self.name)
 
+		self.msg_nothing_happens = "Nothing happens"
+
+		self.msg_cannot_eat = "You cannot eat that."
+
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -216,6 +220,22 @@ class Thing:
 	def receive_item(self, game, item, prep):
 		say("You can't put things {} the {}.".format(prep, self.name))
 
+	def eat(self, game, actionargs):
+		say(self.msg_cannot_eat)
+
+	# Special Functions
+	def ram(self, game, actionargs):
+		print("[[ram on {}]]".format(self.name))
+		say(self.msg_nothing_happens)
+
+	def kin(self, game, actionargs):
+		print("[[kin on {}]]".format(self.name))
+		say(self.msg_nothing_happens)
+
+	def tic(self, game, actionargs):
+		print("[[tic on {}]]".format(self.name))
+		say(self.msg_nothing_happens)
+
 
 class Exit(Thing):
 	"""Class for object that transports the player to another room."""
@@ -308,6 +328,7 @@ class Item(Thing):
 			type = "Item"
 		return super().get_status(type)
 
+
 class Book(Item):
 
 	def __init__(self, id, name):
@@ -333,6 +354,11 @@ class Book(Item):
 
 class Cheese(Item):
 
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_cannot_eat = "As you bring the cheese to your lips, the smell makes you gag." \
+							  "You decide it isn't fit for human consumption."
+
 	def get_status(self, type=None):
 		if type is None:
 			type = "Cheese"
@@ -342,8 +368,8 @@ class Cheese(Item):
 		thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
 		if thing_to_receive is game.thing_list["hungryMouse"]:
 			message = "As you hold out the cheese, the mosue's eyes widen." \
-						 "It snatches it from your hand, and runs to the opposite corner of the room." \
-						 "It begins nibbling away."
+					  "It snatches it from your hand, and runs to the opposite corner of the room." \
+					  "It begins nibbling away."
 			say(message)
 			self.mouse_eats_cheese(game, actionargs)
 		else:
@@ -353,8 +379,8 @@ class Cheese(Item):
 	def drop(self, game, actionargs):
 		if game.player.current_room is game.room_list["roomD"]:
 			message = "You drop the cheese, and the mouses's eyes widen." \
-						 "It quickly darts over, grabs the cheese, and runs to the opposite corner of the room." \
-						 "It begins nibbling away"
+					  "It quickly darts over, grabs the cheese, and runs to the opposite corner of the room." \
+					  "It begins nibbling away"
 			say(message)
 			self.mouse_eats_cheese(game, actionargs)
 		else:
@@ -365,6 +391,7 @@ class Cheese(Item):
 		game.room_list["roomD"].remove_thing(game.thing_list["hungryMouse"])
 		game.room_list["roomD"].add_thing(game.thing_list["eatingMouse"])
 		game.thing_list["lever"].become_reachable()
+
 
 class Feature(Thing):
 	"""Not-Takable, Not-Dropable thing"""
@@ -385,6 +412,7 @@ class Input(Feature):
 	"""A feature that you can input text into (like a keyboard)
 	By default they have one correct answer which performs one function.
 	"""
+
 	def __init__(self, id, name):
 		super().__init__(id, name)
 		# True if the input only functions once
@@ -429,6 +457,7 @@ class Input(Feature):
 	def carry_out_action(self, game, actionargs):
 		print("[[default action...]]")
 
+
 class InputBalconyWindow(Input):
 	"""the class for the input device on the balcony that opens the window"""
 
@@ -465,7 +494,7 @@ class Lever(Feature):
 		return super().get_status("Lever")
 
 	def use(self, game, actionargs):
-		#send to pull
+		# send to pull
 		pass
 
 	def pull(self, game, actionargs):
@@ -558,7 +587,6 @@ class Storage(Feature):
 
 		say(desc_string)
 
-
 	def get_list_name(self):
 		list_string = self.list_name
 
@@ -604,7 +632,6 @@ class Storage(Feature):
 		self.is_open = False
 		if self.contents_accessible_iff_open:
 			self.contents_accessible = False
-
 
 
 class Container(Storage):

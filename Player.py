@@ -4,17 +4,45 @@ import Room
 import Thing
 import json
 
+
 class Player:
 
 	def __init__(self):
 		"""Initialize player"""
 		self.name = "NAME"
 		self.inventory = []
-		self.current_room = None	# Room
+		# Room object
+		self.current_room = None
+		self.special_functions = {"pro":
+									  {"name": "pro",
+									   "learned": False,
+									   "description": "Gain extreme coordination.",
+									   "action": "verb_only"},
+								  "ram":
+									  {"name": "ram",
+									   "learned": False,
+									   "description": "Applies a great force.",
+									   "action": "direct_object"},
+								  "kin":
+									  {"name": "kin",
+									   "learned": False,
+									   "description": "Duplicates something.",
+									   "action": "direct_object"},
+								  "tic":
+									  {"name": "tic",
+									   "learned": False,
+									   "description": "Make a machine malfucntion.",
+									   "action": "direct_object"},
+								  "led":
+									  {"name": "led",
+									   "learned": False,
+									   "description": "Powers a room's lights.",
+									   "action": "verb_only"}
+								  }
 
 	def get_status(self):
 		"""returns the status of player in JSON format"""
-		
+
 		# Returns the appropriate export value based on whether value is a Room or Thing
 		def get_export_value(value):
 			if isinstance(value, Room.Room):
@@ -26,7 +54,7 @@ class Player:
 
 		str_dict = self.__dict__
 
-		#print ("str_dict before: " + str(str_dict))
+		# print ("str_dict before: " + str(str_dict))
 
 		for attr in str_dict:
 			if isinstance(str_dict[attr], list):
@@ -40,7 +68,7 @@ class Player:
 			else:
 				str_dict[attr] = get_export_value(str_dict[attr])
 
-		#print ("str_dict after: " + str(str_dict))
+		# print ("str_dict after: " + str(str_dict))
 
 		return json.dumps(str_dict)
 
@@ -60,7 +88,7 @@ class Player:
 				if list is not None:
 					id = value[3:(value.find(">"))]
 					return list[id]
-			
+
 			return value
 
 		status_obj = json.loads(status)
@@ -76,7 +104,7 @@ class Player:
 					imp_val[i] = get_import_value(status_obj[attr][i], thing_list, room_list)
 			else:
 				imp_val = get_import_value(status_obj[attr], thing_list, room_list)
-		
+
 			setattr(self, attr, imp_val)
 
 	def add_to_inventory(self, thing):
@@ -119,7 +147,6 @@ class Player:
 		say("[[player goes to room {}]]".format(destination.name))
 		self.current_room = destination
 		destination.get_description()
-
 
 	def is_in_inventory(self, thing):
 		"""returns whether or not the given thing is in the Player's inventory

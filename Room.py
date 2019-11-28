@@ -18,6 +18,7 @@ class Room:
 		self.contents = []
 
 		self.msg_cannot_go_direction = "You cannot go that direction."
+		self.msg_nothing_happens = "Nothing happens."
 
 	def get_status(self):
 		"""returns the status of a room in JSON format"""
@@ -89,6 +90,11 @@ class Room:
 	def get_description(self):
 		say(self.name)
 		if self.has_been_visited:
+			# TESTING BEGIN
+			print("room contents:")
+			for c in self.contents:
+				print(type(c))
+			# TESTING END
 			description_string = self.short_description
 			listed_things = []
 
@@ -183,50 +189,36 @@ class Room:
 
 		return all_contents_list
 
+	def pro(self, game, actionargs):
+		say(self.msg_nothing_happens)
 
-# OLD Room.py just in case
-#
-# import os
-# import json
-# import Exit
-# import Feature
-#
-# class Room:
-# 	def __init__(self, data, state):
-# 		self.data = data.copy()
-# 		self.state = state.copy()
-#
-# 	def get_prompt(self, game):
-# 		if not self.state['visited']:
-# 			prompt = self.data["long_description"]
-# 			self.state['visited'] = True
-# 		else:
-# 			prompt = self.data["short_description"]
-#
-# 		for itm in self.state["items"]:
-# 			obj = game.objects[itm]
-#
-# 			if obj.data["static"] == False:
-# 				if obj.state["current_state"] in obj.data["message"]:
-# 					prompt += ("\n" + obj.data["message"][obj.state["current_state"]])
-# 				else:
-# 					prompt += ("\n" + obj.data["message"]["default"])
-#
-# 		return prompt
-#
-# 	def check_item(self, item):
-# 		for itm in self.state["items"]:
-# 			if itm == item:
-# 				return True
-#
-# 		return False
-#
-# 	def remove_item(self, item):
-# 		if item in self.state["items"]:
-# 			self.state["items"].remove(item)
-#
-# 	def add_dropped_item(self, item):
-# 		self.state["items"].append(item)
-#
-# 	def get_state_data(self):
-# 		return self.state
+	def led(self, game, actionargs):
+		say(self.msg_nothing_happens)
+
+class DarkWeb(Room):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.is_lit = False
+
+		self.msg_already_lit = "The room is already lit."
+		self.msg_lit = "You here a faint buzzing sound, and then a light at the opposite " \
+					   "end of the room suddenly turns on. Then another light, turns on, and another, " \
+					   "until the whole room is fully lit. You sheild your eyes until they have time to adjust. " \
+					   "When you finally look around, you see a room completely filled with spider webs, " \
+					   "and at the far end of the room... a large spider."
+		self.alternate_description = "A long room filled with cobwebs. There is an opening to the north."
+
+	def get_status(self):
+		return super().get_status("DarkWeb")
+
+	def led(self, game, actionargs):
+		if self.is_lit is False:
+			self.is_lit = True
+
+			say(self.msg_lit)
+			self.short_description = self.alternate_description
+
+			# add floppy
+			# change properties of stuff in room (floppy, cobwebs, spider?)
+		else:
+			say(self.msg_already_lit)

@@ -210,7 +210,7 @@ class Game:
 		files = os.listdir(get_path())
 
 		for name in files:
-			if name.find(ROOM_PREFIX) is 0:
+			if name.find(ROOM_PREFIX) == 0:
 				filenames.append(name)
 
 		#for each room file
@@ -609,8 +609,8 @@ class Game:
 			self.prompt()
 		
 # Temporarily turning off width validation for ease of use in my IDE
-# if valid_width():
-if valid_width() or True:
+# if valid_width() or True:
+if valid_width():
 	game = Game()
 	if game.game_loaded:
 		game.play()
