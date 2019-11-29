@@ -81,7 +81,7 @@ class Game:
 
 		self.keywords = set()
 
-		self.quit_selected = False
+		self.end_game = False
 
 		self.parser = parser_class.Parser(self)
 
@@ -617,11 +617,13 @@ class Game:
 	def quit(self):
 		if self.get_yn_answer("Do you want to save before you quit? (y/n) "):
 			self.save_game()
+		self.end()
 
-		self.quit_selected = True
+	def end(self):
+		self.end_game = True
 
 	def play(self):
-		while not self.quit_selected:
+		while not self.end_game:
 			self.prompt()
 		
 # Temporarily turning off width validation for ease of use in my IDE
