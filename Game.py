@@ -17,7 +17,7 @@ SAVES = "SV"
 ROOM_PREFIX = "RM_"
 THINGS = "TH"
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 WIDTH = 100
 HEIGHT = 30
 
@@ -112,7 +112,7 @@ class Game:
 		input_words = input_str_lc.split()
 		answer_words = answer_lc.split()
 
-		
+		print()
 
 		if input_words == answer_words:
 			return True
@@ -141,6 +141,8 @@ class Game:
 				valid_input = True
 			else:
 				self.say("Invalid input!")
+
+		print()
 		
 		return ret_val
 
@@ -216,7 +218,7 @@ class Game:
 		#for each room file
 		for room_file in filenames:
 			#retrieve data from room file
-			data = self.load_data_from_file(room_file)
+			data = self.load_data_from_file(room_file)["data"]
 
 			room_name = data["name"]
 
@@ -307,7 +309,7 @@ class Game:
 
 		for save in self.game_data["saves"]:
 			name = self.game_data["saves"][save]["data"]["player"]["name"]
-			time = self.game_data["saves"][save]["time"]
+			time = self.game_data["saves"][save]["timestamp"]
 
 			display = name + ", " + time
 
@@ -363,6 +365,10 @@ class Game:
 
 		debug("loading saved game: " + str(load_names[selection]["display"]))
 		self.load_saved_game(load_names[selection]["id"])
+		print()
+		say("Game loaded!")
+		print()
+		#any = input("Press any key to continue...")
 
 		return True
 
@@ -443,21 +449,26 @@ class Game:
 			#for each room file
 			for room_file in filenames:
 				#retrieve data from room file
-				data = self.load_data_from_file(room_file)
+				data = self.load_data_from_file(room_file)["data"]
+				type = self.load_data_from_file(room_file)["type"]
 
 				id = data["id"]
 				name = data["name"]
+				self.keywords.add(name)
 
 				self.default_rooms[id] = data
 
-				self.room_list[id] = Room.Room(id, name)
-
+				self.room_list[id] = getattr(Room, type)(id, name)
 		else:
 			for room in rooms:
-				data = rooms[room]
+				data = rooms[room]["data"]
+				type = rooms[room]["type"]
+
 				id = data["id"]
 				name = data["name"]
-				self.room_list[id] = Room.Room(id, name)
+				self.keywords.add(name)
+
+				self.room_list[id] = getattr(Room, type)(id, name)
 
 	def load_things(self, things=None):
 		self.thing_list = dict()
@@ -521,11 +532,11 @@ class Game:
 
 		# Set status for each room
 		for room in self.room_list:
-			self.room_list[room].set_status(json.dumps(self.game_data["saves"][id]["data"]["room_list"][room]), self.thing_list, self.room_list)
+			self.room_list[room].set_status(json.dumps(self.game_data["saves"][id]["data"]["room_list"][room]["data"]), self.thing_list, self.room_list)
 
 		# Set status for each thing
 		for thing in self.thing_list:
-			self.thing_list[thing].set_status(json.dumps(self.game_data["saves"][id]["data"]["thing_list"][thing]), self.thing_list, self.room_list)
+			self.thing_list[thing].set_status(json.dumps(self.game_data["saves"][id]["data"]["thing_list"][thing]["data"]), self.thing_list, self.room_list)
 
 		# Load player object from saved game data based on ID
 		player_obj = self.game_data["saves"][id]["data"]["player"]
@@ -534,10 +545,13 @@ class Game:
 
 		# These are data attributes for the saved game 
 		self.current_save = id #index of game in "saves" list
-		self.timestamp = self.game_data["saves"][id]["time"]
+		self.timestamp = self.game_data["saves"][id]["timestamp"]
 
 		# Load game time
 		self.game_time = self.game_data["saves"][id]["game_time"]
+
+		self.new_room = True
+
 
 	def save_game(self):
 		data = dict()
@@ -585,12 +599,14 @@ class Game:
 
 		if self.new_room:
 			#NOTE: The following clear screen code adapted from: https://stackoverflow.com/questions/18937058/clear-screen-in-shell/47296211
-			if OS == "Windows":
-				os.system('cls')  # For Windows
-			elif OS == "Linux" or OS == "Darwin":
-				os.system('clear')  # For Linux/OS X
+			#if OS == "Windows":
+			#	os.system('cls')  # For Windows
+			#elif OS == "Linux" or OS == "Darwin":
+			#	os.system('clear')  # For Linux/OS X
 			
 			self.room_list[self.player.current_room.id].get_description()
+			print()
+
 			self.advance_time()
 			self.new_room = False
 

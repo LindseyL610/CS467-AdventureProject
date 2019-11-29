@@ -77,19 +77,21 @@ class Thing:
 			else:
 				return value
 
-		str_dict = self.__dict__
+		str_dict = self.__dict__.copy()
 
 		# print ("str_dict before: " + str(str_dict))
 
 		for attr in str_dict:
 			if isinstance(str_dict[attr], list):
-				i = 0
+				new_list = list()
 				for x in str_dict[attr]:
-					str_dict[attr][i] = get_export_value(x)
-					i += 1
+					new_list.append(get_export_value(x))
+				str_dict[attr] = new_list
 			elif isinstance(str_dict[attr], dict):
-				for i in str_dict[attr]:
-					str_dict[attr][i] = get_export_value(str_dict[attr][i])
+				new_dict = dict()
+				for x in str_dict[attr]:
+					new_dict[x] = get_export_value(str_dict[attr][x])
+				str_dict[attr] = new_dict
 			else:
 				str_dict[attr] = get_export_value(str_dict[attr])
 
@@ -252,6 +254,7 @@ class Exit(Thing):
 			say(self.msg_go)
 			# TODO make sure game function is used properly
 			game.player.go(self.destination)
+			game.new_room = True
 		else:
 			say(self.msg_cannot_go)
 

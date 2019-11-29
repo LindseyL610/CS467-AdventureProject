@@ -391,7 +391,7 @@ def generate_data_files(thing_list, room_list):
     for room in room_list:
         room_obj = json.loads(room_list[room].get_status())
 
-        file_name = ROOM_PREFIX + room_obj["id"]
+        file_name = ROOM_PREFIX + room_obj["data"]["id"]
         f = open(file_name, "w")
         f.truncate(0)
         json.dump(room_obj, f)

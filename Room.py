@@ -20,9 +20,12 @@ class Room:
 		self.msg_cannot_go_direction = "You cannot go that direction."
 		self.msg_nothing_happens = "Nothing happens."
 
-	def get_status(self):
+	def get_status(self, type = None):
 		"""returns the status of a room in JSON format"""
 		
+		if type is None:
+			type = "Room"
+
 		# Returns the appropriate export value based on whether value is a Room or Thing
 		def get_export_value(value):
 			if isinstance(value, Room):
@@ -32,25 +35,32 @@ class Room:
 			else:
 				return value
 
-		str_dict = self.__dict__
+		str_dict = self.__dict__.copy()
 
 		#print ("str_dict before: " + str(str_dict))
 
 		for attr in str_dict:
 			if isinstance(str_dict[attr], list):
-				i = 0
+				new_list = list()
 				for x in str_dict[attr]:
-					str_dict[attr][i] = get_export_value(x)
-					i += 1
+					new_list.append(get_export_value(x))
+				str_dict[attr] = new_list
 			elif isinstance(str_dict[attr], dict):
-				for i in str_dict[attr]:
-					str_dict[attr][i] = get_export_value(str_dict[attr][i])
+				new_dict = dict()
+				for x in str_dict[attr]:
+					new_dict[x] = get_export_value(str_dict[attr][x])
+				str_dict[attr] = new_dict
 			else:
 				str_dict[attr] = get_export_value(str_dict[attr])
 
 		#print ("str_dict after: " + str(str_dict))
 
-		return json.dumps(str_dict)
+		ret_val = dict()
+		ret_val["type"] = type
+		ret_val["data"] = str_dict
+
+		return json.dumps(ret_val)
+
 
 	def set_status(self, status, thing_list, room_list):
 		"""uses the JSON data in status to update the thing"""
