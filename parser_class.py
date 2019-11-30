@@ -177,6 +177,7 @@ class Parser:
 		dobj = None
 		prep = None
 		iobj = None
+		direction = None
 
 		idx = 0
 
@@ -190,6 +191,8 @@ class Parser:
 					iobj = self.action_args[idx]
 			elif (self.parts_of_speech[idx] == "preposition") and (prep == None):
 				prep = self.action_args[idx]
+			elif (self.parts_of_speech[idx] == "direction") and (direction == None):
+				direction = self.action_args[idx]
 
 			idx += 1
 
@@ -197,6 +200,9 @@ class Parser:
 			if (prep == "up") or (prep == "down"):
 				dobj = prep
 				prep = None	
+
+		if (direction is not None) and (verb == "go") and (dobj is None):
+			dobj = direction
 
 		if (verb is None) and (dobj is not None):
 			if (dobj in self.exits) or (dobj in game.direction_list):
