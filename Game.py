@@ -273,9 +273,9 @@ class Game:
 		return dictionary
 
 	def add_special_functions(self, dictionary, speech_dict):
-		function = { "LED", "TIC", "RAM", "KIN", "PRO" }
-		
-		for function in function:
+		functions = [ "pro", "ram", "kin", "tic", "led" ]
+
+		for function in functions:
 			if speech_dict == 0:
 				dictionary[function] = function
 			else:
