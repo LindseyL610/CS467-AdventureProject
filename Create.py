@@ -195,6 +195,115 @@ thing_list["secretWall"].alternate_names.append("wall")
 thing_list["secretWall"].can_go = False
 thing_list["secretWall"].msg_cannot_go = "There does not appear to be any way to go this way."
 
+
+# Creating exits between B and K
+thing_list["B-K"] = Thing.Exit("B-K", "exit B to K")
+thing_list["B-K"].description = "The exit from room B to room K."
+thing_list["B-K"].msg_go = "You walk through the exit from room B to room K."
+thing_list["K-B"] = Thing.Exit("K-B", "exit K to B")
+thing_list["K-B"].description = "The exit from room K to room B."
+thing_list["K-B"].msg_go = "You walk through the exit from room K to room B."
+
+
+
+# Creating exits between D and E
+thing_list["D-E"] = Thing.Exit("D-E", "exit D to E")
+thing_list["D-E"].description = "The exit from room D to room E."
+thing_list["D-E"].msg_go = "You walk through the exit from room D to room E."
+thing_list["E-D"] = Thing.Exit("E-D", "exit E to D")
+thing_list["E-D"].description = "The exit from room E to room D."
+thing_list["E-D"].msg_go = "You walk through the exit from room E to room D."
+
+# Creating exits between D and P1
+thing_list["D-P1"] = Thing.Exit("D-P1", "exit D to P1")
+thing_list["D-P1"].description = "The exit from room D to room P1."
+thing_list["D-P1"].msg_go = "You walk through the exit from room D to room P1."
+thing_list["P1-D"] = Thing.Exit("P1-D", "exit P1 to D")
+thing_list["P1-D"].description = "The exit from room P1 to room D."
+thing_list["P1-D"].msg_go = "You walk through the exit from room P1 to room D."
+
+# Creating exits between E and F
+thing_list["E-F"] = Thing.Exit("E-F", "exit E to F")
+thing_list["E-F"].description = "The exit from room E to room F."
+thing_list["E-F"].msg_go = "You walk through the exit from room E to room F."
+thing_list["F-E"] = Thing.Exit("F-E", "exit F to E")
+thing_list["F-E"].description = "The exit from room F to room E."
+thing_list["F-E"].msg_go = "You walk through the exit from room F to room E."
+
+# Creating exits between E and P2
+thing_list["E-P2"] = Thing.Exit("E-P2", "exit E to P2")
+thing_list["E-P2"].description = "The exit from room E to room P2."
+thing_list["E-P2"].msg_go = "You walk through the exit from room E to room P2."
+thing_list["P2-E"] = Thing.Exit("P2-E", "exit P2 to E")
+thing_list["P2-E"].description = "The exit from room P2 to room E."
+thing_list["P2-E"].msg_go = "You walk through the exit from room P2 to room E."
+
+# Creating exits between F and G
+thing_list["F-G"] = Thing.Exit("F-G", "exit F to G")
+thing_list["F-G"].description = "The exit from room F to room G."
+thing_list["F-G"].msg_go = "You walk through the exit from room F to room G."
+thing_list["G-F"] = Thing.Exit("G-F", "exit G to F")
+thing_list["G-F"].description = "The exit from room G to room F."
+thing_list["G-F"].msg_go = "You walk through the exit from room G to room F."
+
+# Creating exits between F and P3
+thing_list["F-P3"] = Thing.Exit("F-P3", "exit F to P3")
+thing_list["F-P3"].description = "The exit from room F to room P3."
+thing_list["F-P3"].msg_go = "You walk through the exit from room F to room P3."
+thing_list["P3-F"] = Thing.Exit("P3-F", "exit P3 to F")
+thing_list["P3-F"].description = "The exit from room P3 to room F."
+thing_list["P3-F"].msg_go = "You walk through the exit from room P3 to room F."
+
+# Creating exits between G and H
+thing_list["G-H"] = Thing.Exit("G-H", "exit G to H")
+thing_list["G-H"].description = "The exit from room G to room H."
+thing_list["G-H"].msg_go = "You walk through the exit from room G to room H."
+thing_list["H-G"] = Thing.Exit("H-G", "exit H to G")
+thing_list["H-G"].description = "The exit from room H to room G."
+thing_list["H-G"].msg_go = "You walk through the exit from room H to room G."
+
+# Creating exits between H and I
+thing_list["H-I"] = Thing.Exit("H-I", "exit H to I")
+thing_list["H-I"].description = "The exit from room H to room I."
+thing_list["H-I"].msg_go = "You walk through the exit from room H to room I."
+thing_list["I-H"] = Thing.Exit("I-H", "exit I to H")
+thing_list["I-H"].description = "The exit from room I to room H."
+thing_list["I-H"].msg_go = "You walk through the exit from room I to room H."
+
+# Creating exits between H and J
+thing_list["H-J"] = Thing.Exit("H-J", "exit H to J")
+thing_list["H-J"].description = "The exit from room H to room J."
+thing_list["H-J"].msg_go = "You walk through the exit from room H to room J."
+thing_list["J-H"] = Thing.Exit("J-H", "exit J to H")
+thing_list["J-H"].description = "The exit from room J to room H."
+thing_list["J-H"].msg_go = "You walk through the exit from room J to room H."
+
+# Creating exits between H and P4
+thing_list["H-P4"] = Thing.Exit("H-P4", "exit H to P4")
+thing_list["H-P4"].description = "The exit from room H to room P4."
+thing_list["H-P4"].msg_go = "You walk through the exit from room H to room P4."
+thing_list["P4-H"] = Thing.Exit("P4-H", "exit P4 to H")
+thing_list["P4-H"].description = "The exit from room P4 to room H."
+thing_list["P4-H"].msg_go = "You walk through the exit from room P4 to room H."
+
+# Creating exits between J and K
+thing_list["J-K"] = Thing.Exit("J-K", "exit J to K")
+thing_list["J-K"].description = "The exit from room J to room K."
+thing_list["J-K"].msg_go = "You walk through the exit from room J to room K."
+thing_list["K-J"] = Thing.Exit("K-J", "exit K to J")
+thing_list["K-J"].description = "The exit from room K to room J."
+thing_list["K-J"].msg_go = "You walk through the exit from room K to room J."
+
+# Creating exits between J and P5
+thing_list["J-P5"] = Thing.Exit("J-P5", "exit J to P5")
+thing_list["J-P5"].description = "The exit from room J to room P5."
+thing_list["J-P5"].msg_go = "You walk through the exit from room J to room P5."
+thing_list["P5-J"] = Thing.Exit("P5-J", "exit P5 to J")
+thing_list["P5-J"].description = "The exit from room P5 to room J."
+thing_list["P5-J"].msg_go = "You walk through the exit from room P5 to room J."
+
+
+
 ######################
 ### CREATING ROOMS ###
 ######################
@@ -251,15 +360,80 @@ room_list["roomD"].long_description = "As you enter the room, the first thing yo
 room_list["roomD"].short_description = "The floor is covered in hay and debris. In the corner sits a gigantic mouse. " \
                                        "It looks like there may be something on the wall behind the mouse."
 
+
+
+# Creating room E
+room_list["roomE"] = Room.Room("roomE", "Ballroom")
+room_list["roomE"].long_description = "You are in room E (long description)."
+room_list["roomE"].short_description = "You are in room E (short description)."
+
+# Creating room F
+room_list["roomF"] = Room.Room("roomF", "I/O Room")
+room_list["roomF"].long_description = "You are in room F (long description)."
+room_list["roomF"].short_description = "You are in room F (short description)."
+
+# Creating room G
+room_list["roomG"] = Room.Room("roomG", "Bus Station")
+room_list["roomG"].long_description = "You are in room G (long description)."
+room_list["roomG"].short_description = "You are in room G (short description)."
+
+
+# Creating room H
+room_list["roomH"] = Room.Room("roomH", "Web")
+room_list["roomH"].long_description = "You are in room H (long description)."
+room_list["roomH"].short_description = "You are in room H (short description)."
+
+
+
 # Creating roomI
 room_list["roomI"] = Room.Room("roomI", "Dark Webs")
 room_list["roomI"].long_description = "A dark room... with webs."
 room_list["roomI"].short_description = "A dark room with webs."
 
+
+
+# Creating room J
+room_list["roomJ"] = Room.Room("J", "Clock Room")
+room_list["roomJ"].long_description = "You are in room J (long description)."
+room_list["roomJ"].short_description = "You are in room J (short description)."
+
+# Creating room K
+room_list["roomK"] = Room.Room("roomK", "Utility Room")
+room_list["roomK"].long_description = "You are in room K (long description)."
+room_list["roomK"].short_description = "You are in room K (short description)."
+
+
+
+
 # Creating roomP1
 room_list["roomP1"] = Room.Room("roomP1", "Monitor Station")
 room_list["roomP1"].long_description = "Monitors everywhere."
 room_list["roomP1"].short_description = "So many monitors."
+
+
+
+# Creating room P2
+room_list["roomP2"] = Room.Room("P2", "puzzle 2")
+room_list["roomP2"].long_description = "You are in puzzle 2 (long description)."
+room_list["roomP2"].short_description = "You are in puzzle 2 (short description)."
+
+# Creating room P3
+room_list["roomP3"] = Room.Room("P3", "puzzle 3")
+room_list["roomP3"].long_description = "You are in puzzle 3 (long description)."
+room_list["roomP3"].short_description = "You are in puzzle 3 (short description)."
+
+# Creating room P4
+room_list["roomP4"] = Room.Room("P4", "puzzle 4")
+room_list["roomP4"].long_description = "You are in puzzle 4 (long description)."
+room_list["roomP4"].short_description = "You are in puzzle 4 (short description)."
+
+# Creating room P5
+room_list["roomP5"] = Room.Room("P5", "puzzle 5")
+room_list["roomP5"].long_description = "You are in puzzle 5 (long description)."
+room_list["roomP5"].short_description = "You are in puzzle 5 (short description)."
+
+
+
 
 # Creating roomMP
 room_list["roomMP"] = Room.Room("roomMP", "Motherboard")
@@ -347,6 +521,102 @@ room_list["roomI"].exits["north"] = thing_list["openingS"]
 # linking roomMP stuff
 
 room_list["roomMP"].exits["south"] = thing_list["ornatedoorN"]
+
+
+
+
+# linking Room B with Room K
+thing_list["B-K"].destination = room_list["roomK"]
+room_list["roomB"].exits["west"] = thing_list["B-K"]
+thing_list["K-B"].destination = room_list["roomB"]
+room_list["roomK"].exits["east"] = thing_list["K-B"]
+
+
+# linking Room D with Room E
+thing_list["D-E"].destination = room_list["roomE"]
+room_list["roomD"].exits["north"] = thing_list["D-E"]
+thing_list["E-D"].destination = room_list["roomD"]
+room_list["roomE"].exits["south"] = thing_list["E-D"]
+
+
+# linking Room D with Puzzle 1
+thing_list["D-P1"].destination = room_list["roomP1"]
+room_list["roomD"].exits["west"] = thing_list["D-P1"]
+thing_list["P1-D"].destination = room_list["roomD"]
+room_list["roomP1"].exits["east"] = thing_list["P1-D"]
+
+
+# linking Room E with Room F
+thing_list["E-F"].destination = room_list["roomF"]
+room_list["roomE"].exits["north"] = thing_list["E-F"]
+thing_list["F-E"].destination = room_list["roomE"]
+room_list["roomF"].exits["south"] = thing_list["F-E"]
+
+
+# linking Room E with Puzzle 2
+thing_list["E-P2"].destination = room_list["roomP2"]
+room_list["roomE"].exits["west"] = thing_list["E-P2"]
+thing_list["P2-E"].destination = room_list["roomE"]
+room_list["roomP2"].exits["east"] = thing_list["P2-E"]
+
+
+# linking Room F with Room G
+thing_list["F-G"].destination = room_list["roomG"]
+room_list["roomF"].exits["west"] = thing_list["F-G"]
+thing_list["G-F"].destination = room_list["roomF"]
+room_list["roomG"].exits["east"] = thing_list["G-F"]
+
+# linking Room F with Puzzle 3
+thing_list["F-P3"].destination = room_list["roomP3"]
+room_list["roomF"].exits["south"] = thing_list["F-P3"]
+thing_list["P3-F"].destination = room_list["roomF"]
+room_list["roomP3"].exits["north"] = thing_list["P3-F"]
+
+
+# linking Room G with Room H
+thing_list["G-H"].destination = room_list["roomH"]
+room_list["roomG"].exits["south"] = thing_list["G-H"]
+thing_list["H-G"].destination = room_list["roomG"]
+room_list["roomH"].exits["north"] = thing_list["H-G"]
+
+
+
+# linking Room H with Room I
+thing_list["H-I"].destination = room_list["roomI"]
+room_list["roomH"].exits["south"] = thing_list["H-I"]
+thing_list["I-H"].destination = room_list["roomH"]
+room_list["roomI"].exits["north"] = thing_list["I-H"]
+
+
+
+# linking Room H with Room J
+thing_list["H-J"].destination = room_list["roomJ"]
+room_list["roomH"].exits["west"] = thing_list["H-J"]
+thing_list["J-H"].destination = room_list["roomH"]
+room_list["roomJ"].exits["east"] = thing_list["J-H"]
+
+
+# linking Room H with Puzzle 4
+thing_list["H-P4"].destination = room_list["roomP4"]
+room_list["roomH"].exits["east"] = thing_list["H-P4"]
+thing_list["P4-H"].destination = room_list["roomH"]
+room_list["roomP4"].exits["west"] = thing_list["P4-H"]
+
+
+# linking Room J with Room K
+thing_list["J-K"].destination = room_list["roomK"]
+room_list["roomJ"].exits["south"] = thing_list["J-K"]
+thing_list["K-J"].destination = room_list["roomJ"]
+room_list["roomK"].exits["north"] = thing_list["K-J"]
+
+
+# linking Room J with Puzzle 5
+thing_list["J-P5"].destination = room_list["roomP5"]
+room_list["roomJ"].exits["north"] = thing_list["J-P5"]
+thing_list["P5-J"].destination = room_list["roomJ"]
+room_list["roomP5"].exits["south"] = thing_list["P5-J"]
+
+
 
 
 def generate_blank_save(thing_list, room_list):
