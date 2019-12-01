@@ -8,7 +8,7 @@ import Player
 ROOM_PREFIX = "RM_"
 THINGS = "TH"
 SAVE = "SV"
-STARTING_ROOM = "roomE"
+STARTING_ROOM = "roomA"
 
 #####################################
 ### CREATING ALL THINGS AND ROOMS ###
