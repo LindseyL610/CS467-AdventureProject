@@ -1,0 +1,5 @@
+
+*.pyc
+.vs/CS467-AdventureProject/v16/.suo
+*.json
+*.sqlite
