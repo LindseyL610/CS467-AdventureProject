@@ -100,11 +100,6 @@ class Room:
 	def get_description(self):
 		say(self.name)
 		if self.has_been_visited:
-			# TESTING BEGIN
-			print("room contents:")
-			for c in self.contents:
-				print(type(c))
-			# TESTING END
 			description_string = self.short_description
 			listed_things = []
 

@@ -640,8 +640,8 @@ class Game:
 			self.prompt()
 		
 # Temporarily turning off width validation for ease of use in my IDE
-# if valid_width() or True:
-if valid_width():
+if valid_width() or True:
+# if valid_width():
 	game = Game()
 	if game.game_loaded:
 		game.play()

@@ -31,7 +31,7 @@ class Verb():
 		self.supported_prepositions = {}
 
 		#TODO Come up with better general wording
-		self.msg_improper_use = "That is not how to use the verb \"{}\".".format(self.name)
+		self.msg_improper_use = "That is not how to use the command \"{}\".".format(self.name)
 
 	def execute(self, game, actionargs):
 		### DEBUG
