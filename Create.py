@@ -100,6 +100,48 @@ thing_list["cobwebs"].list_name = "some cobwebs"
 thing_list["plaque"] = Thing.Sign("plaque", "plaque")
 thing_list["plaque"].description = "A small ornamental plaque. It says... stuff."
 
+
+# Creating puzzle 1 input
+thing_list["puzzle1Keyboard"] = Thing.InputPuzzle1("puzzle1Keyboard", "keyboard")
+thing_list["puzzle1Keyboard"].description = "A keyboard."
+thing_list["puzzle1Keyboard"].msg_prompt = "What do you enter on the keyboard?"
+thing_list["puzzle1Keyboard"].answer = "answer"
+thing_list["puzzle1Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
+
+
+# Creating puzzle 2 input
+thing_list["puzzle2Keyboard"] = Thing.InputPuzzle2("puzzle2Keyboard", "keyboard")
+thing_list["puzzle2Keyboard"].description = "A keyboard."
+thing_list["puzzle2Keyboard"].msg_prompt = "What do you enter on the keyboard?"
+thing_list["puzzle2Keyboard"].answer = "answer"
+thing_list["puzzle2Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
+
+
+# Creating puzzle 3 input
+thing_list["puzzle3Keyboard"] = Thing.InputPuzzle3("puzzle3Keyboard", "keyboard")
+thing_list["puzzle3Keyboard"].description = "A keyboard."
+thing_list["puzzle3Keyboard"].msg_prompt = "What do you enter on the keyboard?"
+thing_list["puzzle3Keyboard"].answer = "answer"
+thing_list["puzzle3Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
+
+
+# Creating puzzle 1 input
+thing_list["puzzle4Keyboard"] = Thing.InputPuzzle4("puzzle4Keyboard", "keyboard")
+thing_list["puzzle4Keyboard"].description = "A keyboard."
+thing_list["puzzle4Keyboard"].msg_prompt = "What do you enter on the keyboard?"
+thing_list["puzzle4Keyboard"].answer = "answer"
+thing_list["puzzle4Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
+
+
+# Creating puzzle 1 input
+thing_list["puzzle5Keyboard"] = Thing.InputPuzzle5("puzzle5Keyboard", "keyboard")
+thing_list["puzzle5Keyboard"].description = "A keyboard."
+thing_list["puzzle5Keyboard"].msg_prompt = "What do you enter on the keyboard?"
+thing_list["puzzle5Keyboard"].answer = "answer"
+thing_list["puzzle5Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
+
+
+
 ######################
 ### CREATING EXITS ###
 ######################
@@ -411,30 +453,33 @@ room_list["roomK"].short_description = "You are in a very cold room. There are s
 
 # Creating roomP1
 room_list["roomP1"] = Room.Room("roomP1", "Monitor Station")
-room_list["roomP1"].long_description = "Monitors everywhere."
+room_list["roomP1"].long_description = "Monitors everywhere. Also a keyboard."
 room_list["roomP1"].short_description = "So many monitors."
-
-
+room_list["roomP1"].documentation = "The answer is 'answer'."
 
 # Creating room P2
-room_list["roomP2"] = Room.Room("roomP2", "puzzle 2")
-room_list["roomP2"].long_description = "You are in puzzle 2 (long description)."
+room_list["roomP2"] = Room.Room("roomP2", "puzzle 2 (database)")
+room_list["roomP2"].long_description = "You are in puzzle 2 (long description). There is a keyboard."
 room_list["roomP2"].short_description = "You are in puzzle 2 (short description)."
+room_list["roomP2"].documentation = "The answer is 'answer'."
 
 # Creating room P3
-room_list["roomP3"] = Room.Room("roomP3", "puzzle 3")
+room_list["roomP3"] = Room.Room("roomP3", "puzzle 3 (search/ memory)")
 room_list["roomP3"].long_description = "You are in puzzle 3 (long description)."
 room_list["roomP3"].short_description = "You are in puzzle 3 (short description)."
+room_list["roomP3"].documentation = "The answer is 'answer'."
 
 # Creating room P4
-room_list["roomP4"] = Room.Room("roomP4", "puzzle 4")
+room_list["roomP4"] = Room.Room("roomP4", "puzzle 4 (cpu)")
 room_list["roomP4"].long_description = "You are in puzzle 4 (long description)."
 room_list["roomP4"].short_description = "You are in puzzle 4 (short description)."
+room_list["roomP4"].documentation = "The answer is 'answer'."
 
 # Creating room P5
-room_list["roomP5"] = Room.Room("roomP5", "puzzle 5")
+room_list["roomP5"] = Room.Room("roomP5", "puzzle 5 (keyboard)")
 room_list["roomP5"].long_description = "You are in puzzle 5 (long description)."
 room_list["roomP5"].short_description = "You are in puzzle 5 (short description)."
+room_list["roomP5"].documentation = "The answer is 'answer'."
 
 
 
@@ -597,26 +642,33 @@ room_list["roomK"].exits["north"] = thing_list["K-J"]
 
 # linking roomP1 (Puzzle 1) stuff
 
+room_list["roomP1"].add_thing(thing_list["puzzle1Keyboard"])
+
 # TODO
 thing_list["P1-D"].destination = room_list["roomD"]
 room_list["roomP1"].exits["east"] = thing_list["P1-D"]
 
 # linking roomP2 (Puzzle 2) stuff
+room_list["roomP2"].add_thing(thing_list["puzzle2Keyboard"])
+
 # TODO
 thing_list["P2-E"].destination = room_list["roomE"]
 room_list["roomP2"].exits["east"] = thing_list["P2-E"]
 
 # linking roomP3 (Puzzle 3) stuff
+room_list["roomP3"].add_thing(thing_list["puzzle3Keyboard"])
 
 thing_list["P3-F"].destination = room_list["roomF"]
 room_list["roomP3"].exits["north"] = thing_list["P3-F"]
 
 # linking roomP4 (Puzzle 4) stuff
+room_list["roomP4"].add_thing(thing_list["puzzle4Keyboard"])
 
 thing_list["P4-H"].destination = room_list["roomH"]
 room_list["roomP4"].exits["west"] = thing_list["P4-H"]
 
 # linking roomP5 (Puzzle 5) stuff
+room_list["roomP5"].add_thing(thing_list["puzzle5Keyboard"])
 
 thing_list["P5-J"].destination = room_list["roomJ"]
 room_list["roomP5"].exits["south"] = thing_list["P5-J"]

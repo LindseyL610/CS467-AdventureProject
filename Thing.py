@@ -476,6 +476,68 @@ class InputBalconyWindow(Input):
 		game.room_list["roomA"].add_exit(game.thing_list["balconyWindowOpen"], "north")
 
 
+class InputPuzzle1(Input):
+	"""the class for the input device on the balcony that opens the window"""
+
+	# This status function is not working on its own
+	def get_status(self):
+		return super().get_status("InputPuzzle1")
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		# Open window...
+		game.player.learn_function("led")
+
+class InputPuzzle2(Input):
+	"""the class for the input device on the balcony that opens the window"""
+
+	# This status function is not working on its own
+	def get_status(self):
+		return super().get_status("InputPuzzle2")
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		# Open window...
+		game.player.learn_function("kin")
+
+class InputPuzzle3(Input):
+	"""the class for the input device on the balcony that opens the window"""
+
+	# This status function is not working on its own
+	def get_status(self):
+		return super().get_status("InputPuzzle3")
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		# Open window...
+		game.player.learn_function("ram")
+
+class InputPuzzle4(Input):
+	"""the class for the input device on the balcony that opens the window"""
+
+	# This status function is not working on its own
+	def get_status(self):
+		return super().get_status("InputPuzzle4")
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		# Open window...
+		game.player.learn_function("tic")
+
+class InputPuzzle5(Input):
+	"""the class for the input device on the balcony that opens the window"""
+
+	# This status function is not working on its own
+	def get_status(self):
+		return super().get_status("InputPuzzle5")
+
+	# This is the function called on a successful answer
+	def carry_out_action(self, game, actionargs):
+		# Open window...
+		game.player.learn_function("pro")
+
+
+
 class Sign(Feature):
 	"""Readable Feature"""
 

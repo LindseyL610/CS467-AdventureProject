@@ -21,12 +21,12 @@ class Player:
 								  "ram":
 									  {"name": "ram",
 									   "learned": False,
-									   "description": "Applies a great force.",
+									   "description": "Apply a great force.",
 									   "action": "direct_object"},
 								  "kin":
 									  {"name": "kin",
 									   "learned": False,
-									   "description": "Duplicates something.",
+									   "description": "Find related things.",
 									   "action": "direct_object"},
 								  "tic":
 									  {"name": "tic",
@@ -36,7 +36,7 @@ class Player:
 								  "led":
 									  {"name": "led",
 									   "learned": False,
-									   "description": "Powers a room's lights.",
+									   "description": "Power a room's lights.",
 									   "action": "verb_only"}
 								  }
 
@@ -155,3 +155,8 @@ class Player:
 		thing: the object itself (not the id?)
 		"""
 		return thing in self.inventory
+
+	def learn_function(self, func):
+		"""sets the 'learned' attribute of a special function to True"""
+		print("[[player learns function {}]]".format(func))
+		self.special_functions[func]["learned"] = True
