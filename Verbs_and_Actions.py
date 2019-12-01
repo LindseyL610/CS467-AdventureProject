@@ -227,6 +227,7 @@ class callAction(Action):
 		func = game.player.special_functions[actionargs["dobj"]]
 		if func["action"] == "verb_only":
 			if "iobj" in actionargs.keys() or "prep" in actionargs.keys():
+				# TODO add specific message like "proper use: 'call pro'"
 				say(self.msg_improper_use)
 			else:
 				# send action to ROOM
@@ -234,6 +235,7 @@ class callAction(Action):
 
 		elif func["action"] == "direct_object":
 			if "iobj" not in actionargs.keys() or actionargs["prep"] != "on":
+				# TODO add specific message like "proper use: 'call ram on thing'"
 				say(self.msg_improper_use)
 			else:
 				# get the iobj by name, if available
