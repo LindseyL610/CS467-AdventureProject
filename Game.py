@@ -225,8 +225,6 @@ class Game:
 			if room_name not in dictionary:
 				dictionary[room_name] = room_name
 
-		self.add_special_functions(dictionary, 0)
-
 		return dictionary
 
 	def get_parts_of_speech_dictionary(self):
@@ -256,8 +254,6 @@ class Game:
 				if adj not in dictionary:
 					dictionary[adj] = "adjective" # add adj to dict with value "adjective"
 
-		self.add_special_functions(dictionary, 1)
-
 		return dictionary
 
 	def add_directions(self, speech_dict):
@@ -271,15 +267,6 @@ class Game:
 				dictionary[direction] = "direction"
 
 		return dictionary
-
-	def add_special_functions(self, dictionary, speech_dict):
-		functions = [ "pro", "ram", "kin", "tic", "led" ]
-
-		for function in functions:
-			if speech_dict == 0:
-				dictionary[function] = function
-			else:
-				dictionary[function] = "object"
 
 	# Gets a list containing the name and alternate names of each exit
 	def get_all_exits(self):
