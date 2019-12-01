@@ -167,3 +167,4 @@ class Player:
 	def clear_effects(self):
 		"""clears all temporary effects"""
 		self.drunk = False
+		self.pro = False

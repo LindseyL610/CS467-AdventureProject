@@ -69,6 +69,8 @@ class Thing:
 
 		self.msg_cannot_play = "You cannot play that."
 
+		self.msg_cannot_dance = "You cannot dance with that."
+
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -228,6 +230,9 @@ class Thing:
 
 	def use(self, game, actionargs):
 		say(self.msg_nothing_happens)
+
+	def dance(self, game, actionargs):
+		say(self.msg_cannot_dance)
 
 	def eat(self, game, actionargs):
 		say(self.msg_cannot_eat)
@@ -726,6 +731,10 @@ class Piano(Feature):
 	def __init__(self, id, name):
 		super().__init__(id, name)
 		self.tip_received = False
+		self.daemon_summoned = False
+		self.msg_good = "You play the piano. Thanks to the wine, you're really groovin'. It sounds good!"
+		self.msg_great = "You play the piano. Thanks to the PRO effects, you're unstoppable! It sounds great!"
+		self.msg_bad = "You play the piano, but you feel a little stiff. It doesn't sound great. Maybe you'll play better if you loosen up somehow..."
 
 	def get_status(self, type=None):
 		if type is None:
@@ -736,16 +745,54 @@ class Piano(Feature):
 		self.play(game,actionargs)
 
 	def play(self, game, actionargs):
-		if game.player.drunk:
-			say("You play the piano. Thanks to the wine, you're really groovin'. It sounds great!")
-			if not self.tip_received:
-				self.tip_received = True
-				game.thing_list["tipJar"].add_item(game.thing_list["coin"])
-				print()
-				say("You received a tip! A coin has appeared in the tip jar.")
+		if game.player.pro:
+			say(self.msg_great)
+			self.play_great(game)
+		elif game.player.drunk:
+			say(self.msg_good)
+			self.play_good(game)
 		else:
-			message = "You play the piano, but you feel a little stiff. It doesn't sound great. Maybe you'll play better if you loosen up somehow..."
+			say(self.msg_bad)
+
+	def play_good(self, game):
+		if not self.tip_received:
+			self.tip_received = True
+			game.thing_list["tipJar"].add_item(game.thing_list["coin"])
+			print()
+			say("You received a tip! A coin has appeared in the tip jar.")
+
+	def play_great(self, game):
+		self.play_good(game)
+		if not self.daemon_summoned:
+			self.daemon_summoned = True
+			game.room_list["roomE"].add_thing(game.thing_list["DancingDaemon"])
+			print()
+			say("Your playing has attracted one of the tower's DAEMONs!")
+			say(game.thing_list["DancingDaemon"].description)
+
+class DancingDaemon(Feature):
+	"""Daemon that appears"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.floppy_received = False
+		self.floppy = None
+		self.msg_dance = "You dance with the DAEMON!"
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "DancingDaemon"
+		return super().get_status(type)
+	
+	def dance(self, game, actionargs):
+		say(self.msg_dance)
+		if not self.floppy_received:
+			message = "The DAEMON gives you a " + self.floppy.name + "!"
+			game.player.add_to_inventory(self.floppy)
+			self.floppy_received = True
 			say(message)
+
+
 
 class Storage(Feature):
 	"""Thing that can store other things"""

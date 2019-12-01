@@ -122,8 +122,12 @@ verb_list["drink"].supported_prepositions.update({"NONE":"NONE"})
 verb_list["play"] = Verb("play")
 verb_list["play"].supported_prepositions.update({"NONE":"NONE"})
 
+verb_list["dance"] = Verb("dance")
+verb_list["dance"].alternate_names.extend(["jig", "waltz"])
+verb_list["dance"].supported_prepositions.update({"NONE":"NONE", "with":"NONE"})
+
 # not sure how we will keep track of prepositions, but here's a running list:
-prep_list = ["at", "on", "in", "to", "into", "through", "up", "down"]
+prep_list = ["at", "on", "in", "to", "into", "through", "up", "down", "with"]
 
 
 class Action():
@@ -318,3 +322,8 @@ action_list["drink"] = ActionDirect("drink")
 # play
 # verb + dobj(ANYWHERE) "play piano" -> Thing.play()
 action_list["play"] = ActionDirect("play")
+
+# dance 
+# only verb "look"-> Room.dance()
+# verb + dobj(ANYWHERE) "dance daemon"-> Thing.dance()
+action_list["dance"] = ActionVerbOnlyOrDirect("dance")

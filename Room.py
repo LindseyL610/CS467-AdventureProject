@@ -22,6 +22,11 @@ class Room:
 
 		self.documentation = ""
 
+		self.msg_already_pro = "You are already feeling the effects of the pro function."
+		self.msg_pro = "Your speed and coordination increase!"
+
+		self.msg_dance = "You dance. Nothing happens."
+
 	def get_status(self, type = None):
 		"""returns the status of a room in JSON format"""
 		
@@ -196,8 +201,15 @@ class Room:
 
 		return all_contents_list
 
+	def dance(self, game, actionargs):
+		say(self.msg_dance)
+
 	def pro(self, game, actionargs):
-		say(self.msg_nothing_happens)
+		if game.player.pro:
+			say(self.msg_already_pro)
+		else:
+			game.player.pro = True
+			say(self.msg_pro)
 
 	def led(self, game, actionargs):
 		say(self.msg_nothing_happens)
@@ -229,3 +241,18 @@ class DarkWeb(Room):
 			# change properties of stuff in room (floppy, cobwebs, spider?)
 		else:
 			say(self.msg_already_lit)
+		
+
+class Ballroom(Room):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+
+	def get_status(self):
+		return super().get_status("Ballroom")
+
+	def dance(self, game, actionargs):
+		if game.thing_list["DancingDaemon"] in self.get_all_contents():
+			game.thing_list["DancingDaemon"].dance(game, actionargs)
+		else:
+			messsage = "You dance like no one's watching. Except you feel like someone is watching..."
+			say(message)

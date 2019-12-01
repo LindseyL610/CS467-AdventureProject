@@ -8,7 +8,7 @@ import Player
 ROOM_PREFIX = "RM_"
 THINGS = "TH"
 SAVE = "SV"
-STARTING_ROOM = "roomE"
+STARTING_ROOM = "roomA"
 
 #####################################
 ### CREATING ALL THINGS AND ROOMS ###
@@ -141,7 +141,30 @@ thing_list["ballroomCoinSlot"].description = "A coin slot next to the door."
 thing_list["ballroomCoinSlot"].list_name = "a slot"
 thing_list["ballroomCoinSlot"].receive_preps.append("in")
 thing_list["ballroomCoinSlot"].key_consumed = True
+
+thing_list["DancingDaemon"] = Thing.DancingDaemon("DancingDaemon", "DAEMON")
+thing_list["DancingDaemon"].adjectives.extend(["dancing"])
+thing_list["DancingDaemon"].description = "The DAEMON dances all across the dance floor and beckons you to join..."
+thing_list["DancingDaemon"].list_name = "a dancing DAEMON"
+
+thing_list["CD"] = Thing.Item("CD", "CD")
+thing_list["CD"].description = "This is some type of ancient storage device. It is a thin circle of plastic with a hole in the middle. One side is shiny as a rainbow."
 #--------------------------------------------------------------------------
+#ROOM F (I/O ROOM) FEATURES AND ITEMS--------------------------------------
+#thing_list["coin"] = Thing.Key("coin", "coin")
+#thing_list["coin"].adjectives.extend(["gold"])
+#thing_list["coin"].description = "A gold coin."
+
+#thing_list["piano"] = Thing.Piano("piano", "piano")
+#thing_list["piano"].description = "A baby grand piano with a long keyboard of shiny white and black ivory keys. The piano has the words 'Qwerty Classics Series' painted in gold cursive beneath the cover."
+
+#thing_list["ballroomCoinSlot"] = Thing.Lock("ballroomCoinSlot", "slot")
+#thing_list["ballroomCoinSlot"].description = "A coin slot next to the door."
+#thing_list["ballroomCoinSlot"].list_name = "a slot"
+#thing_list["ballroomCoinSlot"].receive_preps.append("in")
+#thing_list["ballroomCoinSlot"].key_consumed = True
+#--------------------------------------------------------------------------
+
 
 # Creating puzzle 2 input
 thing_list["puzzle2Keyboard"] = Thing.InputPuzzle2("puzzle2Keyboard", "keyboard")
@@ -337,6 +360,11 @@ thing_list["busHallway"].dynamic_description_text = "There is a hallway to the e
 
 
 # Creating exits between F and P3 [[Door]]
+thing_list["IOroomDoorLocked"] = Thing.Exit("IOroomDoorLocked", "door")
+thing_list["IOroomDoorLocked"].can_go = False
+thing_list["IOroomDoorLocked"].msg_cannot_go = "The door is locked!"
+thing_list["IOroomDoorLocked"].has_dynamic_description = True
+thing_list["IOroomDoorLocked"].dynamic_description_text = "There is a door to the south."
 thing_list["IOroomDoor"] = Thing.Exit("IOroomDoor", "door")
 thing_list["IOroomDoor"].description = "An ordinary door."
 thing_list["IOroomDoor"].msg_go = "You proceed through the door to the south."
@@ -467,9 +495,17 @@ room_list["roomC"].long_description = "You are in roomC (long description)."
 room_list["roomC"].short_description = "You are in roomC (short description)."
 
 # Creating room E
-room_list["roomE"] = Room.Room("roomE", "Ballroom")
-room_list["roomE"].long_description = "You are in room E (long description)."
-room_list["roomE"].short_description = "You are in room E (short description)."
+room_list["roomE"] = Room.Ballroom("roomE", "Ballroom")
+room_list["roomE"].long_description = "You enter an enormous ballroom, which is wide open, with a stocked bar on one side of the room, " \
+										"a grand piano on the other side of the room, and a huge dancefloor made of ornate wood. " \
+										"An elevator with shiny doors and a gold finish is on one end of the room. On the western wall is a door. " \
+										"On the southern wall is a staircase leading down."
+room_list["roomE"].short_description = "You are in the ballroom."
+room_list["roomE"].documentation = "The art of programming starts at the keyboard. " \
+									"Typing involves inputting text by pressing keys on a keyboard, which " \
+									"might be a computer keyboard, a graphical user interface, or anything with keys to be pressed. " \
+									"Typing is measured in words per minute (wpm). On average, programmers can type 50-70 wpm. " \
+									"However, a real PRO can type 90+ wpm!"
 
 # Creating room F
 room_list["roomF"] = Room.Room("roomF", "I/O Room")
@@ -644,6 +680,8 @@ room_list["roomE"].add_thing(thing_list["bar"])
 room_list["roomE"].add_thing(thing_list["tipJar"])
 room_list["roomE"].add_thing(thing_list["piano"])
 room_list["roomE"].add_thing(thing_list["ballroomCoinSlot"])
+
+thing_list["DancingDaemon"].floppy = thing_list["CD"]
 
 # linking roomF (I/O Room) stuff
 
