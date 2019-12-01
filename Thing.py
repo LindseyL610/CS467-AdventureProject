@@ -364,11 +364,23 @@ class Book(Item):
 		return super().get_status(type)
 
 	def read(self, game, actionargs):
-		say("You flip through the \"Tome of Documentation\"...")
+		if not game.player.is_in_inventory(self):
+			say("You pick up the book, and flip through its pages.")
+			game.player.current_room.remove_thing(self)
+			game.player.add_to_inventory(self)
+		else:
+			say("You flip through the \"Tome of Documentation\"...")
 		say("Notes on the " + game.player.current_room.name)
 		say(game.player.current_room.documentation)
-		# if player has special functions
-		# say functions: ...
+		at_least_one_func = False
+		for func in game.player.special_functions.values():
+			if func["learned"] == True:
+				if at_least_one_func == False:
+					at_least_one_func = True
+					say("Special functions (used with 'call'):")
+
+				func_display = func["name"].upper() + ": " + func["description"]
+				say(func_display)
 
 	def open(self, game, actionargs):
 		self.read(game, actionargs)
@@ -557,7 +569,7 @@ class Input(Feature):
 		self.triggered = False
 
 		self.msg_prompt = "What do you input?"
-		self.msg_yn_prompt = "Would you like to input something?"
+		self.msg_yn_prompt = "Would you like to input something? (y/n)"
 		self.answer = "ANSWER"
 		self.msg_correct_answer = "Correct!"
 		self.msg_incorrect_answer = "Nothing happens."
@@ -606,6 +618,12 @@ class InputBalconyWindow(Input):
 		# Open window...
 		game.room_list["roomA"].remove_exit(game.thing_list["balconyWindowClosed"])
 		game.room_list["roomA"].add_exit(game.thing_list["balconyWindowOpen"], "north")
+		if not game.player.is_in_inventory(game.thing_list["book"]):
+			book_message = "The force of the window opening has left the book on the floor. " \
+						   "Curious, you decide to pick it up."
+			say(book_message)
+			game.player.current_room.remove_thing(game.thing_list["book"])
+			game.player.add_to_inventory(game.thing_list["book"])
 
 
 class InputPuzzle1(Input):
