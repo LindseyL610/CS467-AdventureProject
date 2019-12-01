@@ -24,9 +24,8 @@ say("Creating things and rooms...")
 
 # Creating book
 thing_list["book"] = Thing.Book("book", "book")
-thing_list["book"].description = "This ancient book has the word \"Documentation\" printed on its cover. " \
-                                 "Its contents are as follows: blah blah blah"
-thing_list["book"].alternate_names.append("tome")
+thing_list["book"].description = "This ancient book has the title \"Tome of Documentation\" printed on its cover. "
+thing_list["book"].alternate_names.extend(["tome","documentation"])
 
 # Creating pedestal
 thing_list["pedestal"] = Thing.Surface("pedestal", "pedestal")
@@ -52,7 +51,7 @@ thing_list["tower"].description = "It appears to be a humongous computer tower. 
 # Creating fridge
 thing_list["refrigerator"] = Thing.Container("refrigerator", "refrigerator")
 thing_list["refrigerator"].description = "A refrigerator"
-thing_list["refrigerator"].alternate_names.append("fridge")
+thing_list["refrigerator"].alternate_names.extend(["fridge"])
 
 # Creating test table FOR TESTING
 thing_list["testTable"] = Thing.Surface("testTable", "table")
@@ -133,7 +132,7 @@ thing_list["lobbyWindow"].msg_cannot_go = "The window is closed, and there doens
 # Creating exits between B (Lobby) and MP (Motherboard) [[ORNATE DOOR]]
 # Creating lobbyOrnateDoor
 thing_list["lobbyOrnateDoor"] = Thing.Exit("lobbyOrnateDoor", "door")
-thing_list["lobbyOrnateDoor"].adjectives.append("ornate")
+thing_list["lobbyOrnateDoor"].adjectives.extend(["ornate"])
 thing_list["lobbyOrnateDoor"].description = "A huge ornate door."
 thing_list["lobbyOrnateDoor"].can_go = False
 thing_list["lobbyOrnateDoor"].msg_cannot_go = "This door will not open."
@@ -200,8 +199,8 @@ thing_list["secretWall"].description = "A section of this brick wall looks disco
 thing_list["secretWall"].msg_go = ""
 thing_list["secretWall"].has_dynamic_description = True
 thing_list["secretWall"].dynamic_description_text = "There are discolored bricks on the west wall. (DYNAMIC)"
-thing_list["secretWall"].adjectives.append("discolored")
-thing_list["secretWall"].alternate_names.append("wall")
+thing_list["secretWall"].adjectives.extend(["discolored"])
+thing_list["secretWall"].alternate_names.extend(["wall"])
 
 thing_list["secretWall"].can_go = False
 thing_list["secretWall"].msg_cannot_go = "There does not appear to be any way to go this way."
@@ -325,6 +324,8 @@ room_list[
     "wall is a plaque. At the end of the balcony is a stone pedestal, with an large book on top."
 room_list["roomA"].short_description = "You are on a balcony outside of a humongous tower that seems to extend " \
                                        "as far as you can see upwards and downwards."
+room_list["roomA"].documentation = "The entrance code: 'Hello World'"
+
 
 # Creating roomB
 room_list["roomB"] = Room.Room("roomB", "Lobby")

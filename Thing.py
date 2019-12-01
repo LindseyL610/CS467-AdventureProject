@@ -346,10 +346,11 @@ class Book(Item):
 		return super().get_status(type)
 
 	def read(self, game, actionargs):
-		contents = "The book reads:"
-		contents += "\n"
-		contents += "To gain entrance, enter \"Hello World\""
-		say(contents)
+		say("You flip through the \"Tome of Documentation\"...")
+		say("Notes on the " + game.player.current_room.name)
+		say(game.player.current_room.documentation)
+		# if player has special functions
+		# say functions: ...
 
 	def open(self, game, actionargs):
 		self.read(game, actionargs)

@@ -20,6 +20,8 @@ class Room:
 		self.msg_cannot_go_direction = "You cannot go that direction."
 		self.msg_nothing_happens = "Nothing happens."
 
+		self.documentation = ""
+
 	def get_status(self, type = None):
 		"""returns the status of a room in JSON format"""
 		
