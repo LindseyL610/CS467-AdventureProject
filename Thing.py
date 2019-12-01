@@ -64,6 +64,7 @@ class Thing:
 		self.msg_nothing_happens = "Nothing happens"
 
 		self.msg_cannot_eat = "You cannot eat that."
+		self.msg_cannot_drink = "You cannot drink that."
 
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
@@ -224,6 +225,9 @@ class Thing:
 
 	def eat(self, game, actionargs):
 		say(self.msg_cannot_eat)
+
+	def drink(self, game, actionargs):
+		say(self.msg_cannot_drink)
 
 	# Special Functions
 	def ram(self, game, actionargs):
@@ -395,6 +399,43 @@ class Cheese(Item):
 		game.room_list["roomD"].remove_thing(game.thing_list["hungryMouse"])
 		game.room_list["roomD"].add_thing(game.thing_list["eatingMouse"])
 		game.thing_list["lever"].become_reachable()
+
+class Drink(Item):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Drink"
+		return super().get_status(type)
+
+	def drink(self, game, actionargs):
+		message = "You take a sip of the {}.".format(self.name)
+		say(message)
+#		if game.player.current_room is game.room_list["roomE"]:
+#			message = "You take a sip of the {}.".format(self.name)
+#			say(message)
+#			#self.mouse_eats_cheese(game, actionargs)
+#		else:
+#			Thing.drop(self, game, actionargs)
+
+class Wine(Drink):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Wine"
+		return super().get_status(type)
+
+	def drink(self, game, actionargs):
+		if game.player.current_room is not game.room_list["roomE"]:
+			super().drink(game, actionargs)
+		else:
+			message = "You drink some wine and start to loosen up..."
+			game.player.drunk = True
 
 
 class Feature(Thing):

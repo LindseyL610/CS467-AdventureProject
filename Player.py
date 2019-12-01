@@ -40,6 +40,9 @@ class Player:
 									   "action": "verb_only"}
 								  }
 
+		# TEMPORARY STATUS EFFECTS - these will clear after going into another room, or based on other criteria
+		self.clear_effects() # this call sets all the effects to default state
+
 	def get_status(self):
 		"""returns the status of player in JSON format"""
 
@@ -160,3 +163,7 @@ class Player:
 		"""sets the 'learned' attribute of a special function to True"""
 		print("[[player learns function {}]]".format(func))
 		self.special_functions[func]["learned"] = True
+
+	def clear_effects(self):
+		"""clears all temporary effects"""
+		self.drunk = False

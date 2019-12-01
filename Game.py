@@ -616,7 +616,7 @@ class Game:
 			#	os.system('cls')  # For Windows
 			#elif OS == "Linux" or OS == "Darwin":
 			#	os.system('clear')  # For Linux/OS X
-			
+			self.player.clear_effects()
 			self.room_list[self.player.current_room.id].get_description()
 			print()
 

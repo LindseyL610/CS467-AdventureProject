@@ -8,7 +8,7 @@ import Player
 ROOM_PREFIX = "RM_"
 THINGS = "TH"
 SAVE = "SV"
-STARTING_ROOM = "roomA"
+STARTING_ROOM = "roomE"
 
 #####################################
 ### CREATING ALL THINGS AND ROOMS ###
@@ -108,6 +108,32 @@ thing_list["puzzle1Keyboard"].msg_prompt = "What do you enter on the keyboard?"
 thing_list["puzzle1Keyboard"].answer = "answer"
 thing_list["puzzle1Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
 
+
+
+#ROOM E (BALLROOM) FEATURES AND ITEMS--------------------------------------
+thing_list["wine"] = Thing.Item("wine", "wine")
+thing_list["wine"].description = "A bottle of 'Ivory Keyboard' wine. Seems to be a good vintage."
+thing_list["wine"].list_name = "a bottle of wine"
+
+thing_list["water"] = Thing.Item("water", "water")
+thing_list["water"].description = "A bottle of water."
+thing_list["water"].list_name = "a bottle of water"
+
+thing_list["soda"] = Thing.Item("soda", "soda")
+thing_list["soda"].description = "A bottle of Mountain Mist soda. It shines brighter than the light of earendil."
+thing_list["soda"].list_name = "a bottle of soda"
+
+thing_list["bar"] = Thing.Surface("ballroomBar", "bar")
+thing_list["bar"].description = "A fully stocked bar."
+
+thing_list["tipJar"] = Thing.Container("tipJar", "jar")
+thing_list["tipJar"].description = "A tip jar next to the piano. There's only one way to fill it..."
+thing_list["tipJar"].can_be_opened = False
+thing_list["tipJar"].is_open = True
+thing_list["tipJar"].contents_accessible = True
+thing_list["tipJar"].list_name = "a tip jar"
+thing_list["tipJar"].adjectives.extend(["tip"])
+#--------------------------------------------------------------------------
 
 # Creating puzzle 2 input
 thing_list["puzzle2Keyboard"] = Thing.InputPuzzle2("puzzle2Keyboard", "keyboard")
@@ -554,8 +580,6 @@ room_list["roomD"].exits["up"] = thing_list["mousepadStairs"]
 
 
 # linking roomE (Ballroom) stuff
-
-# TODO
 thing_list["ballroomStairs"].destination = room_list["roomD"]
 thing_list["ballroomElevator"].destination = room_list["roomF"]
 thing_list["ballroomDoor"].destination = room_list["roomP2"]
@@ -565,6 +589,12 @@ room_list["roomE"].exits["down"] = thing_list["ballroomStairs"]
 room_list["roomE"].exits["up"] = thing_list["ballroomElevator"]
 room_list["roomE"].exits["west"] = thing_list["ballroomDoor"]
 
+thing_list["bar"].add_item(thing_list["wine"])
+thing_list["bar"].add_item(thing_list["water"])
+thing_list["bar"].add_item(thing_list["soda"])
+
+room_list["roomE"].add_thing(thing_list["bar"])
+room_list["roomE"].add_thing(thing_list["tipJar"])
 
 # linking roomF (I/O Room) stuff
 

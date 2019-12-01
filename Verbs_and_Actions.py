@@ -115,6 +115,12 @@ verb_list["call"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
 verb_list["eat"] = Verb("eat")
 verb_list["eat"].supported_prepositions.update({"NONE":"NONE"})
 
+verb_list["drink"] = Verb("drink")
+verb_list["drink"].alternate_names.extend(["sip", "gulp", "swill", "guzzle", "imbibe", "swig", "chug"])
+verb_list["drink"].supported_prepositions.update({"NONE":"NONE"})
+
+
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "through", "up", "down"]
 
@@ -304,3 +310,6 @@ action_list["call"] = callAction("call")
 # verb + dobj(ANYWHERE) "eat cheese" -> Thing.eat()
 action_list["eat"] = ActionDirect("eat")
 
+# drink
+# verb + dobj(ANYWHERE) "drink wine" -> Thing.drink()
+action_list["drink"] = ActionDirect("drink")
