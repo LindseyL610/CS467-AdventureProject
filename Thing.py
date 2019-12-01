@@ -64,7 +64,9 @@ class Thing:
 		self.msg_nothing_happens = "Nothing happens"
 
 		self.msg_cannot_eat = "You cannot eat that."
+
 		self.msg_cannot_drink = "You cannot drink that."
+
 		self.msg_cannot_play = "You cannot play that."
 
 	def get_status(self, type):
@@ -224,6 +226,9 @@ class Thing:
 	def receive_item(self, game, item, prep):
 		say("You can't put things {} the {}.".format(prep, self.name))
 
+	def use(self, game, actionargs):
+		say(self.msg_nothing_happens)
+
 	def eat(self, game, actionargs):
 		say(self.msg_cannot_eat)
 
@@ -363,7 +368,6 @@ class Book(Item):
 	def open(self, game, actionargs):
 		self.read(game, actionargs)
 
-
 class Cheese(Item):
 
 	def __init__(self, id, name):
@@ -404,6 +408,30 @@ class Cheese(Item):
 		game.room_list["roomD"].add_thing(game.thing_list["eatingMouse"])
 		game.thing_list["lever"].become_reachable()
 
+
+class Key(Item):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_no_lock = "There is nothing to use the " + self.name + " with!"
+		self.lock = None
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Key"
+		return super().get_status(type)
+
+	def use(self, game, actionargs):
+		# Determine if the applicable lock is accessible
+		accessible = game.player.current_room.get_all_accessible_contents()
+		if self.lock in accessible:
+			args = actionargs.copy()
+			args["iobj"] = self.lock.name
+			self.put_in(game, args)
+		else:
+			say("There isn't anything that works with the " + self.name + "!")
+
+
 class Drink(Item):
 
 	def __init__(self, id, name):
@@ -414,6 +442,9 @@ class Drink(Item):
 		if type is None:
 			type = "Drink"
 		return super().get_status(type)
+
+	def use(self, game, actionargs):
+		self.drink(game,actionargs)
 
 	def drink(self, game, actionargs):
 		message = "You take a sip of the {}.".format(self.name)
@@ -435,7 +466,6 @@ class Wine(Drink):
 			say("You drink some wine and start to loosen up...")
 			game.player.drunk = True
 
-
 class Feature(Thing):
 	"""Not-Takable, Not-Dropable thing"""
 
@@ -450,6 +480,64 @@ class Feature(Thing):
 			type = "Feature"
 		return super().get_status(type)
 
+class Lock(Feature):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.unlocked = False
+		self.controlled_exit = None
+		self.open_exit = None
+		self.key = None
+		self.receive_preps = []
+		self.already_unlocked_msg = "The " + self.name + " has already been used!"
+		self.incompatible_msg = "The " + self.name + " can not receive that item!"
+		self.unlocked_msg = "The door unlocks."
+		self.key_consumed = False
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Lock"
+		return super().get_status(type)
+
+	def receive_item(self, game, item, prep):
+		if prep in self.receive_preps:
+			if self.unlocked:
+				say(self.already_unlocked_msg)
+			elif item == self.key:
+				say("You put the {} {} the {}.".format(item.name, prep, self.name))
+				self.unlock_exit(game)
+				if self.key_consumed:
+					accessible = game.player.current_room.get_all_accessible_contents()
+					if item in accessible:
+						game.player.current_room.remove_thing(item)
+					elif game.player.is_in_inventory(item):
+						game.player.remove_from_inventory(item)
+		else:
+			say("You can't put things {} the {}.".format(prep, self.name))
+	# use
+	def use(self, game, actionargs):
+		# Determine if the key is accessible in the Room or in the Player's inventory
+		accessible = game.player.current_room.get_all_accessible_contents()
+		if self.key in accessible or game.player.is_in_inventory(self.key):
+			self.receive_item(game, self.key, "in")
+		else:
+			say("You don't have anything that works with the " + self.name + "!")
+
+	def unlock_exit(self, game):
+		# Find direction(s) of the Exit
+		directions = list()
+		for dir in game.player.current_room.exits:
+			if game.player.current_room.exits[dir] == self.controlled_exit:
+				directions.append(dir)
+
+		# Remove the Exit from the current room
+		game.player.current_room.remove_exit(self.controlled_exit)
+
+		# Add the "opened" Exit to the current room in the directions of the previous Exit
+		for dir in directions:
+			game.player.current_room.add_exit(self.open_exit, dir)
+
+		self.unlocked = True
+		say(self.unlocked_msg)
 
 class Input(Feature):
 	"""A feature that you can input text into (like a keyboard)
@@ -643,6 +731,9 @@ class Piano(Feature):
 		if type is None:
 			type = "Piano"
 		return super().get_status(type)
+	
+	def use(self, game, actionargs):
+		self.play(game,actionargs)
 
 	def play(self, game, actionargs):
 		if game.player.drunk:
@@ -650,9 +741,8 @@ class Piano(Feature):
 			if not self.tip_received:
 				self.tip_received = True
 				game.thing_list["tipJar"].add_item(game.thing_list["coin"])
-				say("You received a tip!")
 				print()
-				say("A coin has appeared in the tip jar.")
+				say("You received a tip! A coin has appeared in the tip jar.")
 		else:
 			message = "You play the piano, but you feel a little stiff. It doesn't sound great. Maybe you'll play better if you loosen up somehow..."
 			say(message)

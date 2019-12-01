@@ -129,11 +129,18 @@ thing_list["tipJar"].contents_accessible = True
 thing_list["tipJar"].list_name = "a tip jar"
 thing_list["tipJar"].adjectives.extend(["tip"])
 
-thing_list["coin"] = Thing.Item("coin", "coin")
+thing_list["coin"] = Thing.Key("coin", "coin")
+thing_list["coin"].adjectives.extend(["gold"])
 thing_list["coin"].description = "A gold coin."
 
 thing_list["piano"] = Thing.Piano("piano", "piano")
 thing_list["piano"].description = "A baby grand piano with a long keyboard of shiny white and black ivory keys. The piano has the words 'Qwerty Classics Series' painted in gold cursive beneath the cover."
+
+thing_list["ballroomCoinSlot"] = Thing.Lock("ballroomCoinSlot", "slot")
+thing_list["ballroomCoinSlot"].description = "A coin slot next to the door."
+thing_list["ballroomCoinSlot"].list_name = "a slot"
+thing_list["ballroomCoinSlot"].receive_preps.append("in")
+thing_list["ballroomCoinSlot"].key_consumed = True
 #--------------------------------------------------------------------------
 
 # Creating puzzle 2 input
@@ -255,9 +262,13 @@ thing_list["K-B"].msg_go = "You walk through the exit from room K to room B."
 thing_list["mousepadStairs"] = Thing.Exit("mousepadStairs", "stairs")
 thing_list["mousepadStairs"].description = "A staircase leading up and to the north."
 thing_list["mousepadStairs"].msg_go = "You ascend the stairs to the north."
+
 thing_list["ballroomStairs"] = Thing.Exit("ballroomStairs", "stairs")
 thing_list["ballroomStairs"].description = "A staircase leading down and to the south."
 thing_list["ballroomStairs"].msg_go = "You descend the stairs to the south."
+thing_list["ballroomStairs"].has_dynamic_description = True
+thing_list["ballroomStairs"].dynamic_description_text = "There are stairs to the south."
+
 
 # Creating exits between D (Mousepad) and P1 (Monitors) [[BRICKS/ TUNNEL]]
 
@@ -285,41 +296,70 @@ thing_list["P1-D"].msg_go = "You walk through the exit from room P1 to room D."
 thing_list["ballroomElevator"] = Thing.Exit("ballroomElevator", "elevator")
 thing_list["ballroomElevator"].description = "An elevator stands ready to take you... somewhere. The light inside flickers."
 thing_list["ballroomElevator"].msg_go = "You walk into the elevator, and the door closes behind you. You feel heavier. The elevator must be going up."
+thing_list["ballroomElevator"].has_dynamic_description = True
+thing_list["ballroomElevator"].dynamic_description_text = "There is an elevator that goes up."
 thing_list["IOroomElevator"] = Thing.Exit("IOroomElevator", "elevator")
 thing_list["IOroomElevator"].description = "An elevator stands ready to take you... somewhere. The light inside flickers."
 thing_list["IOroomElevator"].msg_go = "You walk into the elevator, and the door closes behind you. You feel lighter. The elevator must be going down."
+thing_list["IOroomElevator"].has_dynamic_description = True
+thing_list["IOroomElevator"].dynamic_description_text = "There is an elevator that goes down."
 
 # Creating exits between E and P2 [[Door]]
+thing_list["ballroomDoorLocked"] = Thing.Exit("ballroomDoorLocked", "door")
+thing_list["ballroomDoorLocked"].description = "An ordinary door, but it's locked."
+thing_list["ballroomDoorLocked"].can_go = False
+thing_list["ballroomDoorLocked"].msg_cannot_go = "The door is locked!"
+thing_list["ballroomDoorLocked"].has_dynamic_description = True
+thing_list["ballroomDoorLocked"].dynamic_description_text = "There is a door to the west."
 thing_list["ballroomDoor"] = Thing.Exit("ballroomDoor", "door")
 thing_list["ballroomDoor"].description = "An ordinary door."
 thing_list["ballroomDoor"].msg_go = "You proceed through the door to the west."
+thing_list["ballroomDoor"].has_dynamic_description = True
+thing_list["ballroomDoor"].dynamic_description_text = "There is a door to the west."
 thing_list["P2Door"] = Thing.Exit("P2Door", "door")
 thing_list["P2Door"].description = "An ordinary door."
 thing_list["P2Door"].msg_go = "You proceed through the door to the east."
+thing_list["P2Door"].has_dynamic_description = True
+thing_list["P2Door"].dynamic_description_text = "There is a door to the east."
+
 
 # Creating exits between F and G [[Hallway]]
 thing_list["IOroomHallway"] = Thing.Exit("IOroomHallway", "hallway")
 thing_list["IOroomHallway"].description = "A long, well-lit hallway leading off to the west."
 thing_list["IOroomHallway"].msg_go = "You walk through the hallway to the west."
+thing_list["IOroomHallway"].has_dynamic_description = True
+thing_list["IOroomHallway"].dynamic_description_text = "There is a hallway to the west."
 thing_list["busHallway"] = Thing.Exit("busHallway", "hallway")
 thing_list["busHallway"].description = "A long, well-lit hallway leading off to the east."
 thing_list["busHallway"].msg_go = "You walk through the hallway to the east."
+thing_list["busHallway"].has_dynamic_description = True
+thing_list["busHallway"].dynamic_description_text = "There is a hallway to the east."
+
 
 # Creating exits between F and P3 [[Door]]
 thing_list["IOroomDoor"] = Thing.Exit("IOroomDoor", "door")
 thing_list["IOroomDoor"].description = "An ordinary door."
 thing_list["IOroomDoor"].msg_go = "You proceed through the door to the south."
+thing_list["IOroomDoor"].has_dynamic_description = True
+thing_list["IOroomDoor"].dynamic_description_text = "There is a door to the south."
 thing_list["P3Door"] = Thing.Exit("P3Door", "door")
 thing_list["P3Door"].description = "An ordinary door."
 thing_list["P3Door"].msg_go = "You proceed through the door to the north."
+thing_list["P3Door"].has_dynamic_description = True
+thing_list["P3Door"].dynamic_description_text = "There is a door to the north."
 
 # Creating exits between G and H [[RAMP]]
 thing_list["busRamp"] = Thing.Exit("busRamp", "ramp")
 thing_list["busRamp"].description = "A ramp leading up and to the south."
 thing_list["busRamp"].msg_go = "You walk up the ramp to the south."
+thing_list["busRamp"].has_dynamic_description = True
+thing_list["busRamp"].dynamic_description_text = "There is a ramp going up to the south."
 thing_list["websRamp"] = Thing.Exit("websRamp", "ramp")
 thing_list["websRamp"].description = "A ramp leading down and to the north."
 thing_list["websRamp"].msg_go = "You walk up the ramp to the north."
+thing_list["websRamp"].has_dynamic_description = True
+thing_list["websRamp"].dynamic_description_text = "There is a ramp going down to the north."
+
 
 # Creating exits between H (Webs) and I (Dark Webs)  [[OPENING]]
 
@@ -588,7 +628,13 @@ thing_list["ballroomDoor"].destination = room_list["roomP2"]
 room_list["roomE"].exits["south"] = thing_list["ballroomStairs"]
 room_list["roomE"].exits["down"] = thing_list["ballroomStairs"]
 room_list["roomE"].exits["up"] = thing_list["ballroomElevator"]
-room_list["roomE"].exits["west"] = thing_list["ballroomDoor"]
+room_list["roomE"].exits["west"] = thing_list["ballroomDoorLocked"]
+
+thing_list["ballroomCoinSlot"].controlled_exit = thing_list["ballroomDoorLocked"]
+thing_list["ballroomCoinSlot"].open_exit = thing_list["ballroomDoor"]
+thing_list["ballroomCoinSlot"].key = thing_list["coin"]
+
+thing_list["coin"].lock = thing_list["ballroomCoinSlot"]
 
 thing_list["bar"].add_item(thing_list["wine"])
 thing_list["bar"].add_item(thing_list["water"])
@@ -597,6 +643,7 @@ thing_list["bar"].add_item(thing_list["soda"])
 room_list["roomE"].add_thing(thing_list["bar"])
 room_list["roomE"].add_thing(thing_list["tipJar"])
 room_list["roomE"].add_thing(thing_list["piano"])
+room_list["roomE"].add_thing(thing_list["ballroomCoinSlot"])
 
 # linking roomF (I/O Room) stuff
 
