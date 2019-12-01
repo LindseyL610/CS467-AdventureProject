@@ -31,6 +31,7 @@ class Parser:
 	def parse_input(self, game, user_input):
 		print()
 		self.init_input(user_input)
+		self.update_dictionaries(game)
 
 		if self.check_basic_verbs(game) == 1: 
 			if self.set_input(game) == 1:
@@ -51,6 +52,19 @@ class Parser:
 		self.action_args = []
 		self.parts_of_speech = []
 		self.action_dict.clear()
+
+	def update_dictionaries(self, game):
+		for function in game.player.special_functions:
+			if game.player.special_functions[function]["learned"] == True:
+				name = game.player.special_functions[function]["name"]
+                                
+
+				if name not in self.dictionary:
+					self.dictionary[name] = name
+                                
+
+				if name not in self.speech_dict:
+					self.speech_dict[name] = "object"
 
 	def check_basic_verbs(self, game):
 		if self.user_input == "look":
