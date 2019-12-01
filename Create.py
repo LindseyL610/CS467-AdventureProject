@@ -8,7 +8,7 @@ import Player
 ROOM_PREFIX = "RM_"
 THINGS = "TH"
 SAVE = "SV"
-STARTING_ROOM = "roomA"
+STARTING_ROOM = "roomE"
 
 #####################################
 ### CREATING ALL THINGS AND ROOMS ###
@@ -56,11 +56,6 @@ thing_list["refrigerator"].alternate_names.extend(["fridge"])
 # Creating test table FOR TESTING
 thing_list["testTable"] = Thing.Surface("testTable", "table")
 thing_list["testTable"].description = "A table (for testing purposes)."
-
-
-# Creating coin FOR TESTING
-thing_list["coin"] = Thing.Item("coin", "coin")
-thing_list["coin"].description = "A gold coin."
 
 # Creating key FOR TESTING
 thing_list["key"] = Thing.Item("key", "key")
@@ -111,15 +106,15 @@ thing_list["puzzle1Keyboard"].msg_correct_answer = "You enter the correct answer
 
 
 #ROOM E (BALLROOM) FEATURES AND ITEMS--------------------------------------
-thing_list["wine"] = Thing.Item("wine", "wine")
+thing_list["wine"] = Thing.Wine("wine", "wine")
 thing_list["wine"].description = "A bottle of 'Ivory Keyboard' wine. Seems to be a good vintage."
 thing_list["wine"].list_name = "a bottle of wine"
 
-thing_list["water"] = Thing.Item("water", "water")
+thing_list["water"] = Thing.Drink("water", "water")
 thing_list["water"].description = "A bottle of water."
 thing_list["water"].list_name = "a bottle of water"
 
-thing_list["soda"] = Thing.Item("soda", "soda")
+thing_list["soda"] = Thing.Drink("soda", "soda")
 thing_list["soda"].description = "A bottle of Mountain Mist soda. It shines brighter than the light of earendil."
 thing_list["soda"].list_name = "a bottle of soda"
 
@@ -133,6 +128,12 @@ thing_list["tipJar"].is_open = True
 thing_list["tipJar"].contents_accessible = True
 thing_list["tipJar"].list_name = "a tip jar"
 thing_list["tipJar"].adjectives.extend(["tip"])
+
+thing_list["coin"] = Thing.Item("coin", "coin")
+thing_list["coin"].description = "A gold coin."
+
+thing_list["piano"] = Thing.Piano("piano", "piano")
+thing_list["piano"].description = "A baby grand piano with a long keyboard of shiny white and black ivory keys. The piano has the words 'Qwerty Classics Series' painted in gold cursive beneath the cover."
 #--------------------------------------------------------------------------
 
 # Creating puzzle 2 input
@@ -595,6 +596,7 @@ thing_list["bar"].add_item(thing_list["soda"])
 
 room_list["roomE"].add_thing(thing_list["bar"])
 room_list["roomE"].add_thing(thing_list["tipJar"])
+room_list["roomE"].add_thing(thing_list["piano"])
 
 # linking roomF (I/O Room) stuff
 

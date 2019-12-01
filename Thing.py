@@ -65,6 +65,7 @@ class Thing:
 
 		self.msg_cannot_eat = "You cannot eat that."
 		self.msg_cannot_drink = "You cannot drink that."
+		self.msg_cannot_play = "You cannot play that."
 
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
@@ -228,6 +229,9 @@ class Thing:
 
 	def drink(self, game, actionargs):
 		say(self.msg_cannot_drink)
+
+	def play(self, game, actionargs):
+		say(self.msg_cannot_play)
 
 	# Special Functions
 	def ram(self, game, actionargs):
@@ -414,12 +418,6 @@ class Drink(Item):
 	def drink(self, game, actionargs):
 		message = "You take a sip of the {}.".format(self.name)
 		say(message)
-#		if game.player.current_room is game.room_list["roomE"]:
-#			message = "You take a sip of the {}.".format(self.name)
-#			say(message)
-#			#self.mouse_eats_cheese(game, actionargs)
-#		else:
-#			Thing.drop(self, game, actionargs)
 
 class Wine(Drink):
 	def __init__(self, id, name):
@@ -431,10 +429,10 @@ class Wine(Drink):
 		return super().get_status(type)
 
 	def drink(self, game, actionargs):
-		if game.player.current_room is not game.room_list["roomE"]:
+		if game.player.current_room is not game.room_list["roomE"] or game.thing_list["piano"].tip_received:
 			super().drink(game, actionargs)
 		else:
-			message = "You drink some wine and start to loosen up..."
+			say("You drink some wine and start to loosen up...")
 			game.player.drunk = True
 
 
@@ -634,6 +632,30 @@ class Clock(Feature):
 	def look(self, game, actionargs):
 		say("The time is t=" + str(game.game_time))
 
+class Piano(Feature):
+	"""Playable piano"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.tip_received = False
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Piano"
+		return super().get_status(type)
+
+	def play(self, game, actionargs):
+		if game.player.drunk:
+			say("You play the piano. Thanks to the wine, you're really groovin'. It sounds great!")
+			if not self.tip_received:
+				self.tip_received = True
+				game.thing_list["tipJar"].add_item(game.thing_list["coin"])
+				say("You received a tip!")
+				print()
+				say("A coin has appeared in the tip jar.")
+		else:
+			message = "You play the piano, but you feel a little stiff. It doesn't sound great. Maybe you'll play better if you loosen up somehow..."
+			say(message)
 
 class Storage(Feature):
 	"""Thing that can store other things"""
