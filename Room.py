@@ -105,8 +105,8 @@ class Room:
 			setattr(self, attr, imp_val)
 
 	def get_description(self, time = None):
-		print("Room.get_description()")
-		print("time = " + str(time))
+		#print("Room.get_description()")
+		#print("time = " + str(time))
 
 		say(self.name)
 		if self.has_been_visited:
@@ -278,10 +278,10 @@ class BusStation(Room):
 		return super().get_status("BusStation")
 
 	def get_description(self, time = -1):
-		print("BusStation.get_description()")
-		print("special_time = " + str(self.special_time))
-		print("time = " + str(time))
-		print("bus= " + self.bus.id)
+		#print("BusStation.get_description()")
+		#print("special_time = " + str(self.special_time))
+		#print("time = " + str(time))
+		#print("bus= " + self.bus.id)
 
 		if time is not -1:
 			if time not in self.special_time:
