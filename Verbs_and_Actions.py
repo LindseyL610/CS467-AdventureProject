@@ -126,6 +126,11 @@ verb_list["dance"] = Verb("dance")
 verb_list["dance"].alternate_names.extend(["jig", "waltz"])
 verb_list["dance"].supported_prepositions.update({"NONE":"NONE", "with":"NONE"})
 
+verb_list["hit"] = Verb("hit")
+verb_list["hit"].alternate_names.extend(["punch", "kick", "shake", "wallop", "smack", "bang"])
+verb_list["hit"].supported_prepositions.update({"NONE":"NONE"})
+
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down", "with"]
 
@@ -343,3 +348,7 @@ action_list["play"] = ActionDirect("play")
 # only verb "look"-> Room.dance()
 # verb + dobj(ANYWHERE) "dance daemon"-> Thing.dance()
 action_list["dance"] = ActionVerbOnlyOrDirect("dance")
+
+# hit
+# verb + dobj(ANYWHERE) "hit machine" -> Thing.hit()
+action_list["hit"] = ActionDirect("hit")

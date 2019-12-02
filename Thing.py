@@ -69,6 +69,7 @@ class Thing:
 
 		self.msg_cannot_dance = "You cannot dance with that."
 
+
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -243,6 +244,9 @@ class Thing:
 
 	def play(self, game, actionargs):
 		say(self.msg_cannot_play)
+
+	def hit(self, game, actionargs):
+		say(self.msg_nothing_happens)
 
 	# Special Functions
 	def ram(self, game, actionargs):
@@ -486,6 +490,55 @@ class Cheese(Item):
 		game.room_list["roomD"].add_thing(game.thing_list["eatingMouse"])
 		game.thing_list["lever"].become_reachable()
 
+
+class Ticket(Item):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.dispensed = False
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Ticket"
+		return super().get_status(type)
+
+	def take(self, game, actionargs):
+		if not self.dispensed:
+			say(self.msg_blocked)
+		else:
+			super().take(game, actionargs)
+
+	def use(self, game, actionargs):
+		accessible = game.current_room.get_all_accessible_contents()
+		if game.thing_list["driverDaemon"] in accessible:
+			args = actionargs.copy()
+			args["iobj"] = "driverDaemon"
+			self.give_to(game, args)
+		else:
+			super().use(game, actionargs)
+
+	def give_to(self, game, actionargs):
+		thing_to_receive = game.get_thing_by_name(actionargs["iobj"], False)
+		if thing_to_receive is game.thing_list["driverDaemon"]:
+			message = "The DAEMON nods, takes your ticket, barely looking at you, and steps aside, granting access to the bus."
+			say(message)
+			self.grant_bus_access(game, actionargs)
+		else:
+			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			if thing_to_receive.can_receive:
+				say("The {} doesn't want the ticket.".format(thing_to_receive.name))
+			else:
+				say("You cannot give anything to the {}".format(thing_to_receive.name))
+
+	def grant_bus_access(self, game, actionargs):
+		accessible = game.player.current_room.get_all_accessible_contents()
+		if self in accessible:
+			game.player.current_room.remove_thing(item)
+		elif game.player.is_in_inventory(self):
+			game.player.remove_from_inventory(self)
+		game.room_list["roomG"].remove_thing(game.thing_list["busLocked"])
+		game.room_list["roomG"].add_thing(game.thing_list["bus"])
+		game.room_list["roomG"].bus = game.thing_list["bus"]
 
 class Key(Item):
 
@@ -853,7 +906,7 @@ class Clock(Feature):
 		self.can_be_read = True
 
 	def get_status(self):
-		return super().get_status("clock")
+		return super().get_status("Clock")
 
 	def look(self, game, actionargs):
 		say("The time is t=" + str(game.game_time))
@@ -1075,8 +1128,10 @@ class Container(Storage):
 		self.contents_accessible = False
 		self.contents_accessible_iff_open = True
 
-	def get_status(self):
-		return super().get_status("Container")
+	def get_status(self, type=None):
+		if type is None:
+			type = "Container"
+		return super().get_status(type)
 
 
 class Surface(Storage):
@@ -1091,3 +1146,44 @@ class Surface(Storage):
 
 	def get_status(self):
 		return super().get_status("Surface")
+
+class VendingTerminal(Container):
+	"""Things are stored IN the Container
+	If the container is CLOSED things inside are NOT accessible.
+	If the container is OPEN things inside ARE accessible
+	EXAMPLES: Fridge, Chest
+	"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_receive = False
+		self.can_be_opened = False
+		self.is_open = True
+		self.contents_accessible = True
+		self.contents_accessible_iff_open = True
+		self.is_listed = True
+		self.dispensed = False
+		self.ticket = None
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "VendingTerminal"
+		return super().get_status(type)
+
+	def hit(self, game, actionargs):
+		if self.dispensed:
+			super().hit(game, actionargs)
+		else:
+			say("You give the vending terminal a smack, but it's not enough to dislodge the ticket. Maybe something with more force...")
+
+	def ram(self, game, actionargs):
+		say("You RAM the vending terminal with tremendous force.")
+		if self.dispensed:
+			super().ram(game, actionargs)
+		else:
+			self.ticket.dispensed = True
+			self.ticket.description = self.ticket.alt_description
+			self.dispensed = True
+			self.description = self.alt_description
+			say(self.msg_rammed)
+			

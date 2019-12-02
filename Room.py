@@ -104,7 +104,10 @@ class Room:
 		
 			setattr(self, attr, imp_val)
 
-	def get_description(self):
+	def get_description(self, time = None):
+		print("Room.get_description()")
+		print("time = " + str(time))
+
 		say(self.name)
 		if self.has_been_visited:
 			description_string = self.short_description
@@ -263,3 +266,39 @@ class Ballroom(Room):
 		else:
 			message = "You dance like no one's watching. Except you feel like someone is watching..."
 			say(message)
+
+class BusStation(Room):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.special_time = list()
+		self.bus = None
+		self.daemon = None
+
+	def get_status(self):
+		return super().get_status("BusStation")
+
+	def get_description(self, time = -1):
+		print("BusStation.get_description()")
+		print("special_time = " + str(self.special_time))
+		print("time = " + str(time))
+		print("bus= " + self.bus.id)
+
+		if time is not -1:
+			if time not in self.special_time:
+				self.set_normal()
+				super().get_description()
+			else:
+				self.set_special()
+				super().get_description()
+				print()
+				say("You caught the bus! It is waiting at the platform...")
+		else:
+			super().get_description()
+
+	def set_normal(self):
+		self.remove_thing(self.bus)
+		self.remove_thing(self.daemon)
+
+	def set_special(self):
+		self.add_thing(self.bus)
+		self.add_thing(self.daemon)
