@@ -251,12 +251,12 @@ thing_list["IOroomLock"].msg_toggled = "The key turns in the lock, and the door 
 #--------------------------------------------------------------------------
 #ROOM G (BUS STATION) FEATURES AND ITEMS--------------------------------------
 thing_list["busLocked"] = Thing.Feature("busLocked", "bus")
-thing_list["busLocked"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. You can see through the windows that it is lit inside, but the Driver Daemon stands at the door, blocking access to the bus."
+thing_list["busLocked"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. You can see through the windows that it is lit inside, but the Driver DAEMON stands at the door, blocking access to the bus."
 thing_list["busLocked"].is_listed = True
 thing_list["busLocked"].list_name = "a bus waiting at the platform"
 
 thing_list["bus"] = Thing.Container("bus", "bus")
-thing_list["bus"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. The driver Daemon has stepped aside, allowing you access to the bus."
+thing_list["bus"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. The driver DAEMON has stepped aside, allowing you access to the bus."
 thing_list["bus"].can_be_opened = False
 thing_list["bus"].is_open = True
 thing_list["bus"].contents_accessible = True
