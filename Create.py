@@ -42,7 +42,6 @@ thing_list["plaque"].description = \
 thing_list["balconyKeypad"] = Thing.InputBalconyWindow("balconyKeypad", "keypad")
 thing_list["balconyKeypad"].description = "A keypad is on the wall next to the window. " \
                                           "It has buttons to enter letters and spaces."
-thing_list["balconyKeypad"].alternate_names.extend(["keyboard"])
 thing_list["balconyKeypad"].msg_prompt = "What do you enter on the keypad?"
 thing_list["balconyKeypad"].answer = "hello world"
 thing_list["balconyKeypad"].msg_correct_answer = "After a brief pause, the window swings open, " \
