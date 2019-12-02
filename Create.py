@@ -174,6 +174,8 @@ thing_list["ballroomCoinSlot"].receive_preps.append("in")
 thing_list["ballroomCoinSlot"].key_consumed = True
 thing_list["ballroomCoinSlot"].door_lock = True
 thing_list["ballroomCoinSlot"].item_dispenser = False
+thing_list["ballroomCoinSlot"].msg_toggled = "The coin disappears into the slot. You hear a click near the door--it is now unlocked."
+
 
 thing_list["DancingDaemon"] = Thing.DancingDaemon("DancingDaemon", "DAEMON")
 thing_list["DancingDaemon"].adjectives.extend(["dancing"])
@@ -282,6 +284,42 @@ thing_list["IOroomLock"].item_dispenser = False
 thing_list["IOroomLock"].msg_toggled = "The key turns in the lock, and the door unlocks."
 #--------------------------------------------------------------------------
 #ROOM G (BUS STATION) FEATURES AND ITEMS--------------------------------------
+thing_list["busLocked"] = Thing.Feature("busLocked", "bus")
+thing_list["busLocked"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. You can see through the windows that it is lit inside, but the Driver DAEMON stands at the door, blocking access to the bus."
+thing_list["busLocked"].is_listed = True
+thing_list["busLocked"].list_name = "a bus waiting at the platform"
+
+thing_list["bus"] = Thing.Container("bus", "bus")
+thing_list["bus"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. The driver DAEMON has stepped aside, allowing you access to the bus."
+thing_list["bus"].can_be_opened = False
+thing_list["bus"].is_open = True
+thing_list["bus"].contents_accessible = True
+thing_list["bus"].contents_accessible_iff_open = True
+thing_list["bus"].is_listed = True
+thing_list["bus"].list_name = "a bus waiting at the platform"
+
+thing_list["driverDaemon"] = Thing.Feature("driverDaemon", "DAEMON")
+thing_list["driverDaemon"].description = "A DAEMON, the bus driver, standing at the door of the bus."
+thing_list["driverDaemon"].is_listed = True
+thing_list["driverDaemon"].list_name = "a driver DAEMON"
+thing_list["driverDaemon"].adjectives.extend(["driver"])
+
+thing_list["ticket"] = Thing.Ticket("ticket", "ticket")
+thing_list["ticket"].list_name = "a ticket"
+thing_list["ticket"].description = "Maybe a bus ticket, but you can't see it, because it's stuck in the vending terminal."
+thing_list["ticket"].alt_description = "A ticket for a bus. On the ticket it reads 'Serial Bus Lines, trip 600', origin GPU, destination CPU."
+thing_list["ticket"].msg_blocked = "The ticket seems to be stuck far back in the dispensing slot, and you hear a mechanical whining sound. Maybe you can do something to dislodge it..."
+
+thing_list["busTicketTerminal"] = Thing.VendingTerminal("busTicketTerminal", "terminal")
+thing_list["busTicketTerminal"].description = "A vending terminal for bus tickets. The screen reads 'Dispensing ticket...'. Below the screen is a dispensing slot. You can hear a whining noise coming from inside the terminal. Inside the dispensing slot you can see that a bus ticket is right at the edge but seems to be blocked."
+thing_list["busTicketTerminal"].alt_description = "A vending terminal for bus tickets."
+thing_list["busTicketTerminal"].list_name = "a bus ticket vending terminal"
+thing_list["busTicketTerminal"].msg_rammed = "The whining sound coming from the terminal is replaced with the satisfying sound of a gear locking into place, followed by silence. The ticket has been dispensed!"
+thing_list["busTicketTerminal"].adjectives.extend(["vending"])
+
+thing_list["busSchedule"] = Thing.Sign("busSchedule", "schedule")
+thing_list["busSchedule"].description = "Bus to GPU: t=4; Bus to CPU: t=11."
+thing_list["busSchedule"].list_name = "a bus schedule"
 
 #--------------------------------------------------------------------------
 
@@ -367,6 +405,11 @@ thing_list["puzzle5Keyboard"].description = "A keyboard."
 thing_list["puzzle5Keyboard"].msg_prompt = "What do you enter on the keyboard?"
 thing_list["puzzle5Keyboard"].answer = "answer"
 thing_list["puzzle5Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
+#--------------------------------------------------------------------------
+#CLOCK STUFF---------------------------------------------------------------
+thing_list["universalClock"] = Thing.Clock("universalClock", "clock")
+thing_list["universalClock"].list_name = "a clock on the wall"
+
 
 
 
@@ -709,9 +752,9 @@ room_list["roomF"].short_description = "You are in the cluttered office."
 room_list["roomF"].documentation = "The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase 'Garbage in, garbage out!'"
 
 # Creating room G
-room_list["roomG"] = Room.Room("roomG", "Bus Station")
-room_list["roomG"].long_description = "You are in room G (long description)."
-room_list["roomG"].short_description = "You are in room G (short description)."
+room_list["roomG"] = Room.BusStation("roomG", "Bus Station")
+room_list["roomG"].long_description = "You are in... a bus station? Isn't this a tower? Nonetheless, there is a bus platform with sixteen parallel bus lanes that start on one end of the station and run together to the other end. At both ends, the lanes disappear into darkness. There is a ticket vending terminal on the platform and a bus schedule hanging on a post near the terminal. A ramp leading up is to the south, and there is a door leading east."
+room_list["roomG"].short_description = "You are in the bus station."
 
 
 # Creating room H
@@ -810,6 +853,27 @@ room_list["roomMP"].short_description = "The final challenge."
 
 say("Linking things and rooms...")
 
+# Clock stuff -- applies to all Rooms!
+room_list["roomB"].add_thing(thing_list["universalClock"])
+room_list["roomC"].add_thing(thing_list["universalClock"])
+room_list["roomD"].add_thing(thing_list["universalClock"])
+room_list["roomE"].add_thing(thing_list["universalClock"])
+room_list["roomF"].add_thing(thing_list["universalClock"])
+room_list["roomG"].add_thing(thing_list["universalClock"])
+room_list["roomH"].add_thing(thing_list["universalClock"])
+room_list["roomI"].add_thing(thing_list["universalClock"])
+room_list["roomJ"].add_thing(thing_list["universalClock"])
+room_list["roomK"].add_thing(thing_list["universalClock"])
+room_list["roomP1"].add_thing(thing_list["universalClock"])
+room_list["roomP2"].add_thing(thing_list["universalClock"])
+room_list["roomP3"].add_thing(thing_list["universalClock"])
+room_list["roomP4"].add_thing(thing_list["universalClock"])
+room_list["roomP5"].add_thing(thing_list["universalClock"])
+
+
+
+
+
 # linking roomA (Balcony) stuff
 
 thing_list["pedestal"].add_item(thing_list["book"])
@@ -827,8 +891,8 @@ room_list["roomB"].add_thing(thing_list["lobbyComputer"])
 
 # adding "floppies" to lobby for now
 
-room_list["roomB"].add_thing(thing_list["floppyDisk"])
-room_list["roomB"].add_thing(thing_list["cd"])
+#room_list["roomB"].add_thing(thing_list["floppyDisk"])
+#room_list["roomB"].add_thing(thing_list["cd"])
 room_list["roomB"].add_thing(thing_list["cartridge"])
 room_list["roomB"].add_thing(thing_list["tape"])
 room_list["roomB"].add_thing(thing_list["flashdrive"])
@@ -956,6 +1020,17 @@ room_list["roomG"].exits["east"] = thing_list["busHallway"]
 room_list["roomG"].exits["south"] = thing_list["busRamp"]
 room_list["roomG"].exits["up"] = thing_list["busRamp"]
 
+thing_list["bus"].add_item(thing_list["floppyDisk"])
+thing_list["busTicketTerminal"].add_item(thing_list["ticket"])
+thing_list["busTicketTerminal"].ticket = thing_list["ticket"]
+
+room_list["roomG"].bus = thing_list["busLocked"]
+room_list["roomG"].daemon = thing_list["driverDaemon"]
+room_list["roomG"].special_time.append(4)
+room_list["roomG"].special_time.append(7)
+
+room_list["roomG"].add_thing(thing_list["busTicketTerminal"])
+room_list["roomG"].add_thing(thing_list["busSchedule"])
 
 # linking roomH (Webs) stuff
 

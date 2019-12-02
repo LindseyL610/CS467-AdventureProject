@@ -130,6 +130,11 @@ verb_list["spray"] = Verb("spray")
 verb_list["spray"].alternate_names.extend(["debug"])
 verb_list["spray"].supported_prepositions.update({"NONE":"NONE", "with":"with"})
 
+verb_list["hit"] = Verb("hit")
+verb_list["hit"].alternate_names.extend(["punch", "kick", "shake", "wallop", "smack", "bang"])
+verb_list["hit"].supported_prepositions.update({"NONE":"NONE"})
+
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down", "with"]
 
@@ -356,3 +361,8 @@ action_list["spray"] = ActionDirect("spray")
 # verb + dobj(ANYWHERE) + iobj(ANYWHERE) "spray moth with debugger" -> Thing.spray_with()
 action_list["spray_with"] = ActionDirectAndIndirect("spray_with")
 action_list["spray_with"].iobj_must_be_in_inventory = True
+
+# hit
+# verb + dobj(ANYWHERE) "hit machine" -> Thing.hit()
+action_list["hit"] = ActionDirect("hit")
+

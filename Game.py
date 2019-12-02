@@ -427,8 +427,8 @@ class Game:
 			time = 0
 		else:
 			time += 1
-			if time > 11:
-				time = 0
+			if time > 12:
+				time = 1
 
 		self.game_time = time
 
@@ -604,10 +604,9 @@ class Game:
 			#elif OS == "Linux" or OS == "Darwin":
 			#	os.system('clear')  # For Linux/OS X
 			self.player.clear_effects()
-			self.room_list[self.player.current_room.id].get_description()
-			print()
-
 			self.advance_time()
+			self.player.current_room.get_description(self.game_time)
+			print()
 			self.new_room = False
 
 		input_str = input("> ")
