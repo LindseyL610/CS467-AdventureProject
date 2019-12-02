@@ -16,7 +16,7 @@ THINGS = "TH"
 
 DEBUG_MODE = False
 WIDTH = 100
-HEIGHT = 30
+HEIGHT = 100
 
 def toggle_debug(input):
 	global DEBUG_MODE
@@ -647,6 +647,7 @@ class Game:
 #		game.play()
 
 if valid_width():
+	print()
 	file = open("model", "r")
 		
 	for line in file:
