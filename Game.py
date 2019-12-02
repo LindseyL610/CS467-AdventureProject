@@ -76,11 +76,11 @@ def get_path():
 	return dir_path
 
 def intro():
-	print()
-
 	#Graphic display only supported on Linux/Mac
 	if OS == "Linux" or OS == "Darwin":
 		os.system('clear')
+
+		print()
 	
 		file = open("model", "r")
 		
@@ -93,7 +93,9 @@ def intro():
 		any = input("Press any key to continue...")
 		say("Main Menu")
 	else:
+		print()
 		say("Tower Escape - Main Menu")
+		print()
 
 class Game:
 	def __init__(self):
@@ -665,8 +667,8 @@ class Game:
 			self.prompt()
 
 # Temporarily turning off width validation for ease of use in my IDE
-#if valid_screen_size() or True:
-if valid_screen_size():
+if valid_screen_size() or True:
+#if valid_screen_size():
 	intro()
 	game = Game()
 	if game.game_loaded:
