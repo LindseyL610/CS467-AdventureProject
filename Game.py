@@ -9,6 +9,9 @@ import Thing
 import Player
 from Utilities import say, find_by_name
 from Verbs_and_Actions import verb_list, action_list, prep_list
+import platform
+
+OS = platform.system()
 
 SAVES = "SV"
 ROOM_PREFIX = "RM_"
@@ -71,6 +74,26 @@ def get_path():
 	#debug(dir_path)
 
 	return dir_path
+
+def intro():
+	print()
+
+	#Color only supported on Linux/Mac
+	if OS == "Linux" or OS == "Darwin":
+		file = open("model", "r")
+		
+		for line in file:
+			print(line, end="")
+
+		file.close()
+
+		say("Main Menu")
+	else:
+		say("Tower Escape - Main Menu")
+	
+
+
+	#any = input("Press any key to continue...")
 
 class Game:
 	def __init__(self):
@@ -640,19 +663,11 @@ class Game:
 	def play(self):
 		while not self.end_game:
 			self.prompt()
-		
+
 # Temporarily turning off width validation for ease of use in my IDE
-#if valid_screen_size() or True:
+if valid_screen_size() or True:
 # if valid_screen_size():
-#	game = Game()
-#	if game.game_loaded:
-#		game.play()
-
-if valid_screen_size():
-	print()
-	file = open("model", "r")
-		
-	for line in file:
-		print(line, end="")
-
-	file.close()
+	intro()
+	game = Game()
+	if game.game_loaded:
+		game.play()
