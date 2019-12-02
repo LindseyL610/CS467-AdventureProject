@@ -16,7 +16,7 @@ THINGS = "TH"
 
 DEBUG_MODE = False
 WIDTH = 100
-HEIGHT = 100
+HEIGHT = 70
 
 def toggle_debug(input):
 	global DEBUG_MODE
