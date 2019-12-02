@@ -2,7 +2,7 @@ import textwrap
 import platform
 
 OS = platform.system()
-WRAPPER = textwrap.TextWrapper()
+WRAPPER = textwrap.TextWrapper(replace_whitespace=False)
 COLOR = "\033[1;32;40m"
 DEFAULT = "\033[0m"
 

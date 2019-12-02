@@ -612,6 +612,30 @@ class Game:
 		input_str = input("> ")
 		self.parser.parse_input(self, input_str)
 
+	def help(self):
+		say("Commands:")
+		say("{:>10}{:^5}{}".format("inventory", ":", "display a list of all of your items"))
+		say("{:>10}{:^5}{}".format("loadgame", ":", "load a previously saved game"))
+		say("{:>10}{:^5}{}".format("savegame", ":","save your current progress"))		
+		say("{:>10}{:^5}{}".format("help", ":","display this help menu"))
+		say("{:>10}{:^5}{}".format("quit", ":","close the game (with or without saving)"))
+		print()
+		
+		verb_str = ""
+		for verb in self.verb_list:
+			verb_str = verb_str + "{:10}".format(verb)
+
+		say("Actions:")
+		say(verb_str)
+
+	def inventory(self):
+		item_str = ""
+
+		for item in self.player.inventory:
+			item_str = item_str + "{:15}".format(item.name)
+
+		say("Inventory:")
+		say(item_str)
 
 	def quit(self):
 		if self.get_yn_answer("Do you want to save before you quit? (y/n) "):
