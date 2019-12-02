@@ -88,11 +88,10 @@ def intro():
 		file.close()
 
 		print()
+		any = input("Press any key to continue...")
 		say("Main Menu")
 	else:
 		say("Tower Escape - Main Menu")
-
-	any = input("Press any key to continue...")
 
 class Game:
 	def __init__(self):
