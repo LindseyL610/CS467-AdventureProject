@@ -27,6 +27,8 @@ class Thing:
 		self.clock = False
 
 		self.can_be_opened = False
+		self.can_receive = False
+
 		self.has_dynamic_description = False
 		self.is_listed = True
 
@@ -454,22 +456,25 @@ class Cheese(Item):
 		return super().get_status(type)
 
 	def give_to(self, game, actionargs):
-		thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+		thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
 		if thing_to_receive is game.thing_list["hungryMouse"]:
-			message = "As you hold out the cheese, the mosue's eyes widen." \
-					  "It snatches it from your hand, and runs to the opposite corner of the room." \
+			message = "As you hold out the cheese, the mosue's eyes widen. " \
+					  "It snatches it from your hand, and runs to the opposite corner of the room. " \
 					  "It begins nibbling away."
 			say(message)
 			self.mouse_eats_cheese(game, actionargs)
 		else:
-			Thing.give_to(self, game, actionargs)
-		pass
+			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			if thing_to_receive.can_receive:
+				say("The {} doesn't want the cheese.".format(thing_to_receive.name))
+			else:
+				say("You cannot give anything to the {}".format(thing_to_receive.name))
 
 	def drop(self, game, actionargs):
 		if game.player.current_room is game.room_list["roomD"]:
-			message = "You drop the cheese, and the mouses's eyes widen." \
-					  "It quickly darts over, grabs the cheese, and runs to the opposite corner of the room." \
-					  "It begins nibbling away"
+			message = "You drop the cheese, and the mouses's eyes widen. " \
+					  "It quickly darts over, grabs the cheese, and runs to the opposite corner of the room. " \
+					  "It begins nibbling away."
 			say(message)
 			self.mouse_eats_cheese(game, actionargs)
 		else:
@@ -782,9 +787,14 @@ class Lever(Feature):
 
 	def pull(self, game, actionargs):
 		if self.is_reachable:
-			say("You pull the lever.")
+			lever_text = "You pull the lever. You hear a rumbling sound behind you and turn as a section of " \
+						 "the west wall slides away, revealing a tunnel leading off to the west."
+			say(lever_text)
+			game.player.current_room.remove_exit(game.thing_list["secretWall"])
+			game.player.current_room.add_exit(game.thing_list["mousepadTunnel"],"west")
+
 		else:
-			say("You cannot reach the lever.")
+			say("You cannot reach the lever, the mouse is in the way.")
 
 	def become_reachable(self):
 		self.is_reachable = True
@@ -914,6 +924,33 @@ class DancingDaemon(Feature):
 			game.player.add_to_inventory(self.floppy)
 			self.floppy_received = True
 			say(message)
+
+class Freezer(Feature):
+	"""Daemon that appears"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.is_malfunctioned = False
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Freezer"
+		return super().get_status(type)
+
+	def tic(self, game, actionargs):
+		if not self.is_malfunctioned:
+			malfunction_text = \
+				"The freezer buzzes and groans. It begins to shake before finally turning off. " \
+				"The chunk of ice begins to drip, and then crack. Finally, the ice falls apart, and the laptop " \
+				"comes crashing down. The screen cracks and the frame gets severely bent upon impact. " \
+				"A flashdrive pops out and slides across the floor."
+			say(malfunction_text)
+			# laptop frozenLaptop -> brokenLaptop -> drop flash drive
+			game.player.current_room.remove_thing(game.thing_list["frozenLaptop"])
+			game.player.current_room.add_thing(game.thing_list["brokenLaptop"])
+			game.player.current_room.add_thing(game.thing_list["flashdrive"])
+		else:
+			say("Nothing happens.")
 
 
 
