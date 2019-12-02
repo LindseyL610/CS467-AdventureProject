@@ -3,8 +3,6 @@ import platform
 
 OS = platform.system()
 WRAPPER = textwrap.TextWrapper(replace_whitespace=False)
-COLOR = "\033[1;32;40m"
-DEFAULT = "\033[0m"
 
 #NOTE: The following color table was adapted from: https://stackoverflow.com/questions/17771287/python-octal-escape-character-033-from-a-dictionary-value-translates-in-a-prin
 COLORS = {
@@ -27,8 +25,6 @@ COLORS = {
     '</>': "\033[0;0m"
 }
 
-TEST_STR = "<darkcyan>This should be dark cyan</>. This should be back to default. <red>This should be red</>."
-
 # basic function to display messages to the user. handles text wrapping and formatting
 # TODO this may be where we want to handle displaying text of different colors
 #  perhaps we come up with a key string (like <colorbegin:red>this text is red<colorend> or something)
@@ -39,6 +35,7 @@ def say(text):
 		for color in COLORS:
 			#Color only supported on Linux/Mac
 			if OS == "Linux" or OS == "Darwin":
+				text = text + "</>"
 				text = text.replace(color, COLORS[color])
 			else:
 				text = text.replace(color, "")
@@ -91,6 +88,3 @@ def find_by_name(name, group_to_search):
 #     if thing.name == name:
 #       return thing
 #   return None
-
-print(TEST_STR)
-say(TEST_STR)

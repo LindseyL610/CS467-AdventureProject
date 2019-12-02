@@ -41,9 +41,9 @@ class Parser:
 				if self.debug == True:
 					self.print_parsed()
 				elif self.action_dict.get("verb", None) != None:
-					game.say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
+					say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
 				else:
-					game.say("I don't understand that. Please try a different command.")
+					say("I don't understand that. Please try a different command.")
 
 		print()
 
@@ -67,17 +67,11 @@ class Parser:
 	def check_basic_verbs(self, game):
 		if self.user_input == "look":
 			self.action_dict["verb"] = "look"
-			game.say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
+			say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
 		elif self.user_input == "help":
 			game.help()
-			#game.say("I understand the following verbs:")
-			#for verb in self.verbs_list:
-			#	game.say(verb)
 		elif self.user_input == "inventory":
 			game.inventory()
-			#game.say("Your bag contains the following items:")
-			#for item in game.player.inventory:
-			#	game.say(item.name)
 		elif self.user_input == "loadgame":
 			game.load_menu(False)
 		elif self.user_input == "savegame":

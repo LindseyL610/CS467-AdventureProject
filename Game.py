@@ -9,9 +9,6 @@ import Thing
 import Player
 from Utilities import say, find_by_name
 from Verbs_and_Actions import verb_list, action_list, prep_list
-import platform
-
-OS = platform.system()
 
 SAVES = "SV"
 ROOM_PREFIX = "RM_"
@@ -93,8 +90,6 @@ class Game:
 
 		self.direction_list = ["north", "east", "south", "west", "up", "down"]
 
-		self.say = say
-
 		self.find_by_name = find_by_name
 
 	def get_word_answer(self, prompt, answer):
@@ -140,7 +135,7 @@ class Game:
 				ret_val = False
 				valid_input = True
 			else:
-				self.say("Invalid input!")
+				say("Invalid input!")
 
 		print()
 		
@@ -598,11 +593,6 @@ class Game:
 		#debug("player: " + str(self.player.get_status()))
 
 		if self.new_room:
-			#NOTE: The following clear screen code adapted from: https://stackoverflow.com/questions/18937058/clear-screen-in-shell/47296211
-			#if OS == "Windows":
-			#	os.system('cls')  # For Windows
-			#elif OS == "Linux" or OS == "Darwin":
-			#	os.system('clear')  # For Linux/OS X
 			self.player.clear_effects()
 			self.advance_time()
 			self.player.current_room.get_description(self.game_time)
