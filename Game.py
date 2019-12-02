@@ -42,7 +42,7 @@ def debug(output):
 	if DEBUG_MODE is True:
 		print(output)
 
-def valid_width():
+def valid_screen_size():
 	valid_size = False
 
 	#NOTE: The following code is adapted from: http://granitosaurus.rocks/getting-terminal-size.html
@@ -51,12 +51,14 @@ def valid_width():
 	debug("Columns: " + str(columns))
 	debug("Rows: " + str(rows))
 
-	if columns >= WIDTH:
+	if columns >= WIDTH or rows >= HEIGHT:
 		valid_size = True
 	else:
 		print("Game has the following console screen size requirements:")
 		print("Minimum width: " + str(WIDTH))
 		print("Minimum height: " + str(HEIGHT))
+		print("Your current width: " + str(columns))
+		print("Your current height: " + str(rows))
 		print("Please resize your screen and run the game again!")
 
 	return valid_size
@@ -640,13 +642,13 @@ class Game:
 			self.prompt()
 		
 # Temporarily turning off width validation for ease of use in my IDE
-#if valid_width() or True:
-# if valid_width():
+#if valid_screen_size() or True:
+# if valid_screen_size():
 #	game = Game()
 #	if game.game_loaded:
 #		game.play()
 
-if valid_width():
+if valid_screen_size():
 	print()
 	file = open("model", "r")
 		
