@@ -646,10 +646,10 @@ class Game:
 #	if game.game_loaded:
 #		game.play()
 
-
-file = open("model", "r")
+if valid_width():
+	file = open("model", "r")
 		
-for line in file:
-    print(line)
+	for line in file:
+		print(line)
 
-file.close()
+	file.close()
