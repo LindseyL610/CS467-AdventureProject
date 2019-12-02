@@ -51,7 +51,7 @@ def valid_screen_size():
 	debug("Columns: " + str(columns))
 	debug("Rows: " + str(rows))
 
-	if columns >= WIDTH or rows >= HEIGHT:
+	if columns >= WIDTH and rows >= HEIGHT:
 		valid_size = True
 	else:
 		print("Game has the following console screen size requirements:")
