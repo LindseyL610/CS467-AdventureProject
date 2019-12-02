@@ -87,6 +87,7 @@ def intro():
 
 		file.close()
 
+		print()
 		say("Main Menu")
 	else:
 		say("Tower Escape - Main Menu")
@@ -665,8 +666,8 @@ class Game:
 			self.prompt()
 
 # Temporarily turning off width validation for ease of use in my IDE
-if valid_screen_size() or True:
-# if valid_screen_size():
+#if valid_screen_size() or True:
+if valid_screen_size():
 	intro()
 	game = Game()
 	if game.game_loaded:
