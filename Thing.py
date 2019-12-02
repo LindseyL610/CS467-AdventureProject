@@ -500,14 +500,16 @@ class Feature(Thing):
 class Lock(Feature):
 	def __init__(self, id, name):
 		super().__init__(id, name)
-		self.unlocked = False
+		self.item_dispenser = False
+		self.door_lock = False
+		self.toggled = False
 		self.controlled_exit = None
 		self.open_exit = None
 		self.key = None
 		self.receive_preps = []
-		self.already_unlocked_msg = "The " + self.name + " has already been used!"
+		self.already_used_msg = "The " + self.name + " has already been used!"
 		self.incompatible_msg = "The " + self.name + " can not receive that item!"
-		self.unlocked_msg = "The door unlocks."
+		self.msg_toggled = ""
 		self.key_consumed = False
 
 	def get_status(self, type=None):
@@ -517,11 +519,11 @@ class Lock(Feature):
 
 	def receive_item(self, game, item, prep):
 		if prep in self.receive_preps:
-			if self.unlocked:
-				say(self.already_unlocked_msg)
+			if self.toggled:
+				say(self.already_used_msg)
 			elif item == self.key:
 				say("You put the {} {} the {}.".format(item.name, prep, self.name))
-				self.unlock_exit(game)
+				self.toggle(game)
 				if self.key_consumed:
 					accessible = game.player.current_room.get_all_accessible_contents()
 					if item in accessible:
@@ -553,8 +555,17 @@ class Lock(Feature):
 		for dir in directions:
 			game.player.current_room.add_exit(self.open_exit, dir)
 
-		self.unlocked = True
-		say(self.unlocked_msg)
+	def toggle(self, game):
+		if self.door_lock:
+			self.unlock_exit(game)
+		elif self.item_dispenser:
+			self.dispense_item(game)
+
+		self.toggled = True
+		say(self.msg_toggled)
+
+	def dispense_item(self, game):
+		game.player.add_to_inventory(self.item)
 
 class Input(Feature):
 	"""A feature that you can input text into (like a keyboard)

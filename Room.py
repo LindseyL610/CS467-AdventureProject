@@ -254,5 +254,5 @@ class Ballroom(Room):
 		if game.thing_list["DancingDaemon"] in self.get_all_contents():
 			game.thing_list["DancingDaemon"].dance(game, actionargs)
 		else:
-			messsage = "You dance like no one's watching. Except you feel like someone is watching..."
+			message = "You dance like no one's watching. Except you feel like someone is watching..."
 			say(message)

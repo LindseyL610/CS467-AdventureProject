@@ -130,17 +130,21 @@ thing_list["tipJar"].list_name = "a tip jar"
 thing_list["tipJar"].adjectives.extend(["tip"])
 
 thing_list["coin"] = Thing.Key("coin", "coin")
+thing_list["coin"].list_name = "a gold coin"
 thing_list["coin"].adjectives.extend(["gold"])
 thing_list["coin"].description = "A gold coin."
 
 thing_list["piano"] = Thing.Piano("piano", "piano")
-thing_list["piano"].description = "A baby grand piano with a long keyboard of shiny white and black ivory keys. The piano has the words 'Qwerty Classics Series' painted in gold cursive beneath the cover."
+thing_list["piano"].description = "A grand piano with a long keyboard of shiny white and black ivory keys. The piano has the words 'Qwerty Classics Series' painted in gold cursive beneath the cover."
+thing_list["piano"].adjectives.extend(["grand"])
 
 thing_list["ballroomCoinSlot"] = Thing.Lock("ballroomCoinSlot", "slot")
 thing_list["ballroomCoinSlot"].description = "A coin slot next to the door."
 thing_list["ballroomCoinSlot"].list_name = "a slot"
 thing_list["ballroomCoinSlot"].receive_preps.append("in")
 thing_list["ballroomCoinSlot"].key_consumed = True
+thing_list["ballroomCoinSlot"].door_lock = True
+thing_list["ballroomCoinSlot"].item_dispenser = False
 
 thing_list["DancingDaemon"] = Thing.DancingDaemon("DancingDaemon", "DAEMON")
 thing_list["DancingDaemon"].adjectives.extend(["dancing"])
@@ -151,19 +155,135 @@ thing_list["CD"] = Thing.Item("CD", "CD")
 thing_list["CD"].description = "This is some type of ancient storage device. It is a thin circle of plastic with a hole in the middle. One side is shiny as a rainbow."
 #--------------------------------------------------------------------------
 #ROOM F (I/O ROOM) FEATURES AND ITEMS--------------------------------------
-#thing_list["coin"] = Thing.Key("coin", "coin")
-#thing_list["coin"].adjectives.extend(["gold"])
-#thing_list["coin"].description = "A gold coin."
+thing_list["key"] = Thing.Key("key", "key")
+thing_list["key"].list_name = "a key"
+thing_list["key"].adjectives.extend(["metal"])
+thing_list["key"].description = "A standard metal key for opening a lock."
 
-#thing_list["piano"] = Thing.Piano("piano", "piano")
-#thing_list["piano"].description = "A baby grand piano with a long keyboard of shiny white and black ivory keys. The piano has the words 'Qwerty Classics Series' painted in gold cursive beneath the cover."
+thing_list["card"] = Thing.Key("card", "card")
+thing_list["card"].list_name = "a punch card"
+thing_list["card"].adjectives.extend(["punch"])
+thing_list["card"].description = "An old computer punch card. At the top of the card is the word 'key'."
 
-#thing_list["ballroomCoinSlot"] = Thing.Lock("ballroomCoinSlot", "slot")
-#thing_list["ballroomCoinSlot"].description = "A coin slot next to the door."
-#thing_list["ballroomCoinSlot"].list_name = "a slot"
-#thing_list["ballroomCoinSlot"].receive_preps.append("in")
-#thing_list["ballroomCoinSlot"].key_consumed = True
+thing_list["IOroomDocuments"] = Thing.Item("IOroomDocuments", "documents")
+thing_list["IOroomDocuments"].description = "A disorderly stack of documents. Coffee rings abound."
+thing_list["IOroomDocuments"].list_name = "some useless documents"
+thing_list["IOroomDocuments"].adjectives.extend(["disorderly"])
+
+thing_list["IOroomCardScraps"] = Thing.Item("IOroomCardScraps", "scraps")
+thing_list["IOroomCardScraps"].description = "A pile of paper scraps. Looks like old punch cards. These things have been used, and not gently. They are useless."
+thing_list["IOroomCardScraps"].list_name = "some paper scraps"
+thing_list["IOroomCardScraps"].adjectives.extend(["paper"])
+
+thing_list["IOroomMetalChunks"] = Thing.Item("IOroomMetalChunks", "chunks")
+thing_list["IOroomMetalChunks"].description = "A pile of useless metal chunks. Not even a fully formed paper clip can be found in the heap."
+thing_list["IOroomMetalChunks"].list_name = "some metal chunks"
+thing_list["IOroomMetalChunks"].adjectives.extend(["metal"])
+
+thing_list["IOroomShreddings"] = Thing.Item("IOroomShreddings", "shreddings")
+thing_list["IOroomShreddings"].description = "Shredded paper. You begin to piece the shreddings together to see what they say but decide not to, because you don't want to die alone in this tower, literally trying to read what is written on trash."
+thing_list["IOroomShreddings"].list_name = "some paper shreddings"
+thing_list["IOroomShreddings"].adjectives.extend(["paper"])
+
+thing_list["IOroomFiles"] = Thing.Item("IOroomFiles", "files")
+thing_list["IOroomFiles"].description = "Files. They appear to contain technical schematics."
+thing_list["IOroomFiles"].list_name = "a bunch of files"
+
+thing_list["IOroomDesk"] = Thing.Surface("IOroomDesk", "desk")
+thing_list["IOroomDesk"].description = "A cluttered desk. There is a drawer."
+
+thing_list["IOroomDeskDrawer"] = Thing.Container("IOroomDeskDrawer", "drawer")
+thing_list["IOroomDeskDrawer"].description = "A desk drawer."
+thing_list["IOroomDeskDrawer"].can_be_opened = True
+thing_list["IOroomDeskDrawer"].is_open = False
+thing_list["IOroomDeskDrawer"].contents_accessible = False
+thing_list["IOroomDeskDrawer"].contents_accessible_iff_open = True
+thing_list["IOroomDeskDrawer"].is_listed = False
+thing_list["IOroomDeskDrawer"].list_name = "a desk drawer"
+
+thing_list["IOroomBox"] = Thing.Container("IOroomBox", "box")
+thing_list["IOroomBox"].description = "A cardboard box with 'junk' scrawled on it with marker."
+thing_list["IOroomBox"].can_be_opened = True
+thing_list["IOroomBox"].is_open = False
+thing_list["IOroomBox"].contents_accessible = False
+thing_list["IOroomBox"].contents_accessible_iff_open = True
+thing_list["IOroomBox"].is_listed = True
+thing_list["IOroomBox"].list_name = "a cardboard box"
+thing_list["IOroomBox"].adjectives.extend(["cardboard"])
+
+thing_list["IOroomInbox"] = Thing.Container("IOroomInbox", "inbox")
+thing_list["IOroomInbox"].description = "An inbox. That is, a literal inbox. A bin labeled 'in' for putting papers into, to be pushed, for instance, to an outbox."
+thing_list["IOroomInbox"].can_be_opened = False
+thing_list["IOroomInbox"].is_open = True
+thing_list["IOroomInbox"].contents_accessible = True
+thing_list["IOroomInbox"].list_name = "an inbox"
+
+thing_list["IOroomOutbox"] = Thing.Container("IOroomOutbox", "outbox")
+thing_list["IOroomOutbox"].description = "An outbox. For stuff going out, such as useless metal chunks."
+thing_list["IOroomOutbox"].can_be_opened = False
+thing_list["IOroomOutbox"].is_open = True
+thing_list["IOroomOutbox"].contents_accessible = True
+thing_list["IOroomOutbox"].list_name = "an outbox"
+
+thing_list["IOroomCabinet"] = Thing.Container("IOroomCabinet", "cabinet")
+thing_list["IOroomCabinet"].description = "A metal filing cabinet."
+thing_list["IOroomCabinet"].can_be_opened = True
+thing_list["IOroomCabinet"].is_open = False
+thing_list["IOroomCabinet"].contents_accessible = False
+thing_list["IOroomCabinet"].contents_accessible_iff_open = True
+thing_list["IOroomCabinet"].is_listed = False
+thing_list["IOroomCabinet"].list_name = "a filing cabinet"
+thing_list["IOroomCabinet"].adjectives.extend(["filing"])
+
+thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "reader")
+thing_list["IOroomPunchCardReader"].description = "A punch card reader. There is a cavity below the reader. It looks like objects are dispensed into the cavity."
+thing_list["IOroomPunchCardReader"].list_name = "a punch card reader"
+thing_list["IOroomPunchCardReader"].receive_preps.append("in")
+thing_list["IOroomPunchCardReader"].key_consumed = True
+thing_list["IOroomPunchCardReader"].door_lock = False
+thing_list["IOroomPunchCardReader"].item_dispenser = True
+thing_list["IOroomPunchCardReader"].msg_toggled = "The reader accepts the punch card. You hear deafening mechanical noises coming from all around you. After awhile, the reader spits out a key. You add the key to your inventory."
+
+thing_list["IOroomLock"] = Thing.Lock("IOroomLock", "lock")
+thing_list["IOroomLock"].description = "A locking mechanism next to the door. There is a hole where a key should go."
+thing_list["IOroomLock"].list_name = "a door lock"
+thing_list["IOroomLock"].receive_preps.append("in")
+thing_list["IOroomLock"].key_consumed = False
+thing_list["IOroomLock"].door_lock = True
+thing_list["IOroomLock"].item_dispenser = False
+thing_list["IOroomLock"].msg_toggled = "The key turns in the lock, and the door unlocks."
 #--------------------------------------------------------------------------
+#ROOM G (BUS STATION) FEATURES AND ITEMS--------------------------------------
+thing_list["key"] = Thing.Key("key", "key")
+thing_list["key"].list_name = "a key"
+thing_list["key"].adjectives.extend(["metal"])
+thing_list["key"].description = "A standard metal key for opening a lock."
+
+thing_list["card"] = Thing.Key("card", "card")
+thing_list["card"].list_name = "a punch card"
+thing_list["card"].adjectives.extend(["punch"])
+thing_list["card"].description = "An old computer punch card. At the top of the card is the word 'key'."
+
+thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "reader")
+thing_list["IOroomPunchCardReader"].description = "A punch card reader. There is a cavity below the reader. It looks like objects are dispensed into the cavity."
+thing_list["IOroomPunchCardReader"].list_name = "a punch card reader"
+thing_list["IOroomPunchCardReader"].receive_preps.append("in")
+thing_list["IOroomPunchCardReader"].key_consumed = True
+thing_list["IOroomPunchCardReader"].door_lock = False
+thing_list["IOroomPunchCardReader"].item_dispenser = True
+thing_list["IOroomPunchCardReader"].msg_toggled = "The reader accepts the punch card. You hear deafening mechanical noises coming from all around you. After awhile, the reader spits out a key. You add the key to your inventory."
+
+thing_list["IOroomLock"] = Thing.Lock("IOroomLock", "lock")
+thing_list["IOroomLock"].description = "A locking mechanism next to the door. There is a hole where a key should go."
+thing_list["IOroomLock"].list_name = "a door lock"
+thing_list["IOroomLock"].receive_preps.append("in")
+thing_list["IOroomLock"].key_consumed = False
+thing_list["IOroomLock"].door_lock = True
+thing_list["IOroomLock"].item_dispenser = False
+thing_list["IOroomLock"].msg_toggled = "The key turns in the lock, and the door unlocks."
+#--------------------------------------------------------------------------
+
+
 
 
 # Creating puzzle 2 input
@@ -509,8 +629,11 @@ room_list["roomE"].documentation = "The art of programming starts at the keyboar
 
 # Creating room F
 room_list["roomF"] = Room.Room("roomF", "I/O Room")
-room_list["roomF"].long_description = "You are in room F (long description)."
-room_list["roomF"].short_description = "You are in room F (short description)."
+room_list["roomF"].long_description = "You are in a cluttered office. There is a desk, with high stacks of papers along with an inbox and an outbox. " \
+										"A file cabinet sits next to the desk. A cardboard box sits on the floor next to the cabinet. " \
+										"Near the desk is a reader for reading punch cards."
+room_list["roomF"].short_description = "You are in the cluttered office."
+room_list["roomF"].documentation = "The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase 'Garbage in, garbage out!'"
 
 # Creating room G
 room_list["roomG"] = Room.Room("roomG", "Bus Station")
@@ -684,7 +807,6 @@ room_list["roomE"].add_thing(thing_list["ballroomCoinSlot"])
 thing_list["DancingDaemon"].floppy = thing_list["CD"]
 
 # linking roomF (I/O Room) stuff
-
 # TODO
 thing_list["IOroomElevator"].destination = room_list["roomE"]
 thing_list["IOroomHallway"].destination = room_list["roomG"]
@@ -692,7 +814,33 @@ thing_list["IOroomDoor"].destination = room_list["roomP3"]
 
 room_list["roomF"].exits["down"] = thing_list["IOroomElevator"]
 room_list["roomF"].exits["west"] = thing_list["IOroomHallway"]
-room_list["roomF"].exits["south"] = thing_list["IOroomDoor"]
+room_list["roomF"].exits["south"] = thing_list["IOroomDoorLocked"]
+
+thing_list["IOroomPunchCardReader"].item = thing_list["key"]
+thing_list["IOroomPunchCardReader"].key = thing_list["card"]
+
+thing_list["IOroomLock"].controlled_exit = thing_list["IOroomDoorLocked"]
+thing_list["IOroomLock"].open_exit = thing_list["IOroomDoor"]
+thing_list["IOroomLock"].key = thing_list["key"]
+
+thing_list["card"].lock = thing_list["IOroomPunchCardReader"]
+thing_list["key"].lock = thing_list["IOroomLock"]
+
+thing_list["IOroomDeskDrawer"].add_item(thing_list["card"])
+thing_list["IOroomDesk"].add_item(thing_list["IOroomDocuments"])
+thing_list["IOroomBox"].add_item(thing_list["IOroomShreddings"])
+thing_list["IOroomInbox"].add_item(thing_list["IOroomCardScraps"])
+thing_list["IOroomOutbox"].add_item(thing_list["IOroomMetalChunks"])
+thing_list["IOroomCabinet"].add_item(thing_list["IOroomFiles"])
+
+room_list["roomF"].add_thing(thing_list["IOroomPunchCardReader"])
+room_list["roomF"].add_thing(thing_list["IOroomLock"])
+room_list["roomF"].add_thing(thing_list["IOroomDesk"])
+room_list["roomF"].add_thing(thing_list["IOroomDeskDrawer"])
+room_list["roomF"].add_thing(thing_list["IOroomBox"])
+room_list["roomF"].add_thing(thing_list["IOroomInbox"])
+room_list["roomF"].add_thing(thing_list["IOroomOutbox"])
+room_list["roomF"].add_thing(thing_list["IOroomCabinet"])
 
 # linking roomG (Bus Station) stuff
 # TODO
