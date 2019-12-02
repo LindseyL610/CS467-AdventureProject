@@ -19,7 +19,7 @@ THINGS = "TH"
 
 DEBUG_MODE = False
 WIDTH = 100
-HEIGHT = 60
+HEIGHT = 50
 
 def toggle_debug(input):
 	global DEBUG_MODE
@@ -78,7 +78,7 @@ def get_path():
 def intro():
 	print()
 
-	#Color only supported on Linux/Mac
+	#Graphic display only supported on Linux/Mac
 	if OS == "Linux" or OS == "Darwin":
 		file = open("model", "r")
 		
@@ -91,10 +91,8 @@ def intro():
 		say("Main Menu")
 	else:
 		say("Tower Escape - Main Menu")
-	
 
-
-	#any = input("Press any key to continue...")
+	any = input("Press any key to continue...")
 
 class Game:
 	def __init__(self):
