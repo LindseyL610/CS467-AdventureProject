@@ -69,6 +69,8 @@ class Thing:
 
 		self.msg_cannot_dance = "You cannot dance with that."
 
+		self.msg_cannot_spray = "You cannot spray that."
+
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -243,6 +245,12 @@ class Thing:
 
 	def play(self, game, actionargs):
 		say(self.msg_cannot_play)
+
+	def spray(self, game, actionargs):
+		say(self.msg_cannot_spray)
+
+	def spray_with(self, game, actionargs):
+		say(self.msg_cannot_spray)
 
 	# Special Functions
 	def ram(self, game, actionargs):
@@ -543,6 +551,39 @@ class Wine(Drink):
 		else:
 			say("You drink some wine and start to loosen up...")
 			game.player.drunk = True
+
+class Newspaper(Item):
+
+        def __init__(self, id, name):
+                super().__init__(id, name)
+                self.can_be_read = True
+
+        def get_status(self, type=None):
+                if type is None:
+                        type = "Newspaper"
+                return super().get_status(type)
+
+        def read(self, game, actionargs):
+                contents = "The newspaper has an article about bugs."
+                say(contents)
+
+        def open(self, game, actionargs):
+                self.read(game, actionargs)
+
+
+class Debugger(Item):
+
+        def __init__(self, id, name):
+                super().__init__(id, name)
+                self.can_be_sprayed = True
+
+        def get_status(self, type=None):
+                if type is None:
+                        type = "Debugger"
+                return super().get_status(type)
+
+        def spray(self, game, actionargs):
+                print("You spray the Debugger in the air. Nothing happens.")
 
 class Feature(Thing):
 	"""Not-Takable, Not-Dropable thing"""
@@ -924,6 +965,55 @@ class DancingDaemon(Feature):
 			game.player.add_to_inventory(self.floppy)
 			self.floppy_received = True
 			say(message)
+
+class Moth(Feature):
+	"""Moth holding the cartridge"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.floppy_received = False
+		self.floppy = None
+		self.been_sprayed = False
+		self.msg_spray = "You spray the moth with the Debugger."
+		self.msg_first_spray = "The moth flies into the opening, taking the cartridge with it "\
+				       ", but leaving the door unguarded."
+		self.msg_been_sprayed = "The moth flaps its wings in an attempt to get away."
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Moth"
+		return super().get_status(type)
+
+	def look(self, game, actionargs):
+		game.room_list["roomH"].remove_thing(self)
+		game.room_list["roomI"].add_thing(self)
+
+	def spray(self, game, actionargs):
+		has_debugger = False
+
+		for item in game.player.inventory:
+			if item.name == "debugger":
+				has_debugger = True
+				break
+
+		if has_debugger:
+			say(self.msg_spray)
+
+			if self.been_sprayed:
+				say(self.msg_been_sprayed)
+			else:
+				say(self.msg_first_spray)
+				self.been_sprayed = True
+				game.room_list["roomH"].remove_thing(self)
+				game.room_list["roomI"].add_thing(self)
+		else:
+			say("You don't have anything to spray the moth with.")
+
+	def spray_with(self, game, actionargs):
+		if actionargs["iobj"] == "debugger":
+			self.spray(game, actionargs)
+		else: 
+			say("You cannot spray the moth with that.")
 
 class Freezer(Feature):
 	"""Daemon that appears"""
