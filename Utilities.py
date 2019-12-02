@@ -6,33 +6,59 @@ WRAPPER = textwrap.TextWrapper(replace_whitespace=False)
 COLOR = "\033[1;32;40m"
 DEFAULT = "\033[0m"
 
+#NOTE: The following color table was adapted from: https://stackoverflow.com/questions/17771287/python-octal-escape-character-033-from-a-dictionary-value-translates-in-a-prin
+COLORS = {
+    'white':    "\033[1;37m",
+    'yellow':   "\033[1;33m",
+    'green':    "\033[1;32m",
+    'blue':     "\033[1;34m",
+    'cyan':     "\033[1;36m",
+    'red':      "\033[1;31m",
+    'magenta':  "\033[1;35m",
+    'black':      "\033[1;30m",
+    'darkwhite':  "\033[0;37m",
+    'darkyellow': "\033[0;33m",
+    'darkgreen':  "\033[0;32m",
+    'darkblue':   "\033[0;34m",
+    'darkcyan':   "\033[0;36m",
+    'darkred':    "\033[0;31m",
+    'darkmagenta':"\033[0;35m",
+    'darkblack':  "\033[0;30m",
+    'off':        "\033[0;0m"
+}
+
+
 # basic function to display messages to the user. handles text wrapping and formatting
 # TODO this may be where we want to handle displaying text of different colors
 #  perhaps we come up with a key string (like <colorbegin:red>this text is red<colorend> or something)
 #  that this function can find and replace with the necessary output for formatted text
-def say(text, game = None):
+#def say(text, game = None):
 	#if there is no string data, do nothing
-	if text is not None and (text == "") is False and isinstance(text, str):
+	#if text is not None and (text == "") is False and isinstance(text, str):
 		#see if game object was passed (for color)
-		if game is not None:
+		#if game is not None:
 			#Color only supported on Linux/Mac
-			if OS == "Linux" or OS == "Darwin":
+			#text = text.replace()
+			
+			
+			
+			#if OS == "Linux" or OS == "Darwin":
 				#find each instance of each key word
-				for word in game.keywords:
-					start_idx = 0
-					start = 0
+				#for word in game.keywords:
+				#	start_idx = 0
+				#	start = 0
 
-					while start != -1:
-						start = text.find(word, start_idx)
-						end = start + len(word) - 1
+				#	while start != -1:
+				#		start = text.find(word, start_idx)
+				#		end = start + len(word) - 1
 
-						#insert color cords before and after each instance
-						if start != -1:
-							text = text[0:start] + COLOR + word + DEFAULT + text[end+1:]
+				#		#insert color cords before and after each instance
+				#		if start != -1:
+				#			text = text[0:start] + COLOR + word + DEFAULT + text[end+1:]
+				#
+				#		start_idx = text.find(word,start_idx) + len(word)
 
-						start_idx = text.find(word,start_idx) + len(word)
-
-		print(WRAPPER.fill(text))
+#		print(WRAPPER.fill(text))
 
 def list_to_words(object_list):
   list_length = len(object_list)
@@ -80,3 +106,10 @@ def find_by_name(name, group_to_search):
 #     if thing.name == name:
 #       return thing
 #   return None
+
+
+test_str = ""
+
+test_str = test_str + "test1" + COLORS["blue"] + "test2" + COLORS['off'] + "test3"
+
+print(test_str)

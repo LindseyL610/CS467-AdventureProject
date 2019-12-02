@@ -57,11 +57,9 @@ class Parser:
 		for function in game.player.special_functions:
 			if game.player.special_functions[function]["learned"] == True:
 				name = game.player.special_functions[function]["name"]
-                                
 
 				if name not in self.dictionary:
 					self.dictionary[name] = name
-                                
 
 				if name not in self.speech_dict:
 					self.speech_dict[name] = "object"
