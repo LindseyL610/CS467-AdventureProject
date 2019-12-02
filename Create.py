@@ -85,8 +85,8 @@ thing_list["flashdrive"].alternate_names.extend(["drive","usbdrive", "harddrive"
 
 # ROOM C (Utility Room) FEATURES AND ITEMS------------------------------------------
 # Creating desk
-thing_list["desk"] = Thing.Surface("desk", "desk")
-thing_list["desk"].description = "A desk."
+thing_list["utilityRoomDesk"] = Thing.Surface("utilityRoomDesk", "desk")
+thing_list["utilityRoomDesk"].description = "A desk."
 
 # Creating newspaper
 thing_list["newspaper"] = Thing.Newspaper("newspaper", "newspaper")
@@ -100,8 +100,8 @@ thing_list["toolbox"].msg_cannot_take = "The toolbox is too heavy for you to pic
 thing_list["toolbox"].msg_cannot_be_opened = "The toolbox is rusted shut."
 
 # Creating locker
-thing_list["locker"] = Thing.Container("locker", "locker")
-thing_list["locker"].description = "A locker."
+thing_list["utilityRoomLocker"] = Thing.Container("utilityRoomLocker", "locker")
+thing_list["utilityRoomLocker"].description = "A locker."
 
 # Creating cleaning supplies
 thing_list["cleaning supplies"] = Thing.Feature("cleaning supplies", "cleaning supplies")
@@ -849,12 +849,12 @@ room_list["roomB"].exits["down"] = thing_list["lobbyRamp"]
 
 # linking roomC (Utilities) stuff
 
-room_list["roomC"].add_thing(thing_list["desk"])
-thing_list["desk"].add_item(thing_list["newspaper"])
+room_list["roomC"].add_thing(thing_list["utilityRoomDesk"])
+thing_list["utilityRoomDesk"].add_item(thing_list["newspaper"])
 room_list["roomC"].add_thing(thing_list["toolbox"])
-room_list["roomC"].add_thing(thing_list["locker"])
-thing_list["locker"].add_item(thing_list["cleaning supplies"])
-thing_list["locker"].add_item(thing_list["debugger"])
+room_list["roomC"].add_thing(thing_list["utilityRoomLocker"])
+thing_list["utilityRoomLocker"].add_item(thing_list["cleaning supplies"])
+thing_list["utilityRoomLocker"].add_item(thing_list["debugger"])
 
 thing_list["utilityStairs"].destination = room_list["roomB"]
 thing_list["utilityHallway"].destination = room_list["roomD"]
