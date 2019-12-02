@@ -80,6 +80,8 @@ def intro():
 
 	#Graphic display only supported on Linux/Mac
 	if OS == "Linux" or OS == "Darwin":
+		os.system('clear')
+	
 		file = open("model", "r")
 		
 		for line in file:
