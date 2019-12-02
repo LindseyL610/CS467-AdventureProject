@@ -126,6 +126,10 @@ verb_list["dance"] = Verb("dance")
 verb_list["dance"].alternate_names.extend(["jig", "waltz"])
 verb_list["dance"].supported_prepositions.update({"NONE":"NONE", "with":"NONE"})
 
+verb_list["spray"] = Verb("spray")
+verb_list["spray"].alternate_names.extend(["debug"])
+verb_list["spray"].supported_prepositions.update({"NONE":"NONE", "with":"with"})
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down", "with"]
 
@@ -343,3 +347,12 @@ action_list["play"] = ActionDirect("play")
 # only verb "look"-> Room.dance()
 # verb + dobj(ANYWHERE) "dance daemon"-> Thing.dance()
 action_list["dance"] = ActionVerbOnlyOrDirect("dance")
+
+# spray
+# verb + dobj(ANYWHERE) "spray moth" -> Thing.spray()
+action_list["spray"] = ActionDirect("spray")
+
+# spray with
+# verb + dobj(ANYWHERE) + iobj(ANYWHERE) "spray moth with debugger" -> Thing.spray_with()
+action_list["spray_with"] = ActionDirectAndIndirect("spray_with")
+action_list["spray_with"].iobj_must_be_in_inventory = True
