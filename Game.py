@@ -650,6 +650,6 @@ if valid_width():
 	file = open("model", "r")
 		
 	for line in file:
-		print(line)
+		print(line, end="")
 
 	file.close()
