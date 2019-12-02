@@ -74,16 +74,16 @@ verb_list["read"].alternate_names.extend(["scan","interpret"])
 verb_list["read"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["take"] = Verb("take")
-verb_list["take"].alternate_names.extend(["grab"])
-verb_list["take"].supported_prepositions.update({"NONE":"NONE"})
+verb_list["take"].alternate_names.extend(["grab", "pick"])
+verb_list["take"].supported_prepositions.update({"NONE":"NONE", "up":"NONE"})
 
 verb_list["drop"] = Verb("drop")
 verb_list["drop"].alternate_names.extend(["leave"])
 verb_list["drop"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["put"] = Verb("put")
-verb_list["put"].alternate_names.extend(["place", "set", "store"])
-verb_list["put"].supported_prepositions.update({"on":"on", "in":"in"})
+verb_list["put"].alternate_names.extend(["place", "set", "store", "insert"])
+verb_list["put"].supported_prepositions.update({"on":"on", "in":"in", "into":"in", "inside":"in", "down":"down"})
 
 verb_list["give"] = Verb("give")
 verb_list["give"].alternate_names.extend([])
@@ -122,7 +122,7 @@ verb_list["drink"].supported_prepositions.update({"NONE":"NONE"})
 
 
 # not sure how we will keep track of prepositions, but here's a running list:
-prep_list = ["at", "on", "in", "to", "into", "through", "up", "down"]
+prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down"]
 
 
 class Action():
@@ -224,25 +224,34 @@ class ActionVerbOnlyOrDirect(Action):
 class callAction(Action):
 	"""this is the unique action for "call" to use with special functions"""
 	def execute(self, game, actionargs):
-		func = game.player.special_functions[actionargs["dobj"]]
-		if func["action"] == "verb_only":
-			if "iobj" in actionargs.keys() or "prep" in actionargs.keys():
-				# TODO add specific message like "proper use: 'call pro'"
+		if "dobj" not in actionargs.keys():
+			# NO DOBJ ("call" or "call func" when func is not learned")
+			say(self.msg_improper_use)
+		else:
+			func = game.player.special_functions.get(actionargs["dobj"])
+			if func == None:
+				# DOBJ is not special function ("call computer")
 				say(self.msg_improper_use)
 			else:
-				# send action to ROOM
-				getattr(game.player.current_room, func["name"])(game, actionargs)
+				if func["action"] == "verb_only":
+					if "iobj" in actionargs.keys() or "prep" in actionargs.keys():
+						# TODO add specific message like "proper use: 'call pro'"
+						say(self.msg_improper_use)
+					else:
+						# send action to ROOM
+						getattr(game.player.current_room, func["name"])(game, actionargs)
 
-		elif func["action"] == "direct_object":
-			if "iobj" not in actionargs.keys() or actionargs["prep"] != "on":
-				# TODO add specific message like "proper use: 'call ram on thing'"
-				say(self.msg_improper_use)
-			else:
-				# get the iobj by name, if available
-				iobj_thing = game.get_thing_by_name(actionargs["iobj"],self.iobj_must_be_in_inventory)
-				if iobj_thing != None:
-					# so this calls dobj.action
-					getattr(iobj_thing, func["name"])(game, actionargs)
+				elif func["action"] == "direct_object":
+					if "iobj" not in actionargs.keys() or actionargs["prep"] != "on":
+						# TODO add specific message like "proper use: 'call ram on thing'"
+						say(self.msg_improper_use)
+					else:
+						# get the iobj by name, if available
+						iobj_thing = game.get_thing_by_name(actionargs["iobj"],self.iobj_must_be_in_inventory)
+						if iobj_thing != None:
+							# so this calls dobj.action
+							getattr(iobj_thing, func["name"])(game, actionargs)
+
 
 # create actions
 action_list = {}
@@ -282,6 +291,11 @@ action_list["put_in"].dobj_must_be_in_inventory = True
 # verb + dobj (IN_INVENTORY) + iobj(ANYWHERE) "put book on table" -> Thing.put_on()
 action_list["put_on"] = ActionDirectAndIndirect("put_on")
 action_list["put_on"].dobj_must_be_in_inventory = True
+
+# put down
+# verb + dobj (IN_INVENTORY) + iobj(ANYWHERE) "put down book" -> Thing.put_down()
+action_list["put_down"] = ActionDirect("put_down")
+action_list["put_down"].dobj_must_be_in_inventory = True
 
 # give to
 # verb + dobj (IN_INVENTORY) + iobj(ANYWHERE) "give cheese to mouse" -> Thing.give_to()

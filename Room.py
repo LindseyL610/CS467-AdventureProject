@@ -105,7 +105,14 @@ class Room:
 			description_string = self.short_description
 			listed_things = []
 
-			# for thing in self.get_all_accessible_contents():
+			for exit in self.exits.values():
+				if exit.is_accessible:
+					if exit.has_dynamic_description:
+						description_string += " " + exit.get_dynamic_description()
+
+					if exit.is_listed:
+						listed_things.append(exit)
+
 			for thing in self.contents:
 				if thing.is_accessible:
 					if thing.has_dynamic_description:

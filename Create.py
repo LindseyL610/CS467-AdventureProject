@@ -22,6 +22,7 @@ thing_list = dict()
 
 say("Creating things and rooms...")
 
+#ROOM A (Balcony) FEATURES AND ITEMS--------------------------------------
 # Creating book
 thing_list["book"] = Thing.Book("book", "book")
 thing_list["book"].description = "This ancient book has the title \"Tome of Documentation\" printed on its cover. "
@@ -31,46 +32,59 @@ thing_list["book"].alternate_names.extend(["tome","documentation"])
 thing_list["pedestal"] = Thing.Surface("pedestal", "pedestal")
 thing_list["pedestal"].description = "A pedestal."
 
+
+# Creating plaque
+thing_list["plaque"] = Thing.Sign("plaque", "plaque")
+thing_list["plaque"].description = \
+    "Welcome to Tower Escape, a game by Jason DiMedio, Lindsey Lopian, and Casey Proulx."
+
 # Creating balcony keyboard
 thing_list["balconyKeypad"] = Thing.InputBalconyWindow("balconyKeypad", "keypad")
 thing_list["balconyKeypad"].description = "A keypad is on the wall next to the window. " \
                                           "It has buttons to enter letters and spaces."
+thing_list["balconyKeypad"].alternate_names.extend(["keyboard"])
 thing_list["balconyKeypad"].msg_prompt = "What do you enter on the keypad?"
 thing_list["balconyKeypad"].answer = "hello world"
 thing_list["balconyKeypad"].msg_correct_answer = "After a brief pause, the window swings open, " \
                                                  "narrowly missing you! You now see more of a " \
                                                  "dimly lit room within the tower."
 
-# Creating Tower
-thing_list["tower"] = Thing.Feature("tower", "tower")
-thing_list["tower"].description = "It appears to be a humongous computer tower. " \
-                                  "Various wires extend from behind it going all directions. " \
-                                  "Several seem to connect to the large wall of circuitry containing an ornate door. " \
-                                  "There are five slots on the front of the tower."
 
-# Creating fridge
-thing_list["refrigerator"] = Thing.Container("refrigerator", "refrigerator")
-thing_list["refrigerator"].description = "A refrigerator"
-thing_list["refrigerator"].alternate_names.extend(["fridge"])
+# ROOM B (Lobby) FEATURES AND ITEMS--------------------------------------
+# Creating Computer
+thing_list["lobbyComputer"] = Thing.Computer("lobbyComputer", "computer")
+thing_list["lobbyComputer"].description = \
+    "This massive machine takes up most of the east wall. It is some sort of system of large rectangular devices all " \
+    "connected with various wires. There are lights blinking, and you hear whirring and clicking sounds. " \
+    "You can only assume it functions as some type of computer. " \
+    "There appears to be a handful of unique ports in the machine where something could be inserted."
+thing_list["lobbyComputer"].alternate_names.extend(["machine"])
 
-# Creating test table FOR TESTING
-thing_list["testTable"] = Thing.Surface("testTable", "table")
-thing_list["testTable"].description = "A table (for testing purposes)."
+thing_list["floppyDisk"] = Thing.Item("floppyDisk", "disk")
+thing_list["floppyDisk"].description = \
+    "An ancient data storage device."
+thing_list["floppyDisk"].alternate_names.extend(["floppy","floppydisk"])
+
+thing_list["cartridge"] = Thing.Item("cartridge", "cartridge")
+thing_list["cartridge"].description = \
+    "An ancient data storage device."
+
+thing_list["tape"] = Thing.Item("tape", "tape")
+thing_list["tape"].description = \
+    "This appears to be a form of magnetic tape, used to store data."
+
+thing_list["cd"] = Thing.Item("cd", "CD")
+thing_list["cd"].description = \
+    "A c.d., once used to store information."
+thing_list["cd"].alternate_names.extend(["C.D."])
+
+thing_list["flashdrive"] = Thing.Item("flashdrive", "flashdrive")
+thing_list["flashdrive"].description = \
+    "A portable storage device."
+thing_list["flashdrive"].alternate_names.extend(["drive","usbdrive", "harddrive"])
 
 
-# Creating coin FOR TESTING
-thing_list["coin"] = Thing.Item("coin", "coin")
-thing_list["coin"].description = "A gold coin."
-
-# Creating key FOR TESTING
-thing_list["key"] = Thing.Item("key", "key")
-thing_list["key"].description = "A brass key."
-
-# Creating cheese
-thing_list["cheese"] = Thing.Cheese("cheese", "cheese")
-thing_list["cheese"].description = "The block of cheese smells quite potent."
-thing_list["cheese"].list_name = "some cheese"
-
+# ROOM D (Mouse Pad) FEATURES AND ITEMS--------------------------------------
 # Creating hungryMouse
 thing_list["hungryMouse"] = Thing.Feature("hungryMouse", "mouse")
 thing_list["hungryMouse"].description = "This mouse is longer than you are tall. It sits calmly in the corner, " \
@@ -84,31 +98,6 @@ thing_list["eatingMouse"].description = "The mouse is sitting in the corner quie
 thing_list["lever"] = Thing.Lever("lever", "lever")
 thing_list["lever"].description = "There is some kind of lever on the wall." \
                                   "You cannot reach it with the mouse in the way."
-
-# Creating Floppy
-thing_list["floppy"] = Thing.Item("floppy", "floppy")
-thing_list["floppy"].description = "This is some type of ancient storage device. It is a thin rectangle of plastic, " \
-                                    "with some unkown language written across the top."
-
-# Creating cobwebs
-thing_list["cobwebs"] = Thing.Feature("cobwebs", "cobwebs")
-thing_list["cobwebs"].description = "Sticky cobwebs cover the walls, celing, " \
-                                    "and floors, only getting denser further into the darkness."
-thing_list["cobwebs"].list_name = "some cobwebs"
-
-# Creating plaque
-thing_list["plaque"] = Thing.Sign("plaque", "plaque")
-thing_list["plaque"].description = "A small ornamental plaque. It says... stuff."
-
-
-# Creating puzzle 1 input
-thing_list["puzzle1Keyboard"] = Thing.InputPuzzle1("puzzle1Keyboard", "keyboard")
-thing_list["puzzle1Keyboard"].description = "A keyboard."
-thing_list["puzzle1Keyboard"].msg_prompt = "What do you enter on the keyboard?"
-thing_list["puzzle1Keyboard"].answer = "answer"
-thing_list["puzzle1Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
-
-
 
 #ROOM E (BALLROOM) FEATURES AND ITEMS--------------------------------------
 thing_list["wine"] = Thing.Item("wine", "wine")
@@ -134,6 +123,41 @@ thing_list["tipJar"].contents_accessible = True
 thing_list["tipJar"].list_name = "a tip jar"
 thing_list["tipJar"].adjectives.extend(["tip"])
 #--------------------------------------------------------------------------
+
+
+# ROOM I (Dark Webs) FEATURES AND ITEMS--------------------------------------
+# Creating Floppy
+thing_list["floppy"] = Thing.Item("floppy", "floppy")
+thing_list["floppy"].description = "This is some type of ancient storage device. It is a thin rectangle of plastic, " \
+                                    "with some unkown language written across the top."
+
+# Creating cobwebs
+thing_list["cobwebs"] = Thing.Feature("cobwebs", "cobwebs")
+thing_list["cobwebs"].description = "Sticky cobwebs cover the walls, celing, " \
+                                    "and floors, only getting denser further into the darkness."
+thing_list["cobwebs"].list_name = "some cobwebs"
+
+# ROOM K (Cooling Room) FEATURES AND ITEMS--------------------------------------
+
+# Creating fridge
+thing_list["refrigerator"] = Thing.Container("refrigerator", "refrigerator")
+thing_list["refrigerator"].description = "A refrigerator"
+thing_list["refrigerator"].alternate_names.extend(["fridge"])
+
+
+# Creating cheese
+thing_list["cheese"] = Thing.Cheese("cheese", "cheese")
+thing_list["cheese"].description = "The block of cheese smells quite potent."
+thing_list["cheese"].list_name = "some cheese"
+
+
+
+# Creating puzzle 1 input
+thing_list["puzzle1Keyboard"] = Thing.InputPuzzle1("puzzle1Keyboard", "keyboard")
+thing_list["puzzle1Keyboard"].description = "A keyboard."
+thing_list["puzzle1Keyboard"].msg_prompt = "What do you enter on the keyboard?"
+thing_list["puzzle1Keyboard"].answer = "answer"
+thing_list["puzzle1Keyboard"].msg_correct_answer = "You enter the correct answer and learn a function!"
 
 # Creating puzzle 2 input
 thing_list["puzzle2Keyboard"] = Thing.InputPuzzle2("puzzle2Keyboard", "keyboard")
@@ -199,11 +223,8 @@ thing_list["lobbyWindow"].msg_cannot_go = "The window is closed, and there doens
 
 # Creating exits between B (Lobby) and MP (Motherboard) [[ORNATE DOOR]]
 # Creating lobbyOrnateDoor
-thing_list["lobbyOrnateDoor"] = Thing.Exit("lobbyOrnateDoor", "door")
+thing_list["lobbyOrnateDoor"] = Thing.MetaDoor("lobbyOrnateDoor", "door")
 thing_list["lobbyOrnateDoor"].adjectives.extend(["ornate"])
-thing_list["lobbyOrnateDoor"].description = "A huge ornate door."
-thing_list["lobbyOrnateDoor"].can_go = False
-thing_list["lobbyOrnateDoor"].msg_cannot_go = "This door will not open."
 
 # Creating motherboardOrnateDoor
 thing_list["motherboardOrnateDoor"] = Thing.Exit("motherboardOrnateDoor", "door")
@@ -388,22 +409,28 @@ room_list[
     "how you got here, the last thing you remember is sitting in front of your computer. Looking up at the " \
     "tower makes you dizzy, it seems to extend infinitely into the sky. Looking down over the railing " \
     "doesn't help either; the tower descends and disappears the clouds. There is a large window to the north " \
-    "that seems to lead inside. To the left of the window is a keypad. To the right of the window on the" \
+    "that seems to lead inside. To the left of the window is a keypad. To the right of the window on the " \
     "wall is a plaque. At the end of the balcony is a stone pedestal, with an large book on top."
 room_list["roomA"].short_description = "You are on a balcony outside of a humongous tower that seems to extend " \
                                        "as far as you can see upwards and downwards."
-room_list["roomA"].documentation = "The entrance code: 'Hello World'"
+room_list["roomA"].documentation = "Enter the tower at your own risk, you may find yourself caught " \
+                                   "in an infinite loop. " \
+                                   "To remedy this, you must discover who you are. " \
+                                   "As with most journeys, you may want to start with a simple phrase: " \
+                                   "\"Hello World.\""
 
 
 # Creating roomB
 room_list["roomB"] = Room.Room("roomB", "Lobby")
 
-room_list["roomB"].long_description = "In this large room, there is some type of large computer tower in " \
-                                      "the corner. A huge ornate door is to the north. Stairs ascend to the east. " \
-                                      "A large window is to the south."
-room_list["roomB"].short_description = "In this large room, there is some type of large computer tower in " \
-                                       "the corner. A huge ornate door is to the north. Stairs ascend to the east. " \
-                                       "A large window is to the south. "
+room_list["roomB"].long_description = \
+    "As you enter this massive room, the first thing you notice is a huge ornate door across from you on " \
+    "the north wall. There are various wires and tubes connecting it to a large machine along the east " \
+    "wall. Stairs ascend to the east, and a ramp descends to the west. The window you came in is to the south."
+room_list["roomB"].short_description = \
+    "In this massive room, there is some type of large computer taking up most of the east wall. " \
+    "A huge ornate door is to the north. Stairs ascend to the east. A ramp goes down to the west. " \
+    "A large window is to the south. "
 
 
 # Creating roomD
@@ -534,7 +561,16 @@ thing_list["balconyWindowOpen"].destination = room_list["roomB"]
 
 # linking roomB (Lobby) stuff
 
-room_list["roomB"].add_thing(thing_list["tower"])
+room_list["roomB"].add_thing(thing_list["lobbyComputer"])
+
+# adding "floppies" to lobby for now
+
+room_list["roomB"].add_thing(thing_list["floppyDisk"])
+room_list["roomB"].add_thing(thing_list["cd"])
+room_list["roomB"].add_thing(thing_list["cartridge"])
+room_list["roomB"].add_thing(thing_list["tape"])
+room_list["roomB"].add_thing(thing_list["flashdrive"])
+
 
 thing_list["lobbyStairs"].destination = room_list["roomC"]
 thing_list["lobbyOrnateDoor"].destination = room_list["roomMP"]
@@ -637,7 +673,7 @@ room_list["roomH"].exits["east"] = thing_list["H-P4"]
 # linking roomI (Dark Webs) stuff
 
 room_list["roomI"].add_thing(thing_list["cobwebs"])
-room_list["roomI"].add_thing(thing_list["floppy"])
+# room_list["roomI"].add_thing(thing_list["floppy"])
 
 thing_list["darkWebsOpening"].destination = room_list["roomH"]
 

@@ -53,10 +53,6 @@ class Thing:
 		self.msg_cannot_go = "That is not a way you can go."
 		self.msg_go = "You go that way."
 
-		# TODO evaluate how these messages should be worded
-		self.msg_cannot_put_in = "You cannot do that."
-		self.msg_cannot_put_on = "You cannot do that."
-
 		self.msg_cannot_pull = "You cannot pull that."
 
 		self.msg_has_no_contents = "The {} can't store anything.".format(self.name)
@@ -188,6 +184,9 @@ class Thing:
 		else:
 			say(self.msg_cannot_drop)
 
+	def put_down(self, game, actionargs):
+		self.drop(game, actionargs)
+
 	def give_to(self, game, actionargs):
 		if self.can_be_dropped:
 			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
@@ -274,7 +273,64 @@ class Door(Exit):
 	def get_status(self):
 		return super().get_status("Door")
 
-	pass
+
+class MetaDoor(Exit):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_go = False
+		self.locked = True
+
+		self.num_lights = 0
+		self.msg_unlock = "The fifth and final orb along the top of the ornate door begins to glow. " \
+						  "You hear clanging and whirring sounds as if some internal mechanism is " \
+						  "operating inside the door."
+		self.msg_cannot_go = "You try to open the door, but it will not budge."
+		self.msg_go = "You approach the door, and with the slightest touch, it slowly swings open. " \
+					  "You walk through."
+
+	def get_status(self):
+		return super().get_status("MetaDoor")
+
+	def add_light(self):
+		self.num_lights += 1
+		if self.num_lights == 5:
+			say(self.msg_unlock)
+			self.can_go = True
+			self.locked = False
+		elif self.num_lights == 1:
+			say("One of the orbs along the top of the ornate door suddenly begins to glow bright white.")
+		else:
+			say("Another orb on the door begins to glow. Now {} of the five orbs are shining "
+				"bright.".format(self.num_to_word(self.num_lights)))
+
+	def num_to_word(self, num):
+		"""takes an integer 1 through 5 and returns it spelled out"""
+		if num == 0:
+			return "none"
+		elif num ==1:
+			return "one"
+		elif num ==2:
+			return "two"
+		elif num ==3:
+			return "three"
+		elif num ==4:
+			return "four"
+		elif num ==5:
+			return "five"
+
+	def get_desc(self):
+		description_text = "A towering ornate door. It is intricately decorated, and seems to be connected via " \
+						   "various cords to the large computer. "
+		if self.num_lights == 5:
+			description_text += "All five orbs along the top of the door are glowing brightly."
+		elif self.num_lights == 0:
+			description_text += "There are five dark orbs along the top of the door."
+		else:
+			description_text += "There are five orbs along the top of the door, {} of which are " \
+								"glowing white.".format(self.num_to_word(self.num_lights))
+		say(description_text)
+
 
 
 # class Door(Exit):
@@ -629,7 +685,6 @@ class Lever(Feature):
 			say("You cannot reach the lever.")
 
 	def become_reachable(self):
-		print("[[lever becomes reachable]]")
 		self.is_reachable = True
 
 	def get_desc(self):
@@ -637,6 +692,45 @@ class Lever(Feature):
 			say("A large lever is attatched to the wall. It is not clear what it is connected to.")
 		else:
 			say("Some kind of lever is attached to the wall. You can't get a closer look with the mouse in the way.")
+
+
+
+class Computer(Feature):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.key_items = ["floppyDisk", "cartridge", "tape", "cd", "flashdrive"]
+		self.inserted_things = list()
+		self.description_text = \
+			"This massive machine takes up most of the east wall. It is some sort of system of large rectangular devices all " \
+			"connected with various wires. There are lights blinking, and you hear whirring and clicking sounds. " \
+			"You can only assume it functions as some type of computer. " \
+			"There appears to be a handful of unique ports in the machine where something could be inserted."
+
+	def get_status(self):
+		return super().get_status("Computer")
+
+	def receive_item(self, game, item, prep):
+		if prep == "in":
+			if item.id in self.key_items:
+				game.player.remove_from_inventory(item)
+				self.inserted_things.append(item)
+				say("You find an appropriate looking place to insert the {} into the "
+					"computer.".format(item.name, prep, self.name))
+				game.thing_list["lobbyOrnateDoor"].add_light()
+			else:
+				say("You can't find anywhere in the computer to put the {}.".format(item.name))
+		else:
+			say("You can't put things {} the computer.".format(prep))
+
+	def get_desc(self):
+		text = self.description_text
+		if self.inserted_things:
+			text += " You have inserted"
+			text += Utilities.list_to_words([o.get_list_name() for o in self.inserted_things])
+			text += "."
+		say(text)
+
 
 
 class Clock(Feature):
