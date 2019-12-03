@@ -162,6 +162,9 @@ class Game:
 				else:
 					default_thing = self.find_by_name(thing_name, self.thing_list)
 					say("You don't see {}.".format(default_thing.list_name))
+					if self.player.current_room.name == "Dark Web"\
+					and self.player.current_room.is_lit == False:
+						say("But then again you can't really see much of anything...")	
 					return None	
 
 	def get_game_dictionary(self):

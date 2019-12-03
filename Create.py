@@ -324,9 +324,12 @@ thing_list["busSchedule"].list_name = "a bus schedule"
 #--------------------------------------------------------------------------
 
 # ROOM H (WEB) FEATURES AND ITEMS-------------------------------------------
+
+# Creating moth
 thing_list["moth"] = Thing.Moth("moth", "moth")
 thing_list["moth"].description = "A moth."
-thing_list["moth"].list_name = "a moth."
+thing_list["moth"].list_name = "a moth"
+
 
 # ROOM I (Dark Webs) FEATURES AND ITEMS--------------------------------------
 # Creating Floppy
@@ -336,9 +339,22 @@ thing_list["moth"].list_name = "a moth."
 
 # Creating cobwebs
 thing_list["cobwebs"] = Thing.Feature("cobwebs", "cobwebs")
-thing_list["cobwebs"].description = "Sticky cobwebs cover the walls, celing, " \
-                                    "and floors, only getting denser further into the darkness."
+thing_list["cobwebs"].description = "You can see that there are sticky cobwebs everywhere, "\
+				    "but can't see much more detail without any light."
 thing_list["cobwebs"].list_name = "some cobwebs"
+
+# Creating spider
+thing_list["spider"] = Thing.Spider("spider", "spider")
+thing_list["spider"].description = "A spider."
+thing_list["spider"].list_name = "a spider"
+
+
+# ROOM J (Clock Room) FEATURES AND ITEMS---------------------------------------
+thing_list["shiftyMan"] = Thing.ShiftyMan("shiftyMan", "shiftyMan")
+thing_list["shiftyMan"].description = "A shifty man."
+thing_list["shiftyMan"].list_name = "a shifty man"
+thing_list["shiftyMan"].alternate_names.extend(["man"])
+thing_list["shiftyMan"].adjectives.extend(["shifty"])
 
 # ROOM K (Cooling Room) FEATURES AND ITEMS--------------------------------------
 
@@ -346,7 +362,6 @@ thing_list["cobwebs"].list_name = "some cobwebs"
 thing_list["refrigerator"] = Thing.Container("refrigerator", "refrigerator")
 thing_list["refrigerator"].description = "A refrigerator."
 thing_list["refrigerator"].alternate_names.extend(["fridge"])
-
 
 # Creating cheese
 thing_list["cheese"] = Thing.Cheese("cheese", "cheese")
@@ -463,7 +478,8 @@ thing_list["lobbyStairs"].msg_go = "You ascend the stairs to the east."
 thing_list["utilityStairs"] = Thing.Exit("utilityStairs", "stairs")
 thing_list["utilityStairs"].description = "A dark staircase leads down and to the west."
 thing_list["utilityStairs"].msg_go = "You descend the stairs to the west."
-
+thing_list["utilityStairs"].has_dynamic_description = True
+thing_list["utilityStairs"].dynamic_description_text = "There is a staircase leading down and to the west."
 
 # Creating exits between C (Utilities) and D (Mousepad) [[HALLWAY]]
 # Creating utilityHallway
@@ -471,6 +487,8 @@ thing_list["utilityHallway"] = Thing.Exit("utilityHallway", "hallway")
 thing_list["utilityHallway"].description = "This dark hallway leads off to the north." \
                                      "A strange smell seems to be coming through it."
 thing_list["utilityHallway"].msg_go = "You slowly creep down the hallway."
+thing_list["utilityHallway"].has_dynamic_description = True
+thing_list["utilityHallway"].dynamic_description_text = "There is a hallway leading to the north."
 
 # Creating mousepadHallway
 thing_list["mousepadHallway"] = Thing.Exit("mousepadHallway", "hallway")
@@ -613,11 +631,15 @@ thing_list["websRamp"].dynamic_description_text = "There is a ramp going down to
 thing_list["websOpening"] = Thing.Exit("websOpening", "opening")
 thing_list["websOpening"].description = "The opening leads to a dark room."
 thing_list["websOpening"].msg_go = "You cautiously go through the opening."
+thing_list["websOpening"].has_dynamic_description = True
+thing_list["websOpening"].dynamic_description_text = "There is an opening to the south."
 
 # Creating darkWebsOpening
 thing_list["darkWebsOpening"] = Thing.Exit("darkWebsOpening", "opening")
 thing_list["darkWebsOpening"].description = "Light pours through the opening to the north."
 thing_list["darkWebsOpening"].msg_go = "You quickly walk back through the opening."
+thing_list["darkWebsOpening"].has_dynamic_description = True
+thing_list["darkWebsOpening"].dynamic_description_text = "There is an opening to the north."
 
 # thing_list["H-I"] = Thing.Exit("H-I", "exit H to I")
 # thing_list["H-I"].description = "The exit from room H to room I."
@@ -631,12 +653,12 @@ thing_list["websStairs"] = Thing.Exit("websStairs", "stairs")
 thing_list["websStairs"].description = "A staircase leading up and to the west."
 thing_list["websStairs"].msg_go = "You walk up the stairs to the west."
 thing_list["websStairs"].has_dynamic_description = True
-thing_list["websStairs"].dynamic_description = "There is a staircase to the west."
+thing_list["websStairs"].dynamic_description_text = "There is a staircase to the west."
 thing_list["clockRoomStairs"] = Thing.Exit("clockRoomStairs", "stairs")
 thing_list["clockRoomStairs"].description = "A staircase leading down and to the east ."
 thing_list["clockRoomStairs"].msg_go = "You walk down the stairs to the east."
 thing_list["clockRoomStairs"].has_dynamic_description = True
-thing_list["clockRoomStairs"].dynamic_description = "There is a staircase to the east."
+thing_list["clockRoomStairs"].dynamic_description_text = "There is a staircase to the east."
 
 # Creating exits between H and P4 [[DOOR]]
 thing_list["H-P4"] = Thing.Exit("H-P4", "exit H to P4")
@@ -765,21 +787,25 @@ room_list["roomH"].long_description = "You step into the west side of an extrava
 				      "and notice that it is holding some sort of a cartride in its mouth. Behind the moth lies a door, which the moth "\
 				      "appears to be guarding. On the north side of the hall, you see a ramp going downward. On the south side "\
 				      "of the hall, you see a pitch black opening." 
-room_list["roomH"].short_description = "You are in room H (short description)."
+room_list["roomH"].short_description = "You are in the marble hall."
 
 
 
 # Creating roomI
-room_list["roomI"] = Room.Room("roomI", "Dark Webs")
-room_list["roomI"].long_description = "A dark room... with webs."
-room_list["roomI"].short_description = "A dark room with webs."
+room_list["roomI"] = Room.DarkWeb("roomI", "Dark Web")
+room_list["roomI"].long_description = "You enter a room so dark you can't see much of anything. As you you try to make out more of the room, using the small amount of light "\
+				      "shining in from the hall to the north, you notice spider webs stretching across the room. You'll need to find a source of light before "\
+				      "you can determine anything else about this room..."
+room_list["roomI"].short_description = "You are in the dark room. The only thing you can see is some spider webs stretching across the room."
 
 
 
 # Creating room J
-room_list["roomJ"] = Room.Room("roomJ", "Clock Room")
-room_list["roomJ"].long_description = "You are in room J (long description)."
-room_list["roomJ"].short_description = "You are in room J (short description)."
+room_list["roomJ"] = Room.ClockRoom("roomJ", "Clock Room")
+room_list["roomJ"].long_description = "You enter a room containing a large, hand-carved clock on its west side. "\
+				      "On the east side of the room, a staircase leads downward. "\
+				      "Across from you, on the north side of the room, there is a door. "
+room_list["roomJ"].short_description = "You are in the clock room."
 
 # Creating roomK
 room_list["roomK"] = Room.Room("roomK", "Cooling Room")
@@ -893,8 +919,8 @@ room_list["roomB"].add_thing(thing_list["lobbyComputer"])
 
 #room_list["roomB"].add_thing(thing_list["floppyDisk"])
 #room_list["roomB"].add_thing(thing_list["cd"])
-room_list["roomB"].add_thing(thing_list["cartridge"])
-room_list["roomB"].add_thing(thing_list["tape"])
+#room_list["roomB"].add_thing(thing_list["cartridge"])
+#room_list["roomB"].add_thing(thing_list["tape"])
 room_list["roomB"].add_thing(thing_list["flashdrive"])
 
 
@@ -1036,6 +1062,8 @@ room_list["roomG"].add_thing(thing_list["busSchedule"])
 
 room_list["roomH"].add_thing(thing_list["moth"])
 
+thing_list["moth"].floppy = thing_list["cartridge"]
+
 thing_list["websOpening"].destination = room_list["roomI"]
 # TODO
 thing_list["websRamp"].destination = room_list["roomG"]
@@ -1054,6 +1082,8 @@ room_list["roomH"].exits["east"] = thing_list["H-P4"]
 # linking roomI (Dark Webs) stuff
 
 room_list["roomI"].add_thing(thing_list["cobwebs"])
+room_list["roomI"].add_thing(thing_list["spider"])
+room_list["roomI"].add_thing(thing_list["tape"])
 # room_list["roomI"].add_thing(thing_list["floppy"])
 
 thing_list["darkWebsOpening"].destination = room_list["roomH"]
@@ -1062,7 +1092,7 @@ room_list["roomI"].exits["north"] = thing_list["darkWebsOpening"]
 
 
 # linking roomJ (Clock Room) stuff
-
+room_list["roomJ"].shifty_man = thing_list["shiftyMan"]
 thing_list["clockRoomStairs"].destination = room_list["roomH"]
 thing_list["clockRoomHallway"].destination = room_list["roomK"]
 

@@ -13,6 +13,7 @@ class Parser:
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
 		self.exits = game.get_all_exits()
 		self.debug = False # Temporary for debugging
+		self.special_function = False
 
 	# Temporary method for debugging
 	def print_parsed(self):
@@ -40,6 +41,8 @@ class Parser:
 			else: 
 				if self.debug == True:
 					self.print_parsed()
+				elif self.special_function:
+					self.check_special_function(game)
 				elif self.action_dict.get("verb", None) != None:
 					say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
 				else:
@@ -52,6 +55,7 @@ class Parser:
 		self.action_args = []
 		self.parts_of_speech = []
 		self.action_dict.clear()
+		self.special_function = False
 
 	def update_dictionaries(self, game):
 		for function in game.player.special_functions:
@@ -228,6 +232,17 @@ class Parser:
 		if iobj is not None:
 			self.action_dict["iobj"] = iobj
 
+		for function in game.player.special_functions:
+			if game.player.special_functions[function]["name"] == dobj:
+				self.special_function = True
+				break
+
+	def check_special_function(self, game):
+		if self.action_dict["verb"] is not "call":
+			say("You must use 'call' with " + self.action_dict["dobj"] + ".")
+		else:
+			say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
+	
 	def init_dictionary(self):
 		gamedict = {
 			"look": "look",

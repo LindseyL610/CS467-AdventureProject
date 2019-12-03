@@ -224,27 +224,114 @@ class Room:
 	def led(self, game, actionargs):
 		say(self.msg_nothing_happens)
 
+class ClockRoom(Room):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.special_time = 3
+		self.last_time = 0
+		self.shifty_man_present = False
+		self.shifty_man = None
+
+	def get_status(self):
+		return super().get_status("ClockRoom")
+
+	def get_description(self, time=-1):
+		if time == -1:
+			time = self.last_time
+		else:
+			self.last_time = time
+
+		if time == self.special_time:
+			super().get_description()
+			if not self.shifty_man_present:
+				self.add_thing(self.shifty_man)
+				self.shifty_man_present = True
+			say("There is a shifty man standing in front of the door.")
+		elif self.shifty_man in self.contents:
+			self.remove_thing(self.shifty_man)
+			self.shifty_man_present = False
+			super().get_description()
+			 
 class DarkWeb(Room):
 	def __init__(self, id, name):
 		super().__init__(id, name)
+		self.contains_moth = False
 		self.is_lit = False
-
 		self.msg_already_lit = "The room is already lit."
 		self.msg_lit = "You here a faint buzzing sound, and then a light at the opposite " \
 					   "end of the room suddenly turns on. Then another light, turns on, and another, " \
-					   "until the whole room is fully lit. You sheild your eyes until they have time to adjust. " \
-					   "When you finally look around, you see a room completely filled with spider webs, " \
+					   "until the whole room is fully lit. You shield your eyes until they have time to adjust. " \
+					   "When you finally look around, you see a room completely filled with cobwebs, " \
+					   "which have a tape tangled in them, "\
 					   "and at the far end of the room... a large spider."
-		self.alternate_description = "A long room filled with cobwebs. There is an opening to the north."
+		self.alternate_description = "A long room filled with cobwebs."
 
 	def get_status(self):
 		return super().get_status("DarkWeb")
+
+	def get_description(self, time=None):
+		say(self.name)
+
+		if not self.has_been_visited:
+			say(self.long_description)
+			self.has_been_visited = True
+		else:
+			if not self.is_lit:
+				description_string = self.short_description
+
+				for exit in self.exits.values():
+					if exit.has_dynamic_description:
+						description_string += " " + exit.get_dynamic_description()
+
+				say(description_string)
+
+			else:
+				description_string = self.short_description
+				listed_things = []
+
+				for exit in self.exits.values():
+					if exit.is_accessible:
+						if exit.has_dynamic_description:
+							description_string += " " + exit.get_dynamic_description()
+
+						if exit.is_listed:
+							listed_things.append(exit)
+
+				for thing in self.contents:
+					if thing.is_accessible:
+						if thing.has_dynamic_description:
+							description_string += " " + thing.get_dynamic_description()
+
+						if thing.is_listed:
+							listed_things.append(thing)
+
+				num_listed_things = len(listed_things)
+
+				if num_listed_things > 0:
+
+					list_string = " You see"
+					list_string += Utilities.list_to_words([o.get_list_name() for o in listed_things])
+					list_string += "."
+					description_string += list_string
+
+				say(description_string)
 
 	def led(self, game, actionargs):
 		if self.is_lit is False:
 			self.is_lit = True
 
-			say(self.msg_lit)
+			for item in self.contents:
+				if item.name == "cobwebs":
+					item.description = "Sticky cobwebs cover the walls, ceiling, "\
+							   "and floors, only getting denser further into the room."
+					break
+
+			message = self.msg_lit
+
+			if self.contains_moth:
+				message += self.moth_msg
+
+			say(message)
 			self.short_description = self.alternate_description
 
 			# add floppy
