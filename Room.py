@@ -149,7 +149,7 @@ class Room:
 			self.has_been_visited = True
 
 	def look(self, game, actionargs):
-		self.get_description()
+		self.get_description(game.game_time)
 
 	def go(self, game, actionargs):
 
