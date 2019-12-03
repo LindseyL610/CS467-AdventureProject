@@ -112,12 +112,15 @@ class Room:
 		if self.has_been_visited:
 			description_string = self.short_description
 			listed_things = []
+			already_described = [] # Stores exits that have already been described
 
 			for exit in self.exits.values():
-				if exit.is_accessible:
+				# Only do this if exit hasn't already been described
+				if exit.is_accessible and exit not in already_described:
 					if exit.has_dynamic_description:
 						description_string += " " + exit.get_dynamic_description()
-
+						already_described.append(exit) # Append exit to described exits
+					
 					if exit.is_listed:
 						listed_things.append(exit)
 
@@ -224,32 +227,55 @@ class Room:
 	def led(self, game, actionargs):
 		say(self.msg_nothing_happens)
 
+	def sleep(self, game, actionargs):
+		hours = int(-1)
+
+		while (hours < 1) or (hours > 12):
+			say("How many hours do you want to sleep for (between 1 and 12)?")
+			hours = input("> ")
+
+			try:
+				hours = int(hours)
+				
+				if (hours < 1) or (hours > 12):
+					say("You must enter an integer between 1 and 12.")
+			except ValueError:
+				hours = int(-1)
+				say("You must enter an integer between 1 and 12.")
+
+		count = 0
+
+		while count < hours:
+			game.advance_time()
+
+			count += 1
+
+		hours = str(hours)
+
+		say("You slept for " + hours + " hours.")
+
+		self.look(game, actionargs)
+
 class ClockRoom(Room):
 	def __init__(self, id, name):
 		super().__init__(id, name)
-		self.special_time = 3
-		self.last_time = 0
-		self.shifty_man_present = False
+		self.special_time = list()
 		self.shifty_man = None
 
 	def get_status(self):
 		return super().get_status("ClockRoom")
 
 	def get_description(self, time=-1):
-		if time == -1:
-			time = self.last_time
-		else:
-			self.last_time = time
-
-		if time == self.special_time:
-			super().get_description()
-			if not self.shifty_man_present:
+		if time is not -1:
+			if time not in self.special_time:
+				if self.shifty_man in self.contents:
+					self.remove_thing(self.shifty_man)
+				super().get_description()
+			else:
+				super().get_description()
 				self.add_thing(self.shifty_man)
-				self.shifty_man_present = True
-			say("There is a shifty man standing in front of the door.")
-		elif self.shifty_man in self.contents:
-			self.remove_thing(self.shifty_man)
-			self.shifty_man_present = False
+				say("There is a shifty man standing in front of the door.")
+		else:
 			super().get_description()
 			 
 class DarkWeb(Room):
@@ -263,9 +289,10 @@ class DarkWeb(Room):
 					   "until the whole room is fully lit. You shield your eyes until they have time to adjust. " \
 					   "When you finally look around, you see a room completely filled with cobwebs, " \
 					   "which have a tape tangled in them, "\
-					   "and at the far end of the room... a large spider."
+					   "and at the far end of the room... a large spider. "
 		self.alternate_description = "A long room filled with cobwebs."
-
+		self.moth_msg = "Looking closer, you can see the moth you sprayed earlier trapped "\
+				"in the web, with the spider directly over it."
 	def get_status(self):
 		return super().get_status("DarkWeb")
 

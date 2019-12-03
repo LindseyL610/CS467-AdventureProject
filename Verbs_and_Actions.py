@@ -137,6 +137,11 @@ verb_list["hit"].supported_prepositions.update({"NONE":"NONE"})
 verb_list["talk"] = Verb("talk")
 verb_list["talk"].alternate_names.extend(["speak", "converse"])
 verb_list["talk"].supported_prepositions.update({"to": "NONE", "with": "NONE"})
+
+verb_list["sleep"] = Verb("sleep")
+verb_list["sleep"].alternate_names.extend(["nap", "snooze"])
+verb_list["sleep"].supported_prepositions.update({"NONE": "NONE"})
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down", "with"]
 
@@ -371,3 +376,7 @@ action_list["hit"] = ActionDirect("hit")
 # talk
 # verb + dobj(ANYWHERE) "talk man" -> Thing.talk()
 action_list["talk"] = ActionDirect("talk")
+
+# sleep
+# verb "sleep" -> Room.sleep()
+action_list["sleep"] = ActionVerbOnly("sleep")

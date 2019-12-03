@@ -318,6 +318,29 @@ class Door(Exit):
 	def get_status(self):
 		return super().get_status("Door")
 
+class BlockedDoor(Exit):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_go = False
+		self.locked = False
+		self.msg_unlock = "The door is unlocked."
+		self.msg_cannot_go = "You cannot go through the door."
+		self.alt_msg_cannot_go =  None
+		self.msg_go = "You go through the door."
+
+	def get_status(self):
+		return super().get_status("BlockedDoor")
+
+	def go(self, game, actionargs):
+		if self.id == "clockRoomDoor":
+			if game.room_list["roomJ"].shifty_man in game.room_list["roomJ"].contents\
+			and not self.can_go and self.alt_msg_cannot_go is not None:
+				say(self.alt_msg_cannot_go)
+			else:
+				super().go(game, actionargs)
+		else:
+			super().go(game, actionargs)	
+				
 
 class MetaDoor(Exit):
 
@@ -436,6 +459,32 @@ class Item(Thing):
 			type = "Item"
 		return super().get_status(type)
 
+
+class RubberDuck(Item):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+	
+	def get_status(self, type=None):
+		if type is None:
+			type = "RubberDuck"
+		return super().get_status(type)
+
+	def give_to(self, game, actionargs):
+		recipient = game.get_thing_by_name(actionargs["iobj"], False)
+
+		if recipient is not game.thing_list["shiftyMan"]:	
+			recipient = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+
+			if recipient.can_receive:
+				say("The {} doesn't want the rubber duck.".format(recipient.name))
+			else:
+				say("You cannot give anything to the {}".format(recipient.name))
+		else:
+			door = game.thing_list["clockRoomDoor"]
+			print(door.msg_unlock)
+			door.locked = False
+			door.can_go = True
+			game.player.remove_from_inventory(self)
 
 class Book(Item):
 
@@ -1081,6 +1130,7 @@ class Moth(Feature):
 				game.room_list["roomI"].add_thing(self)
 				game.room_list["roomI"].contains_moth = True
 				self.in_web = True
+				game.thing_list["webDoor"].can_go = True
 		else:
 			say("You don't have anything to spray the moth with.")
 
