@@ -131,7 +131,8 @@ verb_list["spray"].alternate_names.extend(["debug"])
 verb_list["spray"].supported_prepositions.update({"NONE":"NONE", "with":"with"})
 
 verb_list["hit"] = Verb("hit")
-verb_list["hit"].alternate_names.extend(["punch", "kick", "shake", "wallop", "smack", "bang"])
+verb_list["hit"].alternate_names.extend(["punch", "kick", "shake", "wallop", "smack", "bang",
+										 "destroy", "break", "smash"])
 verb_list["hit"].supported_prepositions.update({"NONE":"NONE"})
 
 
