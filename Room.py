@@ -125,9 +125,10 @@ class Room:
 						listed_things.append(exit)
 
 			for thing in self.contents:
-				if thing.is_accessible:
+				if thing.is_accessible and thing not in already_described:
 					if thing.has_dynamic_description:
 						description_string += " " + thing.get_dynamic_description()
+						already_described.append(thing)
 
 					if thing.is_listed:
 						listed_things.append(thing)
