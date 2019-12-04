@@ -73,7 +73,6 @@ class Thing:
 
 		self.msg_cannot_talk = "You cannot talk to that."
 
-
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -272,7 +271,6 @@ class Thing:
 	def hit(self, game, actionargs):
 		say(self.msg_nothing_happens)
 
-
 	# Special Functions
 	def ram(self, game, actionargs):
 		print("[[ram on {}]]".format(self.name))
@@ -376,15 +374,15 @@ class MetaDoor(Exit):
 		"""takes an integer 1 through 5 and returns it spelled out"""
 		if num == 0:
 			return "none"
-		elif num ==1:
+		elif num == 1:
 			return "one"
-		elif num ==2:
+		elif num == 2:
 			return "two"
-		elif num ==3:
+		elif num == 3:
 			return "three"
-		elif num ==4:
+		elif num == 4:
 			return "four"
-		elif num ==5:
+		elif num == 5:
 			return "five"
 
 	def get_desc(self):
@@ -398,7 +396,6 @@ class MetaDoor(Exit):
 			description_text += "There are five orbs along the top of the door, {} of which are " \
 								"glowing white.".format(self.num_to_word(self.num_lights))
 		say(description_text)
-
 
 
 # class Door(Exit):
@@ -521,6 +518,7 @@ class Book(Item):
 	def open(self, game, actionargs):
 		self.read(game, actionargs)
 
+
 class Cheese(Item):
 
 	def __init__(self, id, name):
@@ -607,12 +605,13 @@ class Ticket(Item):
 	def grant_bus_access(self, game, actionargs):
 		accessible = game.player.current_room.get_all_accessible_contents()
 		if self in accessible:
-			game.player.current_room.remove_thing(item)
+			game.player.current_room.remove_thing(self)
 		elif game.player.is_in_inventory(self):
 			game.player.remove_from_inventory(self)
 		game.room_list["roomG"].remove_thing(game.thing_list["busLocked"])
 		game.room_list["roomG"].add_thing(game.thing_list["bus"])
 		game.room_list["roomG"].bus = game.thing_list["bus"]
+
 
 class Key(Item):
 
@@ -642,18 +641,18 @@ class Drink(Item):
 	def __init__(self, id, name):
 		super().__init__(id, name)
 
-
 	def get_status(self, type=None):
 		if type is None:
 			type = "Drink"
 		return super().get_status(type)
 
 	def use(self, game, actionargs):
-		self.drink(game,actionargs)
+		self.drink(game, actionargs)
 
 	def drink(self, game, actionargs):
 		message = "You take a sip of the {}.".format(self.name)
 		say(message)
+
 
 class Wine(Drink):
 	def __init__(self, id, name):
@@ -671,38 +670,40 @@ class Wine(Drink):
 			say("You drink some wine and start to loosen up...")
 			game.player.drunk = True
 
+
 class Newspaper(Item):
 
-        def __init__(self, id, name):
-                super().__init__(id, name)
-                self.can_be_read = True
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_read = True
 
-        def get_status(self, type=None):
-                if type is None:
-                        type = "Newspaper"
-                return super().get_status(type)
+	def get_status(self, type=None):
+		if type is None:
+			type = "Newspaper"
+		return super().get_status(type)
 
-        def read(self, game, actionargs):
-                contents = "The newspaper has an article about bugs."
-                say(contents)
+	def read(self, game, actionargs):
+		contents = "The newspaper has an article about bugs."
+		say(contents)
 
-        def open(self, game, actionargs):
-                self.read(game, actionargs)
+	def open(self, game, actionargs):
+		self.read(game, actionargs)
 
 
 class Debugger(Item):
 
-        def __init__(self, id, name):
-                super().__init__(id, name)
-                self.can_be_sprayed = True
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_sprayed = True
 
-        def get_status(self, type=None):
-                if type is None:
-                        type = "Debugger"
-                return super().get_status(type)
+	def get_status(self, type=None):
+		if type is None:
+			type = "Debugger"
+		return super().get_status(type)
 
-        def spray(self, game, actionargs):
-                print("You spray the Debugger in the air. Nothing happens.")
+	def spray(self, game, actionargs):
+		print("You spray the Debugger in the air. Nothing happens.")
+
 
 class Feature(Thing):
 	"""Not-Takable, Not-Dropable thing"""
@@ -717,6 +718,7 @@ class Feature(Thing):
 		if type is None:
 			type = "Feature"
 		return super().get_status(type)
+
 
 class Lock(Feature):
 	def __init__(self, id, name):
@@ -753,6 +755,7 @@ class Lock(Feature):
 						game.player.remove_from_inventory(item)
 		else:
 			say("You can't put things {} the {}.".format(prep, self.name))
+
 	# use
 	def use(self, game, actionargs):
 		# Determine if the key is accessible in the Room or in the Player's inventory
@@ -788,6 +791,7 @@ class Lock(Feature):
 	def dispense_item(self, game):
 		game.player.add_to_inventory(self.item)
 
+
 class Input(Feature):
 	"""A feature that you can input text into (like a keyboard)
 	By default they have one correct answer which performs one function.
@@ -797,6 +801,7 @@ class Input(Feature):
 		super().__init__(id, name)
 		# True if the input only functions once
 		self.one_time_use = True
+		self.triggers_once = True
 		# True if the correct answer has already been triggered
 		self.triggered = False
 
@@ -806,6 +811,7 @@ class Input(Feature):
 		self.msg_correct_answer = "Correct!"
 		self.msg_incorrect_answer = "Nothing happens."
 		self.msg_already_triggered = "Nothing happens."
+		self.msg_already_used = ""
 
 	def get_status(self, type=None):
 		if type is None:
@@ -814,24 +820,28 @@ class Input(Feature):
 
 	def look(self, game, actionargs):
 		say(self.get_desc())
-		yes_or_no = game.get_yn_answer(self.msg_yn_prompt)
-		if yes_or_no:
-			self.use(game, actionargs)
+		if not (self.one_time_use and self.triggered):
+			yes_or_no = game.get_yn_answer(self.msg_yn_prompt)
+			if yes_or_no:
+				self.use(game, actionargs)
 
 	def use(self, game, actionargs):
-		response = game.get_word_answer(self.msg_prompt, self.answer)
-		if (response):
-			if self.one_time_use and self.triggered:
-				print("[[already triggered...]]")
-				say(self.msg_already_triggered)
-			else:
-				self.triggered = True
-				print("[[doing aciton...]]")
-				say(self.msg_correct_answer)
-				self.carry_out_action(game, actionargs)
+		if self.one_time_use and self.triggered:
+			say(self.msg_already_used)
 		else:
-			print("[[wrong answer...]]")
-			say(self.msg_incorrect_answer)
+			response = game.get_word_answer(self.msg_prompt, self.answer)
+			if (response):
+				if self.triggers_once and self.triggered:
+					print("[[already triggered...]]")
+					say(self.msg_already_triggered)
+				else:
+					self.triggered = True
+					print("[[doing aciton...]]")
+					say(self.msg_correct_answer)
+					self.carry_out_action(game, actionargs)
+			else:
+				print("[[wrong answer...]]")
+				say(self.msg_incorrect_answer)
 
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
@@ -859,65 +869,117 @@ class InputBalconyWindow(Input):
 
 
 class InputPuzzle1(Input):
-	"""the class for the input device on the balcony that opens the window"""
+	"""the class for the input device in puzzle 1"""
 
-	# This status function is not working on its own
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_prompt = "What do you input into the control panel?"
+		self.answer = "gone"
+		self.msg_correct_answer = \
+			"The Control Panel displays this message: \n" \
+			"<darkred>Crystals are gone, shutting down and switching to manual monitoring system.</>\n" \
+			"All of the monitors in the room turn off, and it is now pitch black. \n" \
+			"Your Documentation Tome begins to glow. Opening it, you see a new function appear: LED. " \
+			"To use this function, input 'call LED'. You try it, and the lights in the room turn back on."
+
+	# "The light from the tome fades away, and the room is again completely dark."
+
 	def get_status(self):
 		return super().get_status("InputPuzzle1")
 
+	def get_desc(self):
+		if not self.triggered:
+			desc = "The Control Panel has a large screen and a keyboard below it. On the screen is this message: \n" \
+				   "<darkred>Error: Crystals have disappeared without a TRACE. " \
+				   "Before turning offline, the monitoring system detected " \
+				   "four distinct paths the crystals took: \n" \
+				   "Path 1: FFFFF0 -> FFFF99 -> FF69B4 -> C19A6B -> 2A3439 -> 614051\n" \
+				   "Path 2: FFFF99 -> FF69B4 -> C19A6B -> FFFFF0 -> FFFF99\n" \
+				   "Path 3: 007FFF -> 800020 -> C19A6B -> FFFFF0\n" \
+				   "Path 4: 800020 -> FFFF99 -> 228B22 -> 614051 -> 228B22 -> FF69B4 -> 007FFF\n" \
+				   "Please input the current location of the crystals...</>"
+		else:
+			desc = "The control panel's screen is now blank."
+		say(desc)
+
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
-		# Open window...
+		# learn function
 		game.player.learn_function("led")
 
-class InputPuzzle2(Input):
-	"""the class for the input device on the balcony that opens the window"""
 
-	# This status function is not working on its own
+class InputPuzzle2(Input):
+	"""the class for the input device in puzzle 2"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_prompt = "What do you type to complete the email?"
+		self.answer = "alone"
+		self.msg_correct_answer = \
+			"You type the final word and send the email. You feel better now that this apology " \
+			"has been sent to those who deserve to hear it. As you reflect on your bizarre adventure, " \
+			"and dream of being free of this tower, you realize that maybe the real adventure is the friends you " \
+			"make along the way. Just then, your Tome of Documentation rumbles. You open it and see a new function " \
+			"has appeared: KIN. You can use it by saying 'call KIN on thing'. It will reconnect something with " \
+			"it's relatives."
+		self.msg_incorrect_answer = "You think harder, and realize that is not the right word to complete the email."
+
 	def get_status(self):
 		return super().get_status("InputPuzzle2")
 
+	def get_desc(self):
+		if not self.triggered:
+			desc = "The computer is on, and on the screen it appears as though someone was composing an email." \
+				   "Here is what is says: \n" \
+				   "<darkred>Dear family, \n" \
+				   "I'm sorry for disrupting our relationship database." \
+				   "My actions have caught up to me. Now I must confess that my fears have become reality, " \
+				   "for, now I am ...</> \n" \
+				   "The email is missing a final word. What should you type before sending the email?"
+		else:
+			desc = "The computer's screen is now blank."
+		say(desc)
+
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
-		# Open window...
+		# learn function
 		game.player.learn_function("kin")
 
-class InputPuzzle3(Input):
-	"""the class for the input device on the balcony that opens the window"""
 
-	# This status function is not working on its own
+class InputPuzzle3(Input):
+	"""the class for the input device in puzzle 3"""
+
 	def get_status(self):
 		return super().get_status("InputPuzzle3")
 
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
-		# Open window...
+		# learn function
 		game.player.learn_function("ram")
 
-class InputPuzzle4(Input):
-	"""the class for the input device on the balcony that opens the window"""
 
-	# This status function is not working on its own
+class InputPuzzle4(Input):
+	"""the class for the input device in puzzle 4"""
+
 	def get_status(self):
 		return super().get_status("InputPuzzle4")
 
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
-		# Open window...
+		# learn function
 		game.player.learn_function("tic")
 
-class InputPuzzle5(Input):
-	"""the class for the input device on the balcony that opens the window"""
 
-	# This status function is not working on its own
+class InputPuzzle5(Input):
+	"""the class for the input device in puzzle 5"""
+
 	def get_status(self):
 		return super().get_status("InputPuzzle5")
 
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
-		# Open window...
+		# learn function
 		game.player.learn_function("pro")
-
 
 
 class Sign(Feature):
@@ -951,7 +1013,7 @@ class Lever(Feature):
 						 "the west wall slides away, revealing a tunnel leading off to the west."
 			say(lever_text)
 			game.player.current_room.remove_exit(game.thing_list["secretWall"])
-			game.player.current_room.add_exit(game.thing_list["mousepadTunnel"],"west")
+			game.player.current_room.add_exit(game.thing_list["mousepadTunnel"], "west")
 
 		else:
 			say("You cannot reach the lever, the mouse is in the way.")
@@ -964,7 +1026,6 @@ class Lever(Feature):
 			say("A large lever is attatched to the wall. It is not clear what it is connected to.")
 		else:
 			say("Some kind of lever is attached to the wall. You can't get a closer look with the mouse in the way.")
-
 
 
 class Computer(Feature):
@@ -1004,7 +1065,6 @@ class Computer(Feature):
 		say(text)
 
 
-
 class Clock(Feature):
 	"""Readable Feature that can tell game time"""
 
@@ -1017,6 +1077,7 @@ class Clock(Feature):
 
 	def look(self, game, actionargs):
 		say("The time is t=" + str(game.game_time))
+
 
 class Piano(Feature):
 	"""Playable piano"""
@@ -1033,9 +1094,9 @@ class Piano(Feature):
 		if type is None:
 			type = "Piano"
 		return super().get_status(type)
-	
+
 	def use(self, game, actionargs):
-		self.play(game,actionargs)
+		self.play(game, actionargs)
 
 	def play(self, game, actionargs):
 		if game.player.pro:
@@ -1063,6 +1124,7 @@ class Piano(Feature):
 			say("Your playing has attracted one of the tower's DAEMONs!")
 			say(game.thing_list["DancingDaemon"].description)
 
+
 class DancingDaemon(Feature):
 	"""Daemon that appears"""
 
@@ -1076,7 +1138,7 @@ class DancingDaemon(Feature):
 		if type is None:
 			type = "DancingDaemon"
 		return super().get_status(type)
-	
+
 	def dance(self, game, actionargs):
 		say(self.msg_dance)
 		if not self.floppy_received:
@@ -1084,6 +1146,7 @@ class DancingDaemon(Feature):
 			game.player.add_to_inventory(self.floppy)
 			self.floppy_received = True
 			say(message)
+
 
 class Moth(Feature):
 	"""Moth holding the cartridge"""
@@ -1094,8 +1157,8 @@ class Moth(Feature):
 		self.floppy = None
 		self.been_sprayed = False
 		self.msg_spray = "You spray the moth with the Debugger."
-		self.msg_first_spray = "The moth flies into the opening, taking the cartridge with it "\
-				       ", but leaving the door unguarded."
+		self.msg_first_spray = "The moth flies into the opening, taking the cartridge with it " \
+							   ", but leaving the door unguarded."
 		self.msg_been_sprayed = "The moth flaps its wings in an attempt to get away."
 		self.in_web = False
 		self.msg_kin_not_in_web = "Hundreds of smaller moths appear. They appear to check on the "\
@@ -1137,7 +1200,7 @@ class Moth(Feature):
 	def spray_with(self, game, actionargs):
 		if actionargs["iobj"] == "debugger":
 			self.spray(game, actionargs)
-		else: 
+		else:
 			say("You cannot spray the moth with that.")
 
 	def kin(self, game, actionargs):
@@ -1230,7 +1293,6 @@ class Freezer(Feature):
 			game.player.current_room.add_thing(game.thing_list["flashdrive"])
 		else:
 			say("Nothing happens.")
-
 
 
 class Storage(Feature):
@@ -1373,6 +1435,7 @@ class Surface(Storage):
 	def get_status(self):
 		return super().get_status("Surface")
 
+
 class VendingTerminal(Container):
 	"""Things are stored IN the Container
 	If the container is CLOSED things inside are NOT accessible.
@@ -1400,7 +1463,8 @@ class VendingTerminal(Container):
 		if self.dispensed:
 			super().hit(game, actionargs)
 		else:
-			say("You give the vending terminal a smack, but it's not enough to dislodge the ticket. Maybe something with more force...")
+			say(
+				"You give the vending terminal a smack, but it's not enough to dislodge the ticket. Maybe something with more force...")
 
 	def ram(self, game, actionargs):
 		say("You RAM the vending terminal with tremendous force.")
@@ -1412,4 +1476,4 @@ class VendingTerminal(Container):
 			self.dispensed = True
 			self.description = self.alt_description
 			say(self.msg_rammed)
-			
+

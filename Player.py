@@ -26,7 +26,7 @@ class Player:
 								  "kin":
 									  {"name": "kin",
 									   "learned": False,
-									   "description": "Find related things.",
+									   "description": "Reconnect with relatives.",
 									   "action": "direct_object"},
 								  "tic":
 									  {"name": "tic",

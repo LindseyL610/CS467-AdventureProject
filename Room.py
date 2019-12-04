@@ -27,9 +27,9 @@ class Room:
 
 		self.msg_dance = "You dance. Nothing happens."
 
-	def get_status(self, type = None):
+	def get_status(self, type=None):
 		"""returns the status of a room in JSON format"""
-		
+
 		if type is None:
 			type = "Room"
 
@@ -44,7 +44,7 @@ class Room:
 
 		str_dict = self.__dict__.copy()
 
-		#print ("str_dict before: " + str(str_dict))
+		# print ("str_dict before: " + str(str_dict))
 
 		for attr in str_dict:
 			if isinstance(str_dict[attr], list):
@@ -60,14 +60,13 @@ class Room:
 			else:
 				str_dict[attr] = get_export_value(str_dict[attr])
 
-		#print ("str_dict after: " + str(str_dict))
+		# print ("str_dict after: " + str(str_dict))
 
 		ret_val = dict()
 		ret_val["type"] = type
 		ret_val["data"] = str_dict
 
 		return json.dumps(ret_val)
-
 
 	def set_status(self, status, thing_list, room_list):
 		"""uses the JSON data in status to update the thing"""
@@ -85,7 +84,7 @@ class Room:
 				if list is not None:
 					id = value[3:(value.find(">"))]
 					return list[id]
-			
+
 			return value
 
 		status_obj = json.loads(status)
@@ -101,12 +100,12 @@ class Room:
 					imp_val[i] = get_import_value(status_obj[attr][i], thing_list, room_list)
 			else:
 				imp_val = get_import_value(status_obj[attr], thing_list, room_list)
-		
+
 			setattr(self, attr, imp_val)
 
-	def get_description(self, time = None):
-		#print("Room.get_description()")
-		#print("time = " + str(time))
+	def get_description(self, time=None):
+		# print("Room.get_description()")
+		# print("time = " + str(time))
 
 		say(self.name)
 		if self.has_been_visited:
@@ -124,10 +123,12 @@ class Room:
 					if exit.is_listed:
 						listed_things.append(exit)
 
+
 			for thing in self.contents:
-				if thing.is_accessible:
+				if thing.is_accessible and thing not in already_described:
 					if thing.has_dynamic_description:
 						description_string += " " + thing.get_dynamic_description()
+						already_described.append(thing)
 
 					if thing.is_listed:
 						listed_things.append(thing)
@@ -135,7 +136,6 @@ class Room:
 			num_listed_things = len(listed_things)
 
 			if num_listed_things > 0:
-
 				list_string = " You see"
 				list_string += Utilities.list_to_words([o.get_list_name() for o in listed_things])
 				list_string += "."
@@ -192,25 +192,28 @@ class Room:
 			if hasattr(item, "contents"):
 				all_contents_list.extend(item.contents)
 
+		# for exit in set(self.exits.values()):
 		for exit in self.exits.values():
 			all_contents_list.append(exit)
 
 		return all_contents_list
 
-	def get_all_accessible_contents(self):
+	# returns all accessibel contents in a room
+	# if deep=True (default) it also returns things inside of storage
+	def get_all_accessible_contents(self, deep=True):
 		"""return everything in a room that IS accessible, from contents, storage, and exits"""
-		all_contents_list = []
+		all_contents_list = set()
 		for item in self.contents:
 			if item.is_accessible:
-				all_contents_list.append(item)
-				if hasattr(item, "contents") and item.contents_accessible:
+				all_contents_list.add(item)
+				if hasattr(item, "contents") and item.contents_accessible and deep:
 					for subitem in item.contents:
 						if subitem.is_accessible:
-							all_contents_list.append(subitem)
+							all_contents_list.add(subitem)
 
 		for exit in self.exits.values():
 			if exit.is_accessible:
-				all_contents_list.append(exit)
+				all_contents_list.add(exit)
 
 		return all_contents_list
 
@@ -225,7 +228,8 @@ class Room:
 			say(self.msg_pro)
 
 	def led(self, game, actionargs):
-		say(self.msg_nothing_happens)
+		say("The lights are already on.")
+
 
 	def sleep(self, game, actionargs):
 		hours = int(-1)
@@ -361,11 +365,11 @@ class DarkWeb(Room):
 			say(message)
 			self.short_description = self.alternate_description
 
-			# add floppy
-			# change properties of stuff in room (floppy, cobwebs, spider?)
+		# add floppy
+		# change properties of stuff in room (floppy, cobwebs, spider?)
 		else:
 			say(self.msg_already_lit)
-		
+
 
 class Ballroom(Room):
 	def __init__(self, id, name):
@@ -381,6 +385,7 @@ class Ballroom(Room):
 			message = "You dance like no one's watching. Except you feel like someone is watching..."
 			say(message)
 
+
 class BusStation(Room):
 	def __init__(self, id, name):
 		super().__init__(id, name)
@@ -391,13 +396,13 @@ class BusStation(Room):
 	def get_status(self):
 		return super().get_status("BusStation")
 
-	def get_description(self, time = -1):
-		#print("BusStation.get_description()")
-		#print("special_time = " + str(self.special_time))
-		#print("time = " + str(time))
-		#print("bus= " + self.bus.id)
+	def get_description(self, time=-1):
+		# print("BusStation.get_description()")
+		# print("special_time = " + str(self.special_time))
+		# print("time = " + str(time))
+		# print("bus= " + self.bus.id)
 
-		if time is not -1:
+		if time != -1:
 			if time not in self.special_time:
 				self.set_normal()
 				super().get_description()
