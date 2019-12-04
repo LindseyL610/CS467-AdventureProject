@@ -807,7 +807,7 @@ room_list["roomH"].long_description = "You step into the west side of an extrava
 				      "appears to be guarding. On the north side of the hall, you see a ramp going downward. On the south side "\
 				      "of the hall, you see a pitch black opening." 
 room_list["roomH"].short_description = "You are in the marble hall."
-
+room_list["roomH"].documentation = "If you're having trouble, try debugging."
 
 
 # Creating roomI
@@ -826,6 +826,7 @@ room_list["roomJ"].long_description = "You enter a room containing a large, hand
 				      "Across from you, on the north side of the room, there is a door. "
 room_list["roomJ"].short_description = "You are in the clock room."
 room_list["roomJ"].special_time.append(2)
+room_list["roomJ"].documentation = "Come to the Clock Room at 2."
 
 # Creating roomK
 room_list["roomK"] = Room.Room("roomK", "Cooling Room")
