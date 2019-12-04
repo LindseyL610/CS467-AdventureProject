@@ -701,6 +701,8 @@ thing_list["webDoor"] = Thing.BlockedDoor("webDoor", "door")
 thing_list["webDoor"].description = "There is a door leading to the east."
 thing_list["webDoor"].msg_go = "You walk east through the door."
 thing_list["webDoor"].msg_cannot_go = "The moth blocks you from approaching the door."
+thing_list["webDoor"].has_dynamic_description = True
+thing_list["webDoor"].dynamic_description_text = "There is a door to the east."
 thing_list["p4Door"] = Thing.BlockedDoor("p4Door", "door")
 thing_list["p4Door"].description = "There is a door leading to the west."
 thing_list["p4Door"].msg_go = "You walk west through the door."
@@ -711,6 +713,8 @@ thing_list["clockRoomHallway"] = Thing.Exit("clockRoomHallway", "hallway")
 thing_list["clockRoomHallway"].description = "This hallway leads south."\
 					     "You can feel cold air coming from that direction."
 thing_list["clockRoomHallway"].msg_go = "You follow the hallway south."
+thing_list["clockRoomHallway"].has_dynamic_description = True
+thing_list["clockRoomHallway"].dynamic_description_text = "There is a hallway to the south."
 thing_list["coolingHallway"] = Thing.Exit("coolingHallway", "hallway")
 thing_list["coolingHallway"].description = "This hallway leads north." \
                                            "You can feel warmer air coming from that direction."
@@ -724,6 +728,8 @@ thing_list["clockRoomDoor"].locked = True
 thing_list["clockRoomDoor"].msg_unlock = "The shifty man opens the door for you."
 thing_list["clockRoomDoor"].msg_cannot_go = "You tug on the door, but it is locked."
 thing_list["clockRoomDoor"].alt_msg_cannot_go = "The shifty man blocks you from approaching the door."
+thing_list["clockRoomDoor"].has_dynamic_description = True
+thing_list["clockRoomDoor"].dynamic_description_text = "There is a door to the north."
 thing_list["p5Door"] = Thing.BlockedDoor("p5Door", "door")
 thing_list["p5Door"].description = "There is a door leading to the south."
 thing_list["p5Door"].msg_go = "You walk south through the door."
@@ -830,7 +836,7 @@ room_list["roomH"].long_description = "You step into the west side of an extrava
 				      "appears to be guarding. On the north side of the hall, you see a ramp going downward. On the south side "\
 				      "of the hall, you see a pitch black opening." 
 room_list["roomH"].short_description = "You are in the marble hall."
-
+room_list["roomH"].documentation = "If you're having trouble, try debugging."
 
 
 # Creating roomI
@@ -849,6 +855,7 @@ room_list["roomJ"].long_description = "You enter a room containing a large, hand
 				      "Across from you, on the north side of the room, there is a door. "
 room_list["roomJ"].short_description = "You are in the clock room."
 room_list["roomJ"].special_time.append(2)
+room_list["roomJ"].documentation = "Come to the Clock Room at 2."
 
 # Creating roomK
 room_list["roomK"] = Room.Room("roomK", "Cooling Room")

@@ -123,11 +123,12 @@ class Room:
 					if exit.is_listed:
 						listed_things.append(exit)
 
-			# for thing in self.contents:
-			for thing in self.get_all_accessible_contents(False):
-				if thing.is_accessible:
+
+			for thing in self.contents:
+				if thing.is_accessible and thing not in already_described:
 					if thing.has_dynamic_description:
 						description_string += " " + thing.get_dynamic_description()
+						already_described.append(thing)
 
 					if thing.is_listed:
 						listed_things.append(thing)
