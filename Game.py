@@ -9,6 +9,9 @@ import Thing
 import Player
 from Utilities import say, find_by_name
 from Verbs_and_Actions import verb_list, action_list, prep_list
+import platform
+
+OS = platform.system()
 
 SAVES = "SV"
 ROOM_PREFIX = "RM_"
@@ -16,7 +19,7 @@ THINGS = "TH"
 
 DEBUG_MODE = False
 WIDTH = 100
-HEIGHT = 30
+HEIGHT = 50
 
 def toggle_debug(input):
 	global DEBUG_MODE
@@ -42,7 +45,7 @@ def debug(output):
 	if DEBUG_MODE is True:
 		print(output)
 
-def valid_width():
+def valid_screen_size():
 	valid_size = False
 
 	#NOTE: The following code is adapted from: http://granitosaurus.rocks/getting-terminal-size.html
@@ -51,12 +54,14 @@ def valid_width():
 	debug("Columns: " + str(columns))
 	debug("Rows: " + str(rows))
 
-	if columns >= WIDTH:
+	if columns >= WIDTH and rows >= HEIGHT:
 		valid_size = True
 	else:
 		print("Game has the following console screen size requirements:")
 		print("Minimum width: " + str(WIDTH))
 		print("Minimum height: " + str(HEIGHT))
+		print("Your current width: " + str(columns))
+		print("Your current height: " + str(rows))
 		print("Please resize your screen and run the game again!")
 
 	return valid_size
@@ -69,6 +74,28 @@ def get_path():
 	#debug(dir_path)
 
 	return dir_path
+
+def intro():
+	#Graphic display only supported on Linux/Mac
+	if OS == "Linux" or OS == "Darwin":
+		os.system('clear')
+
+		print()
+	
+		file = open("model", "r")
+		
+		for line in file:
+			print(line, end="")
+
+		file.close()
+
+		print()
+		any = input("Press any key to continue...") 
+		say("Main Menu")
+	else:
+		print()
+		say("Tower Escape - Main Menu")
+		print()
 
 class Game:
 	def __init__(self):
@@ -162,6 +189,9 @@ class Game:
 				else:
 					default_thing = self.find_by_name(thing_name, self.thing_list)
 					say("You don't see {}.".format(default_thing.list_name))
+					if self.player.current_room.name == "Dark Web"\
+					and self.player.current_room.is_lit == False:
+						say("But then again you can't really see much of anything...")	
 					return None	
 
 	def get_game_dictionary(self):
@@ -638,17 +668,11 @@ class Game:
 	def play(self):
 		while not self.end_game:
 			self.prompt()
-		
+
 # Temporarily turning off width validation for ease of use in my IDE
-if valid_width() or True:
-# if valid_width():
+if valid_screen_size() or True:
+#if valid_screen_size():
+	#intro()		#temporarily turning off intro screen for dev stage
 	game = Game()
 	if game.game_loaded:
 		game.play()
-
-#game = Game()
-#debug(game.__dict__)
-#debug(game.player.__dict__)
-
-
-#game.save_game()

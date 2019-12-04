@@ -71,6 +71,8 @@ class Thing:
 
 		self.msg_cannot_spray = "You cannot spray that."
 
+		self.msg_cannot_talk = "You cannot talk to that."
+
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -157,7 +159,18 @@ class Thing:
 
 	# ACTION for look (and look at)
 	def look(self, game, actionargs):
-		say(self.get_desc())
+		cannot_see = False
+	
+		if  game.player.current_room.name == "Dark Web":
+			if not game.player.current_room.is_lit\
+			and self.name != "cobwebs":
+				cannot_see = True
+			
+		if cannot_see:
+			say("You don't see {}.".format(self.list_name))
+			say("But then again you can't really see much of anything...")
+		else:
+			say(self.get_desc())
 
 	# ACTION for read
 	def read(self, game, actionargs):
@@ -252,6 +265,9 @@ class Thing:
 	def spray_with(self, game, actionargs):
 		say(self.msg_cannot_spray)
 
+	def talk(self, game, actionargs):
+		say(self.msg_cannot_talk)
+
 	def hit(self, game, actionargs):
 		say(self.msg_nothing_happens)
 
@@ -300,6 +316,29 @@ class Door(Exit):
 	def get_status(self):
 		return super().get_status("Door")
 
+class BlockedDoor(Exit):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_go = False
+		self.locked = False
+		self.msg_unlock = "The door is unlocked."
+		self.msg_cannot_go = "You cannot go through the door."
+		self.alt_msg_cannot_go =  None
+		self.msg_go = "You go through the door."
+
+	def get_status(self):
+		return super().get_status("BlockedDoor")
+
+	def go(self, game, actionargs):
+		if self.id == "clockRoomDoor":
+			if game.room_list["roomJ"].shifty_man in game.room_list["roomJ"].contents\
+			and not self.can_go and self.alt_msg_cannot_go is not None:
+				say(self.alt_msg_cannot_go)
+			else:
+				super().go(game, actionargs)
+		else:
+			super().go(game, actionargs)	
+				
 
 class MetaDoor(Exit):
 
@@ -417,6 +456,32 @@ class Item(Thing):
 			type = "Item"
 		return super().get_status(type)
 
+
+class RubberDuck(Item):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+	
+	def get_status(self, type=None):
+		if type is None:
+			type = "RubberDuck"
+		return super().get_status(type)
+
+	def give_to(self, game, actionargs):
+		recipient = game.get_thing_by_name(actionargs["iobj"], False)
+
+		if recipient is not game.thing_list["shiftyMan"]:	
+			recipient = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+
+			if recipient.can_receive:
+				say("The {} doesn't want the rubber duck.".format(recipient.name))
+			else:
+				say("You cannot give anything to the {}".format(recipient.name))
+		else:
+			door = game.thing_list["clockRoomDoor"]
+			print(door.msg_unlock)
+			door.locked = False
+			door.can_go = True
+			game.player.remove_from_inventory(self)
 
 class Book(Item):
 
@@ -1095,15 +1160,18 @@ class Moth(Feature):
 		self.msg_first_spray = "The moth flies into the opening, taking the cartridge with it " \
 							   ", but leaving the door unguarded."
 		self.msg_been_sprayed = "The moth flaps its wings in an attempt to get away."
+		self.in_web = False
+		self.msg_kin_not_in_web = "Hundreds of smaller moths appear. They appear to check on the "\
+			       		  "giant moth before flying away."
+		self.msg_kin_in_web = "Hundreds of smaller moths appear. They work to free the giant moth "\
+				      "from the web. The giant moth comes loose from the web, dropping the "\
+				      "cartridge in your hand before flying away with its friends."
+
 
 	def get_status(self, type=None):
 		if type is None:
 			type = "Moth"
 		return super().get_status(type)
-
-	def look(self, game, actionargs):
-		game.room_list["roomH"].remove_thing(self)
-		game.room_list["roomI"].add_thing(self)
 
 	def spray(self, game, actionargs):
 		has_debugger = False
@@ -1123,6 +1191,9 @@ class Moth(Feature):
 				self.been_sprayed = True
 				game.room_list["roomH"].remove_thing(self)
 				game.room_list["roomI"].add_thing(self)
+				game.room_list["roomI"].contains_moth = True
+				self.in_web = True
+				game.thing_list["webDoor"].can_go = True
 		else:
 			say("You don't have anything to spray the moth with.")
 
@@ -1132,7 +1203,70 @@ class Moth(Feature):
 		else:
 			say("You cannot spray the moth with that.")
 
+	def kin(self, game, actionargs):
+		if not self.in_web:
+			say(self.msg_kin_not_in_web)
+		else:
+			say(self.msg_kin_in_web)
 
+			if not self.floppy_received:
+				message = "You received a " + self.floppy.name + "!"
+				game.player.add_to_inventory(self.floppy)
+				self.floppy_received = True
+				self.in_web = False
+				game.room_list["roomI"].remove_thing(self)
+				game.room_list["roomI"].contains_moth = False
+				say(message)
+
+class ShiftyMan(Feature):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.talk_msg = "The shifty man tells you about his friend, "\
+				"who he used to bounce ideas off of, "\
+				"and the 5 Tower DAEMONS, who stole "\
+				"his floppy disks."
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "ShiftyMan"
+		return super().get_status(type)
+
+	def talk(self, game, actionargs):
+		say(self.talk_msg)
+
+
+class Spider(Feature):
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_spray = "You spray the spider with the Debugger. "\
+			    "The spider angrily lunges toward you, and "\
+			    "you fall backwards, narrowly avoiding being bitten. "
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Spider"
+		return super().get_status(type)
+
+	def spray(self, game, actionargs):
+		has_debugger = False
+
+		for item in game.player.inventory:
+			if item.name == "debugger":
+				has_debugger = True
+				break
+
+		if has_debugger:
+			say(self.msg_spray)
+		else:
+			say("You don't have anything to spray the spider with.")
+
+	def spray_with(self, game, actionargs):
+		if actionargs["iobj"] == "debugger":
+			self.spray(game, actionargs)
+		else:
+			say("You cannot spray the spider with that.")
+		
 class Freezer(Feature):
 	"""Daemon that appears"""
 
@@ -1342,3 +1476,4 @@ class VendingTerminal(Container):
 			self.dispensed = True
 			self.description = self.alt_description
 			say(self.msg_rammed)
+
