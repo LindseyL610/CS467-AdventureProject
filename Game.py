@@ -121,8 +121,6 @@ class Game:
 
 		self.new_load = False
 
-		self.hints = None
-
 		self.game_over = False
 
 	def get_word_answer(self, prompt, answer):
