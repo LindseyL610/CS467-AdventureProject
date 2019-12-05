@@ -238,7 +238,8 @@ class Parser:
 				break
 
 	def check_special_function(self, game):
-		if self.action_dict["verb"] is not "call":
+		if self.action_dict.get("verb", None) == None\
+		or self.action_dict["verb"] is not "call":
 			say("You must use 'call' with " + self.action_dict["dobj"] + ".")
 		else:
 			say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
