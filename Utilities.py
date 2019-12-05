@@ -38,10 +38,10 @@ COLORS['<CLUE>'] = COLORS['<red>']
 def say(text):
 	#if there is no string data, do nothing
 	if text is not None and (text == "") is False and isinstance(text, str):
+		text = text + "</>"
 		for color in COLORS:
 			#Color only supported on Linux/Mac
 			if OS == "Linux" or OS == "Darwin":
-				text = text + "</>"
 				text = text.replace(color, COLORS[color])
 			else:
 				text = text.replace(color, "")
