@@ -4,6 +4,7 @@ from Utilities import say
 class Parser:
 	def __init__(self, game):
 		self.user_input = ""
+		self.original_input = ""
 		self.dictionary = game.get_game_dictionary()
 		self.lc_dictionary = self.get_lc_dictionary()
 		self.speech_dict = game.get_parts_of_speech_dictionary()
@@ -12,10 +13,12 @@ class Parser:
 		self.action_dict = dict()
 		self.verbs_list = ["drop", "eat", "go", "open", "take", "unlock", "read"]
 		self.exits = game.get_all_exits()
-		self.debug = False # Temporary for debugging
+		self.unrecognized_words = []
+		self.debug = False # For debugging
 		self.special_function = False
+		self.doubles = False
 
-	# Temporary method for debugging
+	# Method for debugging
 	def print_parsed(self):
 		print("action_dict:")
 		for item in self.action_dict:
@@ -39,6 +42,14 @@ class Parser:
 				print()
 				return
 			else: 
+				if self.doubles == True:
+					say("I don't understand that. Please try a different command.")
+					print()	
+					return
+
+				if len(self.unrecognized_words) != 0:
+					self.print_unrecognized()
+
 				if self.debug == True:
 					self.print_parsed()
 				elif self.special_function:
@@ -52,10 +63,13 @@ class Parser:
 
 	def init_input(self, user_input):
 		self.user_input = user_input.lower()
+		self.original_input = ""
 		self.action_args = []
 		self.parts_of_speech = []
 		self.action_dict.clear()
 		self.special_function = False
+		self.unrecognized_words = []
+		self.doubles = False
 
 	def update_dictionaries(self, game):
 		for function in game.player.special_functions:
@@ -88,6 +102,7 @@ class Parser:
 	def set_input(self, game):
 		self.tokenize_input()
 		self.remove_articles()
+		self.original_input = self.user_input
 
 		idx = 0
 
@@ -100,7 +115,6 @@ class Parser:
 
 			idx += 1
 
-		#self.set_objects(game) # Commented out since we aren't currently using multiple objects of same general type in one room
 		self.set_action_dict(game)
 
 	def tokenize_input(self):
@@ -137,52 +151,8 @@ class Parser:
 			if self.speech_dict[self.user_input[idx]] != "adjective":
 				self.action_args.append(self.user_input[idx])
 				self.parts_of_speech.append(self.speech_dict[self.user_input[idx]])
-
-	def set_objects(self, game):
-		idx = 0
-
-		if "adjective" in self.parts_of_speech:
-			while idx < len(self.parts_of_speech) - 1:
-				if self.parts_of_speech[idx] == "adjective" and\
-				self.parts_of_speech[idx + 1] == "object":
-					self.action_args[idx + 1] = self.action_args[idx]\
-					+ " " + self.action_args[idx + 1]
-
-					self.action_args.pop(idx)
-					self.parts_of_speech.pop(idx)
-				
-				idx += 1
 		else:
-			while idx < len(self.action_args):
-				if self.action_args[idx] in self.exits:
-					possible_objs = list()
-					current_room = game.objects[game.get_current_room()]
-
-					for exit in current_room.data["exits"]:
-						if (current_room.data["exits"][exit] is not None) and (self.action_args[idx] in current_room.data["exits"][exit]):
-							possible_objs.append(current_room.data["exits"][exit])
-
-					if len(possible_objs) == 1:
-						self.action_args[idx] = possible_objs[0]
-					elif len(possible_objs) > 1:
-						obj = None
-
-						while(obj == None):
-							print("Which of the following " + self.action_args[idx] + "s: ")
-							
-							for possible_obj in possible_objs:
-								print(possible_obj)
-
-							obj = input("> ")
-
-							print()
-
-							if obj not in possible_objs:
-								print("That is not one of the options. Please try again.")
-								obj = None
-							else:
-								self.action_args[idx] = obj
-				idx += 1
+			self.unrecognized_words.append(self.original_input[idx])
 
 	def set_action_dict(self, game):
 		verb = None
@@ -194,17 +164,28 @@ class Parser:
 		idx = 0
 
 		while idx < len(self.parts_of_speech):
-			if (self.parts_of_speech[idx] == "verb") and (verb == None):
-				verb = self.action_args[idx]
+			if (self.parts_of_speech[idx] == "verb"):
+				if verb == None:
+					verb = self.action_args[idx]
+				else:
+					self.doubles = True
 			elif self.parts_of_speech[idx] == "object":
 				if dobj == None:
 					dobj = self.action_args[idx]
 				elif iobj == None:
 					iobj = self.action_args[idx]
-			elif (self.parts_of_speech[idx] == "preposition") and (prep == None):
-				prep = self.action_args[idx]
-			elif (self.parts_of_speech[idx] == "direction") and (direction == None):
-				direction = self.action_args[idx]
+				else:
+					self.doubles = True
+			elif (self.parts_of_speech[idx] == "preposition"):
+				if prep == None:
+					prep = self.action_args[idx]
+				else:
+					self.doubles = True
+			elif (self.parts_of_speech[idx] == "direction"):
+				if direction == None:
+					direction = self.action_args[idx]
+				else:
+					self.doubles = True
 
 			idx += 1
 
@@ -243,101 +224,24 @@ class Parser:
 			say("You must use 'call' with " + self.action_dict["dobj"] + ".")
 		else:
 			say(verb_list[self.action_dict["verb"]].execute(game, self.action_dict))
-	
-	def init_dictionary(self):
-		gamedict = {
-			"look": "look",
-			"go": "go",
-			"walk": "go",
-			"run": "go",
-			"leave": "go",
-			"move": "go",
-			"travel": "go",
-			"procede": "go",
-			"pass": "go",
-			"progress": "go",
-			"exit": "go",
-			"wander": "go",
-			"mosey": "go",
-			"meander": "go",
-			"hop": "go",
-			"skip": "go",
-			"jump": "go",
-			"leap": "go",
-			"climb": "climb",
-			"drop": "drop",
-			"put": "drop",
-			"set": "drop",
-			"dump": "drop",
-			"release": "drop",
-			"unload": "drop",
-			"take": "take",
-			"pick": "take",
-			"grab": "take",
-			"collect": "take",
-			"hold": "take",
-			"acquire": "take",
-			"catch": "take",
-			"attain": "take",
-			"obtain": "take",
-			"snatch": "take",
-			"fridge": "fridge",
-			"refrigerator": "fridge",
-			"freezer": "fridge",
-			"stairs": "stairs",
-			"staircase": "stairs",
-			"stair": "stairs",
-			"steps": "stairs",
-			"hallway": "hallway",
-			"hall": "hallway",
-			"corridor": "hallway",
-			"eat": "eat",
-			"consume": "eat",
-			"swallow": "eat",
-			"bite": "eat",
-			"chew": "eat",
-			"devour": "eat",
-			"ingest": "eat",
-			"nibble": "eat",
-			"grand": "grand",
-			"enormous": "grand"
-		}
 
-		return gamedict
+	def print_unrecognized(self):
+		message = "WARNING - I did not recognized the following words: "
 
-	def init_parts_of_speech(self):
-		parts_of_speech = {
-			"look": "verb",
-			"go": "verb",
-			"take": "verb",
-			"drop": "verb",
-			"open": "verb",
-			"use": "verb",
-			"unlock": "verb",
-			"eat": "verb",
-			"read": "verb",
-			"pull": "verb",
-			"lever": "object",
-			"plaque": "object",
-			"book": "object",
-			"door": "object",
-			"fridge": "object",
-			"key": "object",
-			"stairs": "object",
-			"cheese": "object",
-			"hallway": "object",
-			"gate": "object",
-			"north": "direction",
-			"south": "direction",
-			"east": "direction",
-			"west": "direction",
-			"at": "preposition",
-			"on": "preposition",
-			"in": "preposition",
-			"with": "preposition",
-			"under": "preposition",
-			"stone": "adjective",
-			"grand": "adjective"
-		}	
+		idx = 0
 
-		return parts_of_speech
+		while idx < len(self.unrecognized_words):
+			message += self.unrecognized_words[idx]
+
+			if len(self.unrecognized_words) == 2:
+				if idx < (len(self.unrecognized_words) - 1):
+					message += " and "
+			elif idx < (len(self.unrecognized_words) - 2):
+				message += ", "
+			elif idx == (len(self.unrecognized_words) - 2):
+				message += ", and "
+
+			idx += 1
+
+		print(message)
+		print()

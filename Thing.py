@@ -1214,6 +1214,22 @@ class Clock(Feature):
 		say("The time is t=" + str(game.game_time))
 
 
+class ComplexClock(Feature):
+	"""For the clock in the Clock Room"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_read = True
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "ComplexClock"
+		return super().get_status(type)
+
+	def look(self, game, actionargs):
+		say(self.description)
+		say("The time is t=" + str(game.game_time))
+
 class Piano(Feature):
 	"""Playable piano"""
 
@@ -1356,10 +1372,6 @@ class Moth(Feature):
 class ShiftyMan(Feature):
 	def __init__(self, id, name):
 		super().__init__(id, name)
-		self.talk_msg = "The shifty man tells you about his friend, "\
-				"who he used to bounce ideas off of, "\
-				"and the 5 Tower DAEMONS, who stole "\
-				"his floppy disks."
 
 	def get_status(self, type=None):
 		if type is None:
@@ -1367,8 +1379,12 @@ class ShiftyMan(Feature):
 		return super().get_status(type)
 
 	def talk(self, game, actionargs):
-		say(self.talk_msg)
-
+		say("There are five DAEMONS in the Tower who stole some very important things from me:")
+		say("One likes to play pranks.")
+		say("One likes to dance - but only likes very fast music.")
+		say("One got a job as a bus driver.")
+		say("One has been hanging out with a spider.")
+		say("One is the Tower custodian, and keeps a strange pet.")
 
 class Spider(Feature):
 

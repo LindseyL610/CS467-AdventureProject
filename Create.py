@@ -25,9 +25,9 @@ say("Creating things and rooms...")
 # RUBBER DUCK--------------------------
 # Creating rubber duck
 thing_list["rubberDuck"] = Thing.RubberDuck("rubber duck", "rubber duck")
-thing_list["rubberDuck"].description = "A rubber duck."
+thing_list["rubberDuck"].description = "A yellow rubber duck. It squeaks when you squeeze it."
 thing_list["rubberDuck"].alternate_names.extend(["duck"])
-thing_list["rubberDuck"].adjectives.extend(["rubber"])
+thing_list["rubberDuck"].adjectives.extend(["rubber", "yellow"])
 
 #ROOM A (Balcony) FEATURES AND ITEMS--------------------------------------
 # Creating book
@@ -93,31 +93,49 @@ thing_list["flashdrive"].alternate_names.extend(["drive","usbdrive", "harddrive"
 # ROOM C (Utility Room) FEATURES AND ITEMS------------------------------------------
 # Creating desk
 thing_list["utilityRoomDesk"] = Thing.Surface("utilityRoomDesk", "desk")
-thing_list["utilityRoomDesk"].description = "A desk."
+thing_list["utilityRoomDesk"].description = "A simple wood desk. The top is scratched, "\
+					    "and it seems to have been heavily used. "\
+					    "This desk does not have any drawers."
+thing_list["utilityRoomDesk"].adjectives.extend(["wood", "wooden"])
 
 # Creating newspaper
 thing_list["newspaper"] = Thing.Newspaper("newspaper", "newspaper")
-thing_list["newspaper"].description = "A newspaper with an article about bugs."
+thing_list["newspaper"].description = "The newspaper is weathered and seems to be "\
+				      "very old. Looking closer, you can see it dates "\
+				      "back to the 1940s. The article on the front page "\
+				      "is an overview of how the term 'bug' came to be applied "\
+				      "to software errors when a trapped moth was found to "\
+				      "have caused issues with a computer."
 thing_list["newspaper"].alternate_names.extend(["paper"])
+thing_list["newspaper"].adjectives.extend(["old", "weathered"])
 
 # Creating toolbox
 thing_list["toolbox"] = Thing.Container("toolbox", "toolbox")
-thing_list["toolbox"].description = "A toolbox."
-thing_list["toolbox"].msg_cannot_take = "The toolbox is too heavy for you to pick up."
+thing_list["toolbox"].description = "A plastic toolbox. Its metal fittings look rusted "\
+				    "and it is splattered with paint, making you think "\
+				    "it must be quite old."
+thing_list["toolbox"].msg_cannot_take = "The toolbox is too heavy for you to carry around."
+thing_list["toolbox"].adjectives.extend(["old"])
 
 # Creating tools
 thing_list["tools"] = Thing.Feature("tools", "tools")
-thing_list["tools"].description = "Various tools."
+thing_list["tools"].description = "Among the tools are a large number of wrenches and "\
+				  "screwdrivers... along with various other tools that "\
+				  "you don't recognize."
 thing_list["tools"].list_name = "some tools"
 thing_list["tools"].msg_cannot_take = "There are too many tools for you to take."
+thing_list["tools"].alternate_names.extend(["wrenches", "screwdrivers"])
 
 # Creating locker
 thing_list["utilityRoomLocker"] = Thing.Container("utilityRoomLocker", "locker")
-thing_list["utilityRoomLocker"].description = "A locker."
+thing_list["utilityRoomLocker"].description = "A green, metal locker."
+thing_list["utilityRoomLocker"].adjectives.extend(["green", "metal"])
 
 # Creating cleaning supplies
 thing_list["cleaning supplies"] = Thing.Feature("cleaning supplies", "cleaning supplies")
-thing_list["cleaning supplies"].description = "Some bottles of cleaning supplies."
+thing_list["cleaning supplies"].description = "There are dozens of bottles of cleaning supplies, "\
+					      "but none of them stand out to you as being in "\
+					      "any way noteworthy."	
 thing_list["cleaning supplies"].list_name = "some bottles of cleaning supplies"
 thing_list["cleaning supplies"].alternate_names.extend(["supplies", "bottles"])
 thing_list["cleaning supplies"].adjectives.extend(["cleaning"])
@@ -125,9 +143,10 @@ thing_list["cleaning supplies"].msg_cannot_take = "There are too many bottles fo
 
 # Creating debugger
 thing_list["debugger"] = Thing.Debugger("debugger", "debugger")
-thing_list["debugger"].description = "A can of debugger."
+thing_list["debugger"].description = "The only things on the label are the word "\
+				     "'Debugger' and a small picture of a moth. "
 thing_list["debugger"].alternate_names.extend(["can"])
-thing_list["debugger"].list_name = "a can of debugger"
+thing_list["debugger"].list_name = "a can labeled 'Debugger'"
 
 
 # ROOM D (Mouse Pad) FEATURES AND ITEMS--------------------------------------
@@ -351,8 +370,41 @@ thing_list["busSchedule"].list_name = "a bus schedule"
 
 # Creating moth
 thing_list["moth"] = Thing.Moth("moth", "moth")
-thing_list["moth"].description = "A moth."
-thing_list["moth"].list_name = "a moth"
+thing_list["moth"].description = "This large, brown moth appears to be "\
+				 "holding something in its mouth, but you "\
+				 "can't tell what it is."
+thing_list["moth"].list_name = "a moth with something in its mouth"
+
+# Creating couch
+thing_list["webCouch"] = Thing.Feature("webCouch", "couch")
+thing_list["webCouch"].description = "A blue, velvet couch. It looks like "\
+				     "it's comfortable."
+thing_list["webCouch"].list_name = "a couch"
+thing_list["webCouch"].alternate_names.extend(["sofa"])
+thing_list["webCouch"].adjectives.extend(["blue", "velvet"])
+
+# Creating chairs
+thing_list["webChairs"] = Thing.Feature("webChairs", "chairs")
+thing_list["webChairs"].description = "Two overstuffed, striped chairs."
+thing_list["webChairs"].list_name = "two chairs"
+thing_list["webChairs"].alternate_names.extend(["chair", "seat", "seats"])
+thing_list["webChairs"].adjectives.extend(["overstuffed", "striped"])
+
+# Creating fireplace
+thing_list["webFireplace"] = Thing.Feature("webFireplace", "fireplace")
+thing_list["webFireplace"].description = "The lit fire in this marble "\
+					 "fireplace gives off a soft light "\
+					 "and warms the room."
+thing_list["webFireplace"].list_name = "a fireplace"
+thing_list["webFireplace"].adjectives.extend(["marble"])
+
+# Creating cobwebs
+thing_list["webCobwebs"] = Thing.Feature("webCobwebs", "cobwebs")
+thing_list["webCobwebs"].description = "There are some cobwebs in the corner "\
+				       "of the room, but you don't see anything "\
+				       "in the webs."
+thing_list["webCobwebs"].list_name = "some cobwebs"
+thing_list["webCobwebs"].alternate_names.extend(["web", "webs"])
 
 
 # ROOM I (Dark Webs) FEATURES AND ITEMS--------------------------------------
@@ -366,19 +418,33 @@ thing_list["cobwebs"] = Thing.Feature("cobwebs", "cobwebs")
 thing_list["cobwebs"].description = "You can see that there are sticky cobwebs everywhere, "\
 				    "but can't see much more detail without any light."
 thing_list["cobwebs"].list_name = "some cobwebs"
+thing_list["cobwebs"].alternate_names.extend(["web", "webs"])
 
 # Creating spider
 thing_list["spider"] = Thing.Spider("spider", "spider")
-thing_list["spider"].description = "A spider."
+thing_list["spider"].description = "This is the biggest spider you've ever seen!"
 thing_list["spider"].list_name = "a spider"
 
 
 # ROOM J (Clock Room) FEATURES AND ITEMS---------------------------------------
+
+# Creating shifty man
 thing_list["shiftyMan"] = Thing.ShiftyMan("shiftyMan", "shiftyMan")
-thing_list["shiftyMan"].description = "A shifty man."
+thing_list["shiftyMan"].description = "This man looks very shifty... "\
+				      "He's wearing a trench coat and "\
+				      "a low-slung hat that makes it "\
+				      "impossible to see his face."
 thing_list["shiftyMan"].list_name = "a shifty man"
 thing_list["shiftyMan"].alternate_names.extend(["man"])
 thing_list["shiftyMan"].adjectives.extend(["shifty"])
+
+# Creating clock room clock
+thing_list["crClock"] = Thing.ComplexClock("crClock", "clock")
+thing_list["crClock"].description = "This large clock is openworked, allowing you "\
+				    "to see all the mechanical workings. It looks "\
+				    "very complex, and you can see gears moving around "\
+				    "as the hands tick along."
+thing_list["crClock"].list_name = "a complex mechanical clock"
 
 # ROOM K (Cooling Room) FEATURES AND ITEMS--------------------------------------
 
@@ -821,8 +887,12 @@ thing_list["clockRoomDoor"].description = "There is a door leading to the north.
 thing_list["clockRoomDoor"].msg_go = "You walk north through the door."
 thing_list["clockRoomDoor"].locked = True
 thing_list["clockRoomDoor"].msg_unlock = "The shifty man opens the door for you."
-thing_list["clockRoomDoor"].msg_cannot_go = "You tug on the door, but it is locked."
-thing_list["clockRoomDoor"].alt_msg_cannot_go = "The shifty man blocks you from approaching the door."
+thing_list["clockRoomDoor"].msg_cannot_go = "Strangely you can't see any way to open this door yourself. "\
+					    "Maybe someone else can open it for you..."
+thing_list["clockRoomDoor"].alt_msg_cannot_go = "The shifty man blocks you from approaching the door. "\
+						"'I lost my friend, who I used to bounce all my ideas "\
+						"off of. If you can find him for me, I'll open the door "\
+						"for you.'"
 thing_list["clockRoomDoor"].has_dynamic_description = True
 thing_list["clockRoomDoor"].dynamic_description_text = "There is a door to the north."
 thing_list["officeDoor"] = Thing.BlockedDoor("officeDoor", "door")
@@ -927,12 +997,14 @@ room_list["roomG"].short_description = "You are in the bus station."
 # Creating room H
 room_list["roomH"] = Room.Room("roomH", "Web")
 room_list["roomH"].long_description = "You step into the west side of an extravagent marble hall, warmly lit by the glow from a fireplace in the north-east corner of the hall. "\
-				      "A comfortable-looking velvet couch sits in front of the fireplace, but what really draws your attention is "\
+				      "A comfortable-looking velvet couch and two overstuffed chairs sit in front of the fireplace, making this room seem like a place where "\
+				      "people gather together. There are some cobwebs in the corners of the room. "\
+				      "What really draws your attention is "\
 				      "the giant moth hovering directly across from you, on the east side of the room. You take a good look at the moth "\
 				      "and notice that it is holding some sort of a cartride in its mouth. Behind the moth lies a door, which the moth "\
 				      "appears to be guarding. On the north side of the hall, you see a ramp going downward. On the south side "\
 				      "of the hall, you see a pitch black opening." 
-room_list["roomH"].short_description = "You are in the marble hall."
+room_list["roomH"].short_description = "You are in the marble hall that looks to be a place where people gather together."
 room_list["roomH"].documentation = "If you're having trouble, try debugging."
 
 
@@ -1102,7 +1174,6 @@ room_list["roomF"].add_thing(thing_list["universalClock"])
 room_list["roomG"].add_thing(thing_list["universalClock"])
 room_list["roomH"].add_thing(thing_list["universalClock"])
 room_list["roomI"].add_thing(thing_list["universalClock"])
-room_list["roomJ"].add_thing(thing_list["universalClock"])
 room_list["roomK"].add_thing(thing_list["universalClock"])
 room_list["roomP1"].add_thing(thing_list["universalClock"])
 room_list["roomP2"].add_thing(thing_list["universalClock"])
@@ -1276,6 +1347,10 @@ room_list["roomG"].add_thing(thing_list["busSchedule"])
 # linking roomH (Webs) stuff
 
 room_list["roomH"].add_thing(thing_list["moth"])
+room_list["roomH"].add_thing(thing_list["webCouch"])
+room_list["roomH"].add_thing(thing_list["webChairs"])
+room_list["roomH"].add_thing(thing_list["webFireplace"])
+room_list["roomH"].add_thing(thing_list["webCobwebs"])
 
 thing_list["moth"].floppy = thing_list["cartridge"]
 
@@ -1305,6 +1380,7 @@ room_list["roomI"].exits["north"] = thing_list["darkWebsOpening"]
 
 
 # linking roomJ (Clock Room) stuff
+room_list["roomJ"].add_thing(thing_list["crClock"])
 room_list["roomJ"].shifty_man = thing_list["shiftyMan"]
 thing_list["clockRoomStairs"].destination = room_list["roomH"]
 thing_list["clockRoomHallway"].destination = room_list["roomK"]
