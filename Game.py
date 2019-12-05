@@ -121,6 +121,10 @@ class Game:
 
 		self.new_load = False
 
+		self.hints = None
+
+		self.game_over = False
+
 	def get_word_answer(self, prompt, answer):
 		# displays the prompt
 		# gets input from player
@@ -447,6 +451,8 @@ class Game:
 		
 		self.game_time = None
 
+		self.hints = 0
+
 	def advance_time(self):
 		time = self.game_time
 
@@ -577,6 +583,8 @@ class Game:
 		# Load game time
 		self.game_time = self.game_data["saves"][id]["game_time"]
 
+		self.hints = self.game_data["saves"][id]["hints"]
+
 		self.new_room = False
 		self.new_load = True
 
@@ -610,6 +618,7 @@ class Game:
 		self.game_data["saves"][str(self.current_save)]["data"] = data.copy()
 		self.game_data["saves"][str(self.current_save)]["timestamp"] = str(datetime.datetime.now()).replace(":", "-")
 		self.game_data["saves"][str(self.current_save)]["game_time"] = self.game_time
+		self.game_data["saves"][str(self.current_save)]["hints"] = self.hints
 	
 		# write the game data to the save file
 		f = open (SAVES, "w")
@@ -671,6 +680,8 @@ class Game:
 
 	def end(self):
 		self.end_game = True
+		if self.game_over:
+			say("You used " + str(self.hints) + " hints to complete the game.")
 
 	def play(self):
 		while not self.end_game:

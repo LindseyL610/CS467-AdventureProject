@@ -269,10 +269,12 @@ class Room:
 		else:
 			if self.used_hints < max_hints:
 				self.used_hints += 1
+				game.hints += 1
 			for num in range(self.used_hints):
 				say("Hint #{}: ".format(num+1) + self.hints[num])
 			if self.used_hints == max_hints:
 				say("There are no additional hints.")
+			
 
 class ClockRoom(Room):
 	def __init__(self, id, name):

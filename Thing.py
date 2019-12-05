@@ -1100,6 +1100,7 @@ class MetaPuzzleInput(Input):
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
 		# learn function
+		game.game_over = True
 		game.end()
 
 	def get_input(self, game, actionargs):
