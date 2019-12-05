@@ -342,7 +342,7 @@ thing_list["busTicketTerminal"].msg_rammed = "The whining sound coming from the 
 thing_list["busTicketTerminal"].adjectives.extend(["vending"])
 
 thing_list["busSchedule"] = Thing.Sign("busSchedule", "schedule")
-thing_list["busSchedule"].description = "Bus to GPU: t=4; Bus to CPU: t=11."
+thing_list["busSchedule"].description = "Bus to GPU: t=4; Bus to CPU: t=7."
 thing_list["busSchedule"].list_name = "a bus schedule"
 
 #--------------------------------------------------------------------------
