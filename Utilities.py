@@ -25,6 +25,12 @@ COLORS = {
     '</>': "\033[0;0m"
 }
 
+COLORS['<DIGITAL_TEXT>'] = COLORS['<green>']
+COLORS['<WRITTEN_TEXT>'] = COLORS['<blue>']
+COLORS['<SPOKEN_TEXT>'] = COLORS['<yellow>']
+COLORS['<CLUE>'] = COLORS['<red>']
+
+
 # basic function to display messages to the user. handles text wrapping and formatting
 # TODO this may be where we want to handle displaying text of different colors
 #  perhaps we come up with a key string (like <colorbegin:red>this text is red<colorend> or something)
@@ -32,10 +38,10 @@ COLORS = {
 def say(text):
 	#if there is no string data, do nothing
 	if text is not None and (text == "") is False and isinstance(text, str):
+		text = text + "</>"
 		for color in COLORS:
 			#Color only supported on Linux/Mac
 			if OS == "Linux" or OS == "Darwin":
-				text = text + "</>"
 				text = text.replace(color, COLORS[color])
 			else:
 				text = text.replace(color, "")
