@@ -224,7 +224,7 @@ thing_list["DancingDaemon"] = Thing.DancingDaemon("DancingDaemon", "DAEMON")
 thing_list["DancingDaemon"].adjectives.extend(["dancing"])
 thing_list["DancingDaemon"].description = "The DAEMON dances all across the dance floor and beckons you to join..."
 thing_list["DancingDaemon"].list_name = "a dancing DAEMON"
-
+thing_list["DancingDaemon"].alternate_names.extend(["DancingDaemon"])
 
 #--------------------------------------------------------------------------
 #ROOM F (I/O ROOM) FEATURES AND ITEMS--------------------------------------
@@ -341,11 +341,13 @@ thing_list["bus"].contents_accessible_iff_open = True
 thing_list["bus"].is_listed = True
 thing_list["bus"].list_name = "a bus waiting at the platform"
 
-thing_list["driverDaemon"] = Thing.Feature("driverDaemon", "DAEMON")
+thing_list["driverDaemon"] = Thing.Feature("driverDaemon", "daemon")
 thing_list["driverDaemon"].description = "A DAEMON, the bus driver, standing at the door of the bus."
 thing_list["driverDaemon"].is_listed = True
 thing_list["driverDaemon"].list_name = "a driver DAEMON"
 thing_list["driverDaemon"].adjectives.extend(["driver"])
+thing_list["driverDaemon"].alternate_names.extend(["driverDaemon"])
+
 
 thing_list["ticket"] = Thing.Ticket("ticket", "ticket")
 thing_list["ticket"].list_name = "a ticket"

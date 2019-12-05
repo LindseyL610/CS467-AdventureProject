@@ -585,10 +585,10 @@ class Ticket(Item):
 			super().take(game, actionargs)
 
 	def use(self, game, actionargs):
-		accessible = game.current_room.get_all_accessible_contents()
+		accessible = game.player.current_room.get_all_accessible_contents()
 		if game.thing_list["driverDaemon"] in accessible:
 			args = actionargs.copy()
-			args["iobj"] = "driverDaemon"
+			args["iobj"] = "daemon"
 			self.give_to(game, args)
 		else:
 			super().use(game, actionargs)

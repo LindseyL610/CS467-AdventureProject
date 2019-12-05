@@ -104,12 +104,12 @@ def find_by_name(name, group_to_search):
   # for dicts, search all values
   if type(group_to_search) is dict:
     for thing in group_to_search.values():
-      if thing.name == name:
+      if thing.name.lower() == name.lower():
         return thing
   # for set or list, just search all elements
   else:
     for thing in group_to_search:
-      if thing.name == name:
+      if thing.name.lower() == name.lower():
         return thing
   return None
 
