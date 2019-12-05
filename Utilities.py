@@ -38,6 +38,7 @@ COLORS['<CLUE>'] = COLORS['<red>']
 def say(text):
 	#if there is no string data, do nothing
 	if text is not None and (text == "") is False and isinstance(text, str):
+		text = text + "</>"
 		text = text.split('\n')
 
 		for line in text:
@@ -118,8 +119,3 @@ def find_by_name(name, group_to_search):
 #     if thing.name == name:
 #       return thing
 #   return None
-TEST_NEUTRAL = "Notes on the Balcony\nEnter the tower at your own risk, you may find yourself caught in an infinite loop. To remedy this, you must discover who you are. As with most journeys, you may want to start with a simple phrase: \"Hello World.\""
-
-TEST = "<WRITTEN_TEXT>Notes on the Balcony\nEnter the <green>tower<WRITTEN_TEXT> at your own risk, you may find yourself caught in an infinite loop. To remedy this, you must discover who you are. As with most journeys, you may want to start with a simple phrase: \"Hello World.\"</>"
-
-say(TEST)
