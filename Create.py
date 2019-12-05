@@ -101,10 +101,15 @@ thing_list["newspaper"].description = "A newspaper with an article about bugs."
 thing_list["newspaper"].alternate_names.extend(["paper"])
 
 # Creating toolbox
-thing_list["toolbox"] = Thing.Feature("toolbox", "toolbox")
+thing_list["toolbox"] = Thing.Container("toolbox", "toolbox")
 thing_list["toolbox"].description = "A toolbox."
 thing_list["toolbox"].msg_cannot_take = "The toolbox is too heavy for you to pick up."
-thing_list["toolbox"].msg_cannot_be_opened = "The toolbox is rusted shut."
+
+# Creating tools
+thing_list["tools"] = Thing.Feature("tools", "tools")
+thing_list["tools"].description = "Various tools."
+thing_list["tools"].list_name = "some tools"
+thing_list["tools"].msg_cannot_take = "There are too many tools for you to take."
 
 # Creating locker
 thing_list["utilityRoomLocker"] = Thing.Container("utilityRoomLocker", "locker")
@@ -1122,9 +1127,6 @@ thing_list["balconyWindowOpen"].destination = room_list["roomB"]
 
 # linking roomB (Lobby) stuff
 
-# adding "rubberDuck" to lobby for now
-room_list["roomB"].add_thing(thing_list["rubberDuck"])
-
 room_list["roomB"].add_thing(thing_list["lobbyComputer"])
 
 # adding key items to lobby for testing
@@ -1153,6 +1155,8 @@ room_list["roomB"].exits["down"] = thing_list["lobbyRamp"]
 room_list["roomC"].add_thing(thing_list["utilityRoomDesk"])
 thing_list["utilityRoomDesk"].add_item(thing_list["newspaper"])
 room_list["roomC"].add_thing(thing_list["toolbox"])
+thing_list["toolbox"].add_item(thing_list["tools"])
+thing_list["toolbox"].add_item(thing_list["rubberDuck"])
 room_list["roomC"].add_thing(thing_list["utilityRoomLocker"])
 thing_list["utilityRoomLocker"].add_item(thing_list["cleaning supplies"])
 thing_list["utilityRoomLocker"].add_item(thing_list["debugger"])
