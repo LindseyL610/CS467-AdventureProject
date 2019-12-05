@@ -214,7 +214,7 @@ class Thing:
 
 	def give_to(self, game, actionargs):
 		if self.can_be_dropped:
-			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
 			if thing_to_receive.can_receive:
 				# TODO better define default action?
 				say("")
@@ -276,15 +276,12 @@ class Thing:
 
 	# Special Functions
 	def ram(self, game, actionargs):
-		print("[[ram on {}]]".format(self.name))
 		say(self.msg_nothing_happens)
 
 	def kin(self, game, actionargs):
-		print("[[kin on {}]]".format(self.name))
 		say(self.msg_nothing_happens)
 
 	def tic(self, game, actionargs):
-		print("[[tic on {}]]".format(self.name))
 		say(self.msg_nothing_happens)
 
 
@@ -473,7 +470,7 @@ class RubberDuck(Item):
 		recipient = game.get_thing_by_name(actionargs["iobj"], False)
 
 		if recipient is not game.thing_list["shiftyMan"]:	
-			recipient = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			recipient = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
 
 			if recipient.can_receive:
 				say("The {} doesn't want the rubber duck.".format(recipient.name))
@@ -506,17 +503,19 @@ class Book(Item):
 			game.player.add_to_inventory(self)
 		else:
 			say("You flip through the \"Tome of Documentation\"...")
-		say("Notes on the " + game.player.current_room.name)
-		say(game.player.current_room.documentation)
+		book_text = "<WRITTEN_TEXT>"
+		book_text += "Notes on the " + game.player.current_room.name + "\n"
+		book_text += game.player.current_room.documentation + "\n"
 		at_least_one_func = False
 		for func in game.player.special_functions.values():
 			if func["learned"] == True:
 				if at_least_one_func == False:
 					at_least_one_func = True
-					say("Special functions (used with 'call'):")
+					book_text += "Special functions (used with 'call'): \n"
 
-				func_display = func["name"].upper() + ": " + func["description"]
-				say(func_display)
+				book_text = func["name"].upper() + ": " + func["description"] + "\n"
+		book_text += "</>"
+		say(book_text)
 
 	def open(self, game, actionargs):
 		self.read(game, actionargs)
@@ -543,7 +542,7 @@ class Cheese(Item):
 			say(message)
 			self.mouse_eats_cheese(game, actionargs)
 		else:
-			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
 			if thing_to_receive.can_receive:
 				say("The {} doesn't want the cheese.".format(thing_to_receive.name))
 			else:
@@ -839,15 +838,12 @@ class Input(Feature):
 			response = game.get_word_answer(self.msg_prompt, self.answer)
 			if (response):
 				if self.triggers_once and self.triggered:
-					print("[[already triggered...]]")
 					say(self.msg_already_triggered)
 				else:
 					self.triggered = True
-					print("[[doing aciton...]]")
 					say(self.msg_correct_answer)
 					self.carry_out_action(game, actionargs)
 			else:
-				print("[[wrong answer...]]")
 				say(self.msg_incorrect_answer)
 
 	# This is the function called on a successful answer
@@ -1107,7 +1103,6 @@ class MetaPuzzleInput(Input):
 	def get_input(self, game, actionargs):
 		response1 = game.get_word_answer(self.msg_prompt, self.answer)
 		if (response1):
-				print("[[doing aciton1...]]")
 				say(self.msg_correct_answer)
 				response2 = game.get_word_answer(self.msg_prompt2, self.answer2)
 				if (response2):
@@ -1117,7 +1112,6 @@ class MetaPuzzleInput(Input):
 					say(self.msg_incorrect_answer2)
 
 		else:
-			print("[[wrong answer...]]")
 			say(self.msg_incorrect_answer)
 
 

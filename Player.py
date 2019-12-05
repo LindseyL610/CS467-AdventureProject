@@ -115,21 +115,21 @@ class Player:
 	def add_to_inventory(self, thing):
 		"""removes an item from the player inventory"""
 		# place holder message
-		say("[[player adds {} to inventory]]".format(thing.name))
+		# print("[[player adds {} to inventory]]".format(thing.name))
 		# remove thing from inventory
 		self.inventory.append(thing)
 
 	def remove_from_inventory(self, thing):
 		"""removes an item from the player inventory"""
 		# place holder message
-		say("[[player removes {} from inventory]]".format(thing.name))
+		# print("[[player removes {} from inventory]]".format(thing.name))
 		# remove thing from inventory
 		self.inventory.remove(thing)
 
 	def take(self, thing):
 		"""Remove an item from the environment and add it to your inventory"""
 		# place holder message
-		say("[[player takes {}]]".format(thing.name))
+		# print("[[player takes {}]]".format(thing.name))
 
 		# remove thing from its current location (room or storage)
 		self.current_room.remove_thing(thing)
@@ -139,7 +139,7 @@ class Player:
 	def drop(self, thing):
 		"""Drop an item in the players inventory and leave it in the current room"""
 		# place holder message
-		say("[[player drops {}]]".format(thing.name))
+		# print("[[player drops {}]]".format(thing.name))
 		# remove thing from inventory (can use player.remove_from_inventory)
 		self.remove_from_inventory(thing)
 		# add thing to current room contents (use room.add_thing())
@@ -149,7 +149,7 @@ class Player:
 		"""changes the location of the player, and displays description
 		of new destination"""
 		# place holder message
-		say("[[player goes to room {}]]".format(destination.name))
+		# print("[[player goes to room {}]]".format(destination.name))
 		self.current_room = destination
 		#destination.get_description()  --- commenting this out, because game engine displays description
 
@@ -161,7 +161,7 @@ class Player:
 
 	def learn_function(self, func):
 		"""sets the 'learned' attribute of a special function to True"""
-		print("[[player learns function {}]]".format(func))
+		# print("[[player learns function {}]]".format(func))
 		self.special_functions[func]["learned"] = True
 
 	def clear_effects(self):
