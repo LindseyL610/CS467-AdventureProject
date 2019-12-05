@@ -27,6 +27,9 @@ class Room:
 
 		self.msg_dance = "You dance. Nothing happens."
 
+		self.hints = []
+		self.used_hints = 0
+
 	def get_status(self, type=None):
 		"""returns the status of a room in JSON format"""
 
@@ -230,7 +233,6 @@ class Room:
 	def led(self, game, actionargs):
 		say("The lights are already on.")
 
-
 	def sleep(self, game, actionargs):
 		hours = int(-1)
 
@@ -259,6 +261,18 @@ class Room:
 		say("You slept for " + hours + " hours.")
 
 		self.look(game, actionargs)
+
+	def hint(self, game, acitonargs):
+		max_hints = len(self.hints)
+		if not self.hints:
+			say("There are no hints for this room")
+		else:
+			if self.used_hints < max_hints:
+				self.used_hints += 1
+			for num in range(self.used_hints):
+				say("Hint #{}: ".format(num+1) + self.hints[num])
+			if self.used_hints == max_hints:
+				say("There are no additional hints.")
 
 class ClockRoom(Room):
 	def __init__(self, id, name):

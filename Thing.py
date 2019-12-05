@@ -513,7 +513,7 @@ class Book(Item):
 					at_least_one_func = True
 					book_text += "Special functions (used with 'call'): \n"
 
-				book_text = func["name"].upper() + ": " + func["description"] + "\n"
+				book_text += func["name"].upper() + ": " + func["description"] + "\n"
 		book_text += "</>"
 		say(book_text)
 
@@ -910,6 +910,8 @@ class InputPuzzle1(Input):
 	def carry_out_action(self, game, actionargs):
 		# learn function
 		game.player.learn_function("led")
+		game.player.current_room.remove_thing(game.thing_list["puzzle1MonitorsBroken"])
+		game.player.current_room.add_thing(game.thing_list["puzzle1MonitorsFixed"])
 
 
 class InputPuzzle2(Input):

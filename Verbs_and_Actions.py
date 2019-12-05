@@ -143,6 +143,9 @@ verb_list["sleep"] = Verb("sleep")
 verb_list["sleep"].alternate_names.extend(["nap", "snooze"])
 verb_list["sleep"].supported_prepositions.update({"NONE": "NONE"})
 
+verb_list["hint"] = Verb("hint")
+verb_list["hint"].supported_prepositions.update({"NONE": "NONE"})
+
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down", "with"]
 
@@ -381,3 +384,7 @@ action_list["talk"] = ActionDirect("talk")
 # sleep
 # verb "sleep" -> Room.sleep()
 action_list["sleep"] = ActionVerbOnly("sleep")
+
+# sleep
+# verb "sleep" -> Room.sleep()
+action_list["hint"] = ActionVerbOnly("hint")

@@ -130,15 +130,26 @@ thing_list["debugger"].list_name = "a can of debugger"
 thing_list["hungryMouse"] = Thing.Feature("hungryMouse", "mouse")
 thing_list["hungryMouse"].description = "This mouse is longer than you are tall. It sits calmly in the corner, " \
                                         "silently watching you. Whatever the lever is that is behind it is unreachable."
+thing_list["hungryMouse"].is_listed = False
+thing_list["hungryMouse"].has_dynamic_description = True
+thing_list["hungryMouse"].dynamic_description_text = "There is a large mouse sitting against the wall, " \
+                                                     "and a lever behind it."
+
 
 # Creating eatingMouse
 thing_list["eatingMouse"] = Thing.Feature("eatingMouse", "mouse")
 thing_list["eatingMouse"].description = "The mouse is sitting in the corner quietly nibbling on it's cheese."
+thing_list["eatingMouse"].is_listed = False
+thing_list["eatingMouse"].has_dynamic_description = True
+thing_list["eatingMouse"].dynamic_description_text = "There is a large mouse eating in the corner. " \
+                                                     "A lever is on the wall. "
 
 # Creating lever
 thing_list["lever"] = Thing.Lever("lever", "lever")
+thing_list["lever"].is_listed = False
 thing_list["lever"].description = "There is some kind of lever on the wall." \
                                   "You cannot reach it with the mouse in the way."
+
 
 #ROOM E (BALLROOM) FEATURES AND ITEMS--------------------------------------
 thing_list["wine"] = Thing.Wine("wine", "wine")
@@ -413,6 +424,27 @@ thing_list["puzzle1Machine"].description = \
 
 thing_list["puzzle1Panel"] = Thing.InputPuzzle1("puzzle1Panel", "panel")
 thing_list["puzzle1Panel"].adjectives.extend(["control"])
+
+thing_list["puzzle1MonitorsBroken"] = Thing.Feature("puzzle1MonitorsBroken", "monitors")
+thing_list["puzzle1MonitorsBroken"].description = \
+    "Several monitors of various sizes. They are glitching out and showing jumbled images, " \
+    "as if someone cast a <CLUE>hex</> on them."
+thing_list["puzzle1MonitorsBroken"].list_name = "several monitors"
+thing_list["puzzle1MonitorsBroken"].alternate_names.extend(["screens"])
+thing_list["puzzle1MonitorsBroken"].has_dynamic_description = True
+thing_list["puzzle1MonitorsBroken"].dynamic_description_text = \
+    "There are screens of various sizes on the walls which are all malfunctioning. "
+
+
+
+thing_list["puzzle1MonitorsFixed"] = Thing.Feature("puzzle1MonitorsFixed", "monitors")
+thing_list["puzzle1MonitorsFixed"].description = \
+    "Several monitors of various sizes. They have turned off."
+thing_list["puzzle1MonitorsFixed"].list_name = "several monitors"
+thing_list["puzzle1MonitorsFixed"].alternate_names.extend(["screens"])
+thing_list["puzzle1MonitorsFixed"].has_dynamic_description = True
+thing_list["puzzle1MonitorsFixed"].dynamic_description_text = \
+    "There are screens of various sizes on the walls. "
 
 # ROOM P2 (Mailroom) FEATURES AND ITEMS--------------------------------------
 
@@ -810,9 +842,9 @@ room_list[
     "tower makes you dizzy, it seems to extend infinitely into the sky. Looking down over the railing " \
     "doesn't help either; the tower descends and disappears the clouds. There is a large window to the north " \
     "that seems to lead inside. To the left of the window is a keypad. To the right of the window on the " \
-    "wall is a plaque. At the end of the balcony is a stone pedestal, with an large book on top."
+    "wall is a plaque. At the end of the balcony is a stone pedestal, with an large book on top. "
 room_list["roomA"].short_description = "You are on a balcony outside of a humongous tower that seems to extend " \
-                                       "as far as you can see upwards and downwards."
+                                       "as far as you can see upwards and downwards. "
 room_list["roomA"].documentation = "Enter the tower at your own risk, you may find yourself caught " \
                                    "in an infinite loop. " \
                                    "To remedy this, you must discover who you are. " \
@@ -826,7 +858,8 @@ room_list["roomB"] = Room.Room("roomB", "Lobby")
 room_list["roomB"].long_description = \
     "As you enter this massive room, the first thing you notice is a huge ornate door across from you on " \
     "the north wall. There are various wires and tubes connecting it to a large computer along the east " \
-    "wall. Stairs ascend to the east, and a ramp descends to the west. The window you came in is to the south."
+    "wall. There is a clock on the wall. Stairs ascend to the east, and a ramp descends to the west. " \
+    "The window you came in is to the south. "
 room_list["roomB"].short_description = \
     "In this massive room, there is some type of large computer taking up most of the east wall. " \
     "A huge ornate door is to the north. Stairs ascend to the east. A ramp goes down to the west. " \
@@ -848,15 +881,16 @@ room_list["roomC"].short_description = "You are in the utility room. "
 room_list["roomD"] = Room.Room("roomD", "Mouse Pad")
 
 room_list["roomD"].long_description = "As you enter the room, the first thing you notice is the pungent smell. " \
-                                      "You are startled to see in the South East corner... a huge mouse! " \
+                                      "You are startled to see in the corner... a huge mouse! " \
                                       "Scattered about the floor is bits of hay and... debris. " \
                                       "This appears to be the mouse's... dwelling. " \
-                                      "It looks like there may be something on the wall behind the mouse, " \
-                                      "but it cannot be reached. The rest of the room is empty with walls " \
+                                      "It looks like there may be some kind of lever on the wall, " \
+                                      "but the mouse is in the way. The rest of the room is empty with walls " \
                                       "made of large stone bricks. On the west wall, " \
-                                      "some of the bricks appear discolored."
-room_list["roomD"].short_description = "The floor is covered in hay and debris. In the corner sits a gigantic mouse. " \
-                                       "It looks like there may be something on the wall behind the mouse."
+                                      "some of the bricks appear discolored. There is a hallway to the south, " \
+                                      "and stairs ascending to the north."
+room_list["roomD"].short_description = "The floor is covered in hay and debris. There is a hallway to the south, " \
+                                       "and stairs ascending to the north."
 
 # Creating room E
 room_list["roomE"] = Room.Ballroom("roomE", "Ballroom")
@@ -936,15 +970,23 @@ room_list["roomK"].short_description = \
 # Creating roomP1
 room_list["roomP1"] = Room.Room("roomP1", "Monitor Station")
 room_list["roomP1"].long_description = \
-    "The walls are covered with several screens, of various sizes. Most of them seem to be horribly malfunctioning," \
-    "like someone cast a *HEX* on them! They are all displaying nonsense, with the exception of a large control panel" \
-    "on the north wall. All of the monitors have cords running into a large machine." \
+    "This appears to be some kind of surveillance room. " \
+    "The walls are covered with several screens, of various sizes, most of which seem to be horribly malfunctioning. " \
+    "They are all displaying nonsense, with the exception of a large control panel " \
+    "on the north wall. All of the monitors have cords running into a large machine. " \
     "There is a sign hanging next to the machine. " \
     "There is a tunnel to the east."
-room_list["roomP1"].short_description = "So many monitors. " \
-                                       "There is a tunnel to the east."
+room_list["roomP1"].short_description = \
+    "This appears to be some kind of surveillance room. " \
+    "There is a tunnel to the east. "
 room_list["roomP1"].documentation = "This room uses a Crystal Display System to power the monitors used " \
-                                    "for surveillance of the tower"
+                                    "for surveillance of the tower. "
+room_list["roomP1"].hints = [
+    "The machine used to have nine differently colored crystals arranged in a 3x3 grid. You need to determine how they were arranged.",
+    "The sequences of letters and numbers in the paths correspond to the different colored crystals somehow… check the monitors.",
+    "The sequences are hex codes for the different colors which can be found using an external resource (aka the internet).",
+    "By tracing the paths of the crystal colors on the properly filled out grid, you will trace the shapes of letters which spell a word."
+]
 
 # Creating room P2
 room_list["roomP2"] = Room.Room("roomP2", "Mailroom")
@@ -954,6 +996,13 @@ room_list["roomP2"].short_description = "A small, dusty room." \
                                         "There is a door to the east."
 room_list["roomP2"].documentation = "In this room all mail is gathered, sorted, " \
                                     "and added to the database."
+room_list["roomP2"].hints = [
+    "The clue words in each sentence are all referencing a certain type of language…",
+    "Each sentence references a popular programming language.",
+    "Look for the names of the languages in the sentences, with something injected into them.",
+    "The letters in the name of each programming language are contained in each sentence (sometimes across multiple words) with one extra letter added to each.",
+    "Combine the extra letters into a word."
+]
 
 # Creating room P3
 room_list["roomP3"] = Room.Room("roomP3", "Library")
@@ -969,6 +1018,13 @@ room_list["roomP3"].short_description = \
     "There is a door to the north."
 # TODO
 room_list["roomP3"].documentation = "The answer is 'answer'."
+room_list["roomP3"].hints = [
+    "The numbers in parenthesis next to a clue give the number of letters in each word of that answer.",
+    "The answers to each clue will follow a certain trend…",
+    "Each answer contains the word \"hard\" or \"soft\"",
+    "The number in brackets with an asterisk tells you how many letters to count into each answer to extract a letter.",
+    "Combine the extracted letters for hard answers, and for soft answers"
+]
 
 # Creating room P4
 room_list["roomP4"] = Room.Room("roomP4", "Processing Plant")
@@ -982,6 +1038,12 @@ room_list["roomP4"].short_description = \
     "There is a door to the west."
 room_list["roomP4"].documentation = "In this processing plant, finding the system status should be " \
                                     "as easy as 1, 2, 3 -> A, B, C!"
+room_list["roomP4"].hints = [
+    "Interpret the error message from each processor as a number.",
+    "The name of each processor is a clue as to how to interpret it’s number.",
+    "The methods of interpretation are: 1. Pig Latin; 2. Elements on Periodic Table; 3. Take Square Root; 4. Binary; 5. German; 6. U.S. Coin denomination; 7. Roman Numeral",
+    "Change each number into a letter, where A=1, B=2, etc."
+]
 
 # Creating room P5
 room_list["roomP5"] = Room.Room("roomP5", "Manager's Office.")
@@ -994,8 +1056,11 @@ room_list["roomP5"].short_description = "This is a nice looking office. " \
 room_list["roomP5"].documentation = "This is the office of the Password Manager. The manager is known to " \
                                     "make several typos."
 
-
-
+room_list["roomP5"].hints = [
+    "Every character in the incorrect passwords are \"off-by-one\" key",
+    "The passwords were entered on a standard US QWERTY keyboard",
+    "Look the the first letter of every password, and find a key on the computer keyboard that is adjacent to all of them; this was the intended letter. Repeat for all letters."
+]
 
 # Creating roomMP
 room_list["roomMP"] = Room.Room("roomMP", "Mother Boardrooom")
@@ -1009,6 +1074,13 @@ room_list["roomMP"].documentation =\
     "The boardroom is where the mother DAEMON spends most of her time. Her riddles can be answered by " \
     "utilizing your special functions somehow. You may even be able to combine two of them, " \
     "but you’ll to add a little something to connect them."
+
+room_list["roomMP"].hints = [
+    "Each clue the daemon gives can be answered by using your special functions.",
+    "Combine two functions together to form a new word, by adding an extra letter in the middle.",
+    "Chaining together the answer to each clue gives the order.",
+    "Look at the extra connecting letters in order for the final answer."
+]
 
 ##############################
 ### LINKING THINGS & ROOMS ###
@@ -1260,8 +1332,8 @@ room_list["roomK"].exits["north"] = thing_list["coolingHallway"]
 room_list["roomP1"].add_thing(thing_list["puzzle1Panel"])
 room_list["roomP1"].add_thing(thing_list["puzzle1Machine"])
 room_list["roomP1"].add_thing(thing_list["puzzle1Sign"])
+room_list["roomP1"].add_thing(thing_list["puzzle1MonitorsBroken"])
 
-# TODO
 thing_list["monitorTunnel"].destination = room_list["roomD"]
 room_list["roomP1"].exits["east"] = thing_list["monitorTunnel"]
 
