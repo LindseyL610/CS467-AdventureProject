@@ -106,7 +106,7 @@ def find_by_name(name, group_to_search):
 #   return None
 TEST_NEUTRAL = "Notes on the Balcony\nEnter the tower at your own risk, you may find yourself caught in an infinite loop. To remedy this, you must discover who you are. As with most journeys, you may want to start with a simple phrase: \"Hello World.\""
 
-TEST = "<WRITTEN_TEXT>Notes on the Balcony\nEnter the <green>tower</> at your own risk, you may find yourself caught in an infinite loop. To remedy this, you must discover who you are. As with most journeys, you may want to start with a simple phrase: \"Hello World.\"</>"
+TEST = "<WRITTEN_TEXT>Notes on the Balcony\nEnter the <green>tower<WRITTEN_TEXT> at your own risk, you may find yourself caught in an infinite loop. To remedy this, you must discover who you are. As with most journeys, you may want to start with a simple phrase: \"Hello World.\"</>"
 
 text = TEST.split('\n')
 print(text)
@@ -141,34 +141,3 @@ for line in text:
 		line_wrapped = line_wrapped.replace(SPECIAL_CHAR,COLORS[tags[str(i)]], 1)
 
 	print(line_wrapped)
-
-
-
-
-
-#print("reconstructed:")
-#print(text)
-
-
-#text_spl = TEST.split(" ")
-#text_spl_cpy = list()
-
-
-
-
-
-#for word in text_spl:
-#	new_word = ""
-
-#	for color in COLORS:
-#		if word.find(color) != -1:
-#			new_word = word.replace(color, "")
-#			text_spl_cpy.append(color)
-#			break
-#		else:
-#			new_word = word
-		
-#	text_spl_cpy.append(new_word)
-
-#print(text_spl)
-#print(text_spl_cpy)
