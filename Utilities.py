@@ -2,7 +2,7 @@ import textwrap
 import platform
 
 OS = platform.system()
-WRAPPER = textwrap.TextWrapper(replace_whitespace=False)
+WRAPPER = textwrap.TextWrapper(replace_whitespace=False, width=80)
 
 #NOTE: The following color table was adapted from: https://stackoverflow.com/questions/17771287/python-octal-escape-character-033-from-a-dictionary-value-translates-in-a-prin
 COLORS = {
@@ -61,7 +61,7 @@ def say(text):
 
 				indexes.sort()
 
-				line_wrapped = WRAPPER.fill(line_cpy, 80)
+				line_wrapped = WRAPPER.fill(line_cpy)
 
 				for i in indexes:
 					line_wrapped = line_wrapped.replace(SPECIAL_CHAR,COLORS[tags[str(i)]], 1)
@@ -69,7 +69,7 @@ def say(text):
 			else:
 				for color in COLORS:
 					line_cpy = line_cpy.replace(color, "")
-				line_wrapped = WRAPPER.fill(line_cpy, 80)
+				line_wrapped = WRAPPER.fill(line_cpy)
 			
 			print(line_wrapped)
 
