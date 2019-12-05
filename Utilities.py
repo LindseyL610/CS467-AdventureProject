@@ -61,7 +61,7 @@ def say(text):
 
 				indexes.sort()
 
-				line_wrapped = WRAPPER.fill(line_cpy)
+				line_wrapped = WRAPPER.fill(line_cpy, 80)
 
 				for i in indexes:
 					line_wrapped = line_wrapped.replace(SPECIAL_CHAR,COLORS[tags[str(i)]], 1)
@@ -69,7 +69,7 @@ def say(text):
 			else:
 				for color in COLORS:
 					line_cpy = line_cpy.replace(color, "")
-				line_wrapped = WRAPPER.fill(line_cpy)
+				line_wrapped = WRAPPER.fill(line_cpy, 80)
 			
 			print(line_wrapped)
 
