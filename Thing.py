@@ -3,7 +3,6 @@ import Utilities
 import json
 import Room
 
-
 class Thing:
 	"""The basic class for all non-Room objects in the game"""
 
@@ -47,7 +46,8 @@ class Thing:
 		self.msg_already_in_inventory = "You already have the {}.".format(self.name)
 
 		self.msg_cannot_read = "There is nothing to read on the {}.".format(self.name)
-		self.msg_cannot_be_opened = "{} cannot be opened".format(self.name)
+		self.msg_cannot_be_opened = "The {} cannot be opened".format(self.name)
+		self.msg_cannot_be_closed = "The {} cannot be closed".format(self.name)
 
 		self.msg_drop = "You drop the {}.".format(self.name)
 		self.msg_cannot_drop = "You cannot drop the {}".format(self.name)
@@ -181,6 +181,9 @@ class Thing:
 
 	def open(self, game, actionargs):
 		say(self.msg_cannot_be_opened)
+
+	def close(self, game, actionargs):
+		say(self.msg_cannot_be_closed)
 
 	# ACTION for take
 	def take(self, game, actionargs):
@@ -811,7 +814,7 @@ class Input(Feature):
 		self.msg_correct_answer = "Correct!"
 		self.msg_incorrect_answer = "Nothing happens."
 		self.msg_already_triggered = "Nothing happens."
-		self.msg_already_used = ""
+		self.msg_already_used = "There is nothing left to use it for."
 
 	def get_status(self, type=None):
 		if type is None:
@@ -823,9 +826,13 @@ class Input(Feature):
 		if not (self.one_time_use and self.triggered):
 			yes_or_no = game.get_yn_answer(self.msg_yn_prompt)
 			if yes_or_no:
-				self.use(game, actionargs)
+				self.get_input(game, actionargs)
 
 	def use(self, game, actionargs):
+		say(self.get_desc())
+		self.get_input(game, actionargs)
+
+	def get_input(self, game, actionargs):
 		if self.one_time_use and self.triggered:
 			say(self.msg_already_used)
 		else:
@@ -877,7 +884,7 @@ class InputPuzzle1(Input):
 		self.answer = "gone"
 		self.msg_correct_answer = \
 			"The Control Panel displays this message: \n" \
-			"<darkred>Crystals are gone, shutting down and switching to manual monitoring system.</>\n" \
+			"<DIGITAL_TEXT>Crystals are gone, shutting down and switching to manual monitoring system.</>\n" \
 			"All of the monitors in the room turn off, and it is now pitch black. \n" \
 			"Your Documentation Tome begins to glow. Opening it, you see a new function appear: LED. " \
 			"To use this function, input 'call LED'. You try it, and the lights in the room turn back on."
@@ -889,15 +896,16 @@ class InputPuzzle1(Input):
 
 	def get_desc(self):
 		if not self.triggered:
-			desc = "The Control Panel has a large screen and a keyboard below it. On the screen is this message: \n" \
-				   "<darkred>Error: Crystals have disappeared without a TRACE. " \
-				   "Before turning offline, the monitoring system detected " \
-				   "four distinct paths the crystals took: \n" \
-				   "Path 1: FFFFF0 -> FFFF99 -> FF69B4 -> C19A6B -> 2A3439 -> 614051\n" \
-				   "Path 2: FFFF99 -> FF69B4 -> C19A6B -> FFFFF0 -> FFFF99\n" \
-				   "Path 3: 007FFF -> 800020 -> C19A6B -> FFFFF0\n" \
-				   "Path 4: 800020 -> FFFF99 -> 228B22 -> 614051 -> 228B22 -> FF69B4 -> 007FFF\n" \
-				   "Please input the current location of the crystals...</>"
+			desc = \
+				"The Control Panel has a large screen and a keyboard below it. On the screen is this message: \n" \
+				"<DIGITAL_TEXT>Error: Crystals have disappeared without a TRACE. " \
+				"Before turning offline, the monitoring system detected " \
+				"four distinct paths the crystals took: \n" \
+				"Path 1: FFFFF0 -> FFFF99 -> FF69B4 -> C19A6B -> 2A3439 -> 614051\n" \
+				"Path 2: FFFF99 -> FF69B4 -> C19A6B -> FFFFF0 -> FFFF99\n" \
+				"Path 3: 007FFF -> 800020 -> C19A6B -> FFFFF0\n" \
+				"Path 4: 800020 -> FFFF99 -> 228B22 -> 614051 -> 228B22 -> FF69B4 -> 007FFF\n" \
+				"Please input the current location of the crystals...</>"
 		else:
 			desc = "The control panel's screen is now blank."
 		say(desc)
@@ -931,7 +939,7 @@ class InputPuzzle2(Input):
 		if not self.triggered:
 			desc = "The computer is on, and on the screen it appears as though someone was composing an email." \
 				   "Here is what is says: \n" \
-				   "<darkred>Dear family, \n" \
+				   "<DIGITAL_TEXT>Dear family, \n" \
 				   "I'm sorry for disrupting our relationship database." \
 				   "My actions have caught up to me. Now I must confess that my fears have become reality, " \
 				   "for, now I am ...</> \n" \
@@ -949,6 +957,21 @@ class InputPuzzle2(Input):
 class InputPuzzle3(Input):
 	"""the class for the input device in puzzle 3"""
 
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_prompt = "What book do you search for?"
+		self.answer = "hackers assets"
+		self.msg_correct_answer = \
+			"After entering the book title, you hear a buzzing as a drone flys from behind the table. " \
+			"It zooms through the shelves before a small claw extends out and grasps a book. " \
+			"The drone clumsily delivers the book onto the table. You flip through \"Hackers Assets\" " \
+			"and learn about many tools for manipulating hardware and software. " \
+			"You discover that sometimes, the best answer is brute force. " \
+			"Just then your Tome of Documentation begins to thrash wildly. " \
+			"It falls on the table and opens, and you see a new function appear: RAM. " \
+			"To use it, say \"call RAM on thing\". The drone is startled, grabs the hackers book and flies away."
+		self.msg_incorrect_answer = "The search comes up empty, there are no books by that name."
+
 	def get_status(self):
 		return super().get_status("InputPuzzle3")
 
@@ -957,9 +980,39 @@ class InputPuzzle3(Input):
 		# learn function
 		game.player.learn_function("ram")
 
+	def get_desc(self):
+		if not self.triggered:
+			desc = \
+				"This touchscreen is used to search for books in the library. " \
+				"Most are separated into two categories: <CLUE>hardware</> or <CLUE>software</>."
+		else:
+			desc = \
+				"This touchscreen is used to search for books in the library. " \
+				"A message comes up saying you have reached your maximum rentals."
+		say(desc)
+
 
 class InputPuzzle4(Input):
-	"""the class for the input device in puzzle 4"""
+	"""the class for the input device in puzzle 3"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_prompt = "What status do you enter?"
+		self.answer = "bricked"
+		self.msg_correct_answer = \
+			"The computer reads: \n" \
+			"<DIGITAL_TEXT>\"BRICKED\" status detected. Initializing troubleshooting procedure.</> \n" \
+			"Just then a small robot on wheels emerges from the computer! Startled, you jump back. " \
+			"The tiny robot rolls over towards a large plug which seems to be powering the entire system. " \
+			"With it's mechanical arms, it grabs the plug and yanks it from the wall. " \
+			"The processors and computer shut down, and all of the awful noises and smoke stop. " \
+			"After five seconds, the robot plugs the computer back in, and rolls back into the computer." \
+			"The computer screen reads: <DIGITAL_TEXT>Booting up...</>. It appears you've fixed the system! " \
+			"You suddenly feel a jolt, as if your Tome of Documentation just shocked you. " \
+			"Opening its pages you see a new function appear: TIC. This function will make a machine malfunction; " \
+			"to use it, say \"call TIC on thing\". "
+		self.msg_incorrect_answer = "The computer reads: <DIGITAL_TEXT>You've entered an unknown status. " \
+									"Please enter correct status.</>"
 
 	def get_status(self):
 		return super().get_status("InputPuzzle4")
@@ -968,18 +1021,104 @@ class InputPuzzle4(Input):
 	def carry_out_action(self, game, actionargs):
 		# learn function
 		game.player.learn_function("tic")
+		game.player.current_room.remove_thing(game.thing_list["puzzle4ProcessorsBroken"])
+		game.player.current_room.add_thing(game.thing_list["puzzle4ProcessorsFixed"])
+
+	def get_desc(self):
+		if not self.triggered:
+			desc = \
+				"This large computer seems to be controlling the whole mechanical system in this room. It has keyboard, " \
+				"and a large screen displaying this message: \n" \
+				"<DIGITAL_TEXT>ERROR! Processing system is malfunctioning. Must diagnose problem. " \
+				"Check error messages from processors, and input system status below to initiate troubleshooting."
+		else:
+			desc = \
+				"This large computer seems to be controlling the whole mechanical system in this room. It has keyboard, " \
+				"and a large screen displaying this message: \n" \
+				"<DIGITAL_TEXT>Booting up...</>"
+		say(desc)
 
 
 class InputPuzzle5(Input):
-	"""the class for the input device in puzzle 5"""
+    """the class for the input device in puzzle 5"""
+    def __init__(self, id, name):
+        super().__init__(id, name)
+        self.msg_prompt = "What password do you enter?"
+        self.answer = "finesse"
+        self.msg_correct_answer = \
+			"The computer unlocks! looking at the monitor, it appears an online course was in progress, " \
+			"for increasing coordination. After skimming through a few pages, " \
+			"you notice your Tome of Documentation begin to vibrate. " \
+			"You open it up and see a new function has been added: PRO. " \
+			"oO use it, say \"call PRO\". This will temporarilty increase your skill and dexterity. " \
+			"You exit the course and turn off the computer."
+        self.msg_incorrect_answer = "You've entered the incorrect password."
+
+    def get_status(self):
+        return super().get_status("InputPuzzle5")
+
+    # This is the function called on a successful answer
+    def carry_out_action(self, game, actionargs):
+        # learn function
+        game.player.learn_function("pro")
+
+    def get_desc(self):
+        if not self.triggered:
+            desc = \
+				"This is a fancy computer with a large monitor and a standard US QWERTY keyboard. " \
+				"The computer is on, but it appears to be stuck on a log-in screen. I" \
+				"t looks like there have been a few incorrect password attempts, " \
+				"and you can read them! What kind of security is that? " \
+				"Who ever previously tried to log in experienced <CLUE>off-by-one-errors</> " \
+				"with every key! The incorrect passwords were: \n" \
+            "<DIGITAL_TEXT>COMDEXS \nGUMWEED \nROBSZED \nTUBREAR</>\n" \
+            "What do you suppose the actual password is?"
+        else:
+            desc = "The computer's is turned off."
+        say(desc)
+
+class MetaPuzzleInput(Input):
+	"""the class for the input device in the meta puzzle"""
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_prompt = "What do you type?"
+		self.msg_prompt2 = "What do you type?"
+		self.answer = "pro ram kin tic led"
+		self.answer2 = "geek"
+		self.msg_correct_answer = \
+			"Correct! A more text appears on the screen: \n" \
+			"<DIGITAL_TEXT>Now you should have learned something about yourself. What are you?</>"
+		self.msg_correct_answer2 = "YOU WIN!"
+		self.msg_incorrect_answer = "<DIGITAL_TEXT>Incorrect sequence.</>"
+		self.msg_incorrect_answer2 = "<DIGITAL_TEXT>Incorrect. Look deeper.</>"
+
+		self.description = \
+			"This computer is identical to your computer at home. It is displaying a simple message: \n" \
+			"<DIGITAL_TEXT>Enter in all five special functions (separated by spaces) in the correct order.</>"
 
 	def get_status(self):
-		return super().get_status("InputPuzzle5")
+		return super().get_status("MetaPuzzleInput")
 
 	# This is the function called on a successful answer
 	def carry_out_action(self, game, actionargs):
 		# learn function
-		game.player.learn_function("pro")
+		game.end()
+
+	def get_input(self, game, actionargs):
+		response1 = game.get_word_answer(self.msg_prompt, self.answer)
+		if (response1):
+				print("[[doing aciton1...]]")
+				say(self.msg_correct_answer)
+				response2 = game.get_word_answer(self.msg_prompt2, self.answer2)
+				if (response2):
+					say(self.msg_correct_answer2)
+					self.carry_out_action(game, actionargs)
+				else:
+					say(self.msg_incorrect_answer2)
+
+		else:
+			print("[[wrong answer...]]")
+			say(self.msg_incorrect_answer)
 
 
 class Sign(Feature):
@@ -1266,9 +1405,9 @@ class Spider(Feature):
 			self.spray(game, actionargs)
 		else:
 			say("You cannot spray the spider with that.")
-		
+
 class Freezer(Feature):
-	"""Daemon that appears"""
+	"""Freezer that manipulates chunk of ice"""
 
 	def __init__(self, id, name):
 		super().__init__(id, name)
@@ -1294,6 +1433,25 @@ class Freezer(Feature):
 		else:
 			say("Nothing happens.")
 
+
+class MotherDaemon(Feature):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.talk_msg = \
+			"<SPOKEN_TEXT>Greetings. I am the mother of the DAEMON's. " \
+			"You've arrived here </><CLUE>due to motions</><SPOKEN_TEXT> out of your control. " \
+			"It is surprising you have made it this far- a great </><CLUE>application</><SPOKEN_TEXT> of your skills. " \
+			"I hope you are </><CLUE>quite pleased</><SPOKEN_TEXT>. " \
+			"You may be upset, and you might think that revenge is a </><CLUE>small dish</><SPOKEN_TEXT> best served cold. " \
+			"But hopefully by now you have at least learned what you truly are...</>"
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "MotherDaemon"
+		return super().get_status(type)
+
+	def talk(self, game, actionargs):
+		say(self.talk_msg)
 
 class Storage(Feature):
 	"""Thing that can store other things"""
@@ -1336,21 +1494,25 @@ class Storage(Feature):
 	def remove_item(self, item):
 		self.contents.remove(item)
 
-	def get_desc(self):
-		desc_string = self.description
-
+	def list_contents(self):
 		if self.receive_preps:
 			prep = self.receive_preps[0]
 		else:
 			prep = "in"
 
+		extra_sentence = ""
 		# if contents is not empty it returns "True"
 		if self.contents and self.contents_accessible:
 			extra_sentence = "{} it you see".format(prep).capitalize()
 			extra_sentence = " " + extra_sentence
 			extra_sentence += Utilities.list_to_words([o.get_list_name() for o in self.contents])
 			extra_sentence += "."
-			desc_string += extra_sentence
+
+		return extra_sentence
+
+	def get_desc(self):
+		desc_string = self.description
+		desc_string += self.list_contents()
 
 		say(desc_string)
 
@@ -1378,7 +1540,9 @@ class Storage(Feature):
 				say(self.msg_already_opened)
 			else:
 				self.set_open()
-				say(self.msg_open)
+				open_text = self.msg_open
+				open_text += self.list_contents()
+				say(open_text)
 
 	def set_open(self):
 		self.is_open = True
