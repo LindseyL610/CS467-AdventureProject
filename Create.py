@@ -207,7 +207,7 @@ thing_list["coin"].description = "A gold coin."
 thing_list["piano"] = Thing.Piano("piano", "piano")
 thing_list["piano"].description = "A grand piano with a long keyboard of shiny white and black ivory keys. " \
                                   "The piano has the words 'Qwerty Classics Series' painted in gold cursive " \
-                                  "beneath the cover."
+                                  "beneath the cover. Next to the piano is a tip jar."
 thing_list["piano"].adjectives.extend(["grand"])
 
 thing_list["ballroomCoinSlot"] = Thing.Lock("ballroomCoinSlot", "slot")
@@ -233,8 +233,9 @@ thing_list["key"].list_name = "a key"
 thing_list["key"].adjectives.extend(["metal"])
 thing_list["key"].description = "A standard metal key for opening a lock."
 
-thing_list["card"] = Thing.Key("card", "card")
+thing_list["card"] = Thing.Key("card", "punch card")
 thing_list["card"].list_name = "a punch card"
+thing_list["card"].alternate_names.extend(["card"])
 thing_list["card"].adjectives.extend(["punch"])
 thing_list["card"].description = "An old computer punch card. At the top of the card is the word 'key'."
 
@@ -308,14 +309,16 @@ thing_list["IOroomCabinet"].is_listed = False
 thing_list["IOroomCabinet"].list_name = "a filing cabinet"
 thing_list["IOroomCabinet"].adjectives.extend(["filing"])
 
-thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "reader")
-thing_list["IOroomPunchCardReader"].description = "A punch card reader. There is a cavity below the reader. It looks like objects are dispensed into the cavity."
-thing_list["IOroomPunchCardReader"].list_name = "a punch card reader"
+thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "reader device")
+thing_list["IOroomPunchCardReader"].description = "A reader device. It seems like it might accept those old fashioned punch cards. There is a cavity below, where it looks like objects are dispensed."
+thing_list["IOroomPunchCardReader"].list_name = "a reader device"
+thing_list["IOroomPunchCardReader"].adjectives.extend(["reader"])
+thing_list["IOroomPunchCardReader"].alternate_names.extend(["device"])
 thing_list["IOroomPunchCardReader"].receive_preps.append("in")
 thing_list["IOroomPunchCardReader"].key_consumed = True
 thing_list["IOroomPunchCardReader"].door_lock = False
 thing_list["IOroomPunchCardReader"].item_dispenser = True
-thing_list["IOroomPunchCardReader"].msg_toggled = "The reader accepts the punch card. You hear deafening mechanical noises coming from all around you. After awhile, the reader spits out a key. You add the key to your inventory."
+thing_list["IOroomPunchCardReader"].msg_toggled = "The reader device accepts the punch card. You hear deafening mechanical noises coming from all around you. After awhile, the reader spits out a key. You add the key to your inventory."
 
 thing_list["IOroomLock"] = Thing.Lock("IOroomLock", "lock")
 thing_list["IOroomLock"].description = "A locking mechanism next to the door. There is a hole where a key should go."
@@ -774,7 +777,7 @@ thing_list["IOroomElevator"].dynamic_description_text = "There is an elevator th
 
 # Creating exits between E and P2 [[Door]]
 thing_list["ballroomDoorLocked"] = Thing.Exit("ballroomDoorLocked", "door")
-thing_list["ballroomDoorLocked"].description = "An ordinary door, but it's locked."
+thing_list["ballroomDoorLocked"].description = "An ordinary door, but it's locked. Next to the door is a coin slot. Do you have a coin?"
 thing_list["ballroomDoorLocked"].can_go = False
 thing_list["ballroomDoorLocked"].msg_cannot_go = "The door is locked!"
 thing_list["ballroomDoorLocked"].has_dynamic_description = True
@@ -804,6 +807,7 @@ thing_list["busHallway"].dynamic_description_text = "There is a hallway to the e
 
 # Creating exits between F and P3 [[Door]]
 thing_list["IOroomDoorLocked"] = Thing.Exit("IOroomDoorLocked", "door")
+thing_list["IOroomDoorLocked"].description = "An ordinary door, but it's locked. On the door is a lock that appears to require a key."
 thing_list["IOroomDoorLocked"].can_go = False
 thing_list["IOroomDoorLocked"].msg_cannot_go = "The door is locked!"
 thing_list["IOroomDoorLocked"].has_dynamic_description = True
@@ -972,9 +976,9 @@ room_list["roomD"].short_description = "The floor is covered in hay and debris. 
 # Creating room E
 room_list["roomE"] = Room.Ballroom("roomE", "Ballroom")
 room_list["roomE"].long_description = "You enter an enormous ballroom, which is wide open, with a stocked bar on one side of the room, " \
-										"a grand piano on the other side of the room, and a huge dancefloor made of ornate wood. " \
-										"An elevator with shiny doors and a gold finish is on one end of the room. On the western wall is a door. " \
-										"On the southern wall is a staircase leading down."
+										"a grand piano on the other side of the room, next to which is a tip jar, and a huge dancefloor made of ornate wood. " \
+										"An elevator with shiny doors and a gold finish is on one end of the room. On the western wall is a door with a coin slot next to it. " \
+										"On the southern wall is a staircase leading down. There is a clock on the wall."
 room_list["roomE"].short_description = "You are in the ballroom."
 room_list["roomE"].documentation = "The art of programming starts at the keyboard. " \
 									"Typing involves inputting text by pressing keys on a keyboard, which " \
@@ -984,17 +988,17 @@ room_list["roomE"].documentation = "The art of programming starts at the keyboar
 
 # Creating room F
 room_list["roomF"] = Room.Room("roomF", "I/O Room")
-room_list["roomF"].long_description = "You are in a cluttered office. There is a desk, with high stacks of papers along with an inbox and an outbox. " \
+room_list["roomF"].long_description = "You are in a cluttered office. There is a desk, with high stacks of documents along with an inbox and an outbox. " \
 										"A file cabinet sits next to the desk. A cardboard box sits on the floor next to the cabinet. " \
-										"Near the desk is a reader for reading punch cards."
+										"Near the desk is a reader for reading punch cards. There is a clock on the wall. There is an elevator, and on the western wall a hallway with florescent lighting leads to the west. On the southern wall is a door with a lock on it."
 room_list["roomF"].short_description = "You are in the cluttered office."
 room_list["roomF"].documentation = "The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase 'Garbage in, garbage out!'"
 
 # Creating room G
 room_list["roomG"] = Room.BusStation("roomG", "Bus Station")
-room_list["roomG"].long_description = "You are in... a bus station? Isn't this a tower? Nonetheless, there is a bus platform with sixteen parallel bus lanes that start on one end of the station and run together to the other end. At both ends, the lanes disappear into darkness. There is a ticket vending terminal on the platform and a bus schedule hanging on a post near the terminal. A ramp leading up is to the south, and there is a door leading east."
+room_list["roomG"].long_description = "You are in... a bus station? Isn't this a tower? Nonetheless, there is a bus platform with sixteen parallel bus lanes that start on one end of the station and run together to the other end. At both ends, the lanes disappear into darkness. There is a ticket vending terminal on the platform and a bus schedule hanging on a post near the terminal. There is a clock on the wall. A ramp leading up is to the south, and there is a hallway leading east."
 room_list["roomG"].short_description = "You are in the bus station."
-
+room_list["roomG"].documentation = "<WRITTEN_TEXT>Transporting bits from one place to another on a common bus can be a complex task. System components must be synchronized so that transmission via the bus occurs with the expected data at the expected <CLUE>time<WRITTEN_TEXT>.</>"
 
 # Creating room H
 room_list["roomH"] = Room.Room("roomH", "Web")

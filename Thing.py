@@ -1656,3 +1656,6 @@ class VendingTerminal(Container):
 			self.description = self.alt_description
 			say(self.msg_rammed)
 
+	def receive_item(self, game, item, prep):
+		say("You can't put things {} the {}.".format(prep, self.name))
+
