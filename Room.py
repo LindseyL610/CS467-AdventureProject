@@ -270,7 +270,7 @@ class ClockRoom(Room):
 		return super().get_status("ClockRoom")
 
 	def get_description(self, time=-1):
-		if time is not -1:
+		if time != -1:
 			if time not in self.special_time:
 				if self.shifty_man in self.contents:
 					self.remove_thing(self.shifty_man)
