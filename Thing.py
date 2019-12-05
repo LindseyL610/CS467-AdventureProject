@@ -215,7 +215,9 @@ class Thing:
 	def give_to(self, game, actionargs):
 		if self.can_be_dropped:
 			thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
-			if thing_to_receive.can_receive:
+			if thing_to_receive is game.thing_list["shiftyMan"]:
+				say("The shifty man does not want the {}.".format(self.name))
+			elif thing_to_receive.can_receive:
 				# TODO better define default action?
 				say("")
 			else:
