@@ -119,6 +119,8 @@ class Game:
 
 		self.find_by_name = find_by_name
 
+		self.new_load = False
+
 	def get_word_answer(self, prompt, answer):
 		# displays the prompt
 		# gets input from player
@@ -575,7 +577,8 @@ class Game:
 		# Load game time
 		self.game_time = self.game_data["saves"][id]["game_time"]
 
-		self.new_room = True
+		self.new_room = False
+		self.new_load = True
 
 
 	def save_game(self):
@@ -628,6 +631,10 @@ class Game:
 			self.player.current_room.get_description(self.game_time)
 			print()
 			self.new_room = False
+		elif self.new_load:
+			self.player.current_room.get_description(self.game_time)
+			print()
+			self.new_load = False
 
 		input_str = input("> ")
 		self.parser.parse_input(self, input_str)
