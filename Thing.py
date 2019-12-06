@@ -306,6 +306,9 @@ class Exit(Thing):
 		else:
 			say(self.msg_cannot_go)
 
+	def use(self, game, actionargs):
+		self.go(game, actionargs)
+
 	def get_status(self, type=None):
 		if type is None:
 			type = "Exit"
@@ -315,10 +318,15 @@ class Exit(Thing):
 class Door(Exit):
 	"""A special Exit, doors can be closed, locked, and unlocked"""
 
-	def get_status(self):
-		return super().get_status("Door")
+	def get_status(self, type=None):
+		if type is None:
+			type = "Door"
+		return super().get_status(type)
 
-class BlockedDoor(Exit):
+	def open(self, game, actionargs):
+		self.go(game, actionargs)
+
+class BlockedDoor(Door):
 	def __init__(self, id, name):
 		super().__init__(id, name)
 		self.can_go = False
@@ -342,7 +350,7 @@ class BlockedDoor(Exit):
 			super().go(game, actionargs)	
 				
 
-class MetaDoor(Exit):
+class MetaDoor(Door):
 
 	def __init__(self, id, name):
 		super().__init__(id, name)
@@ -1142,8 +1150,7 @@ class Lever(Feature):
 		return super().get_status("Lever")
 
 	def use(self, game, actionargs):
-		# send to pull
-		pass
+		self.pull(game, actionargs)
 
 	def pull(self, game, actionargs):
 		if self.is_reachable:
