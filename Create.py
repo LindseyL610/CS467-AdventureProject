@@ -312,16 +312,16 @@ thing_list["IOroomCabinet"].is_listed = False
 thing_list["IOroomCabinet"].list_name = "a filing cabinet"
 thing_list["IOroomCabinet"].adjectives.extend(["filing"])
 
-thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "reader device")
-thing_list["IOroomPunchCardReader"].description = "A reader device. It seems like it might accept those old fashioned punch cards. There is a cavity below, where it looks like objects are dispensed."
-thing_list["IOroomPunchCardReader"].list_name = "a reader device"
-#thing_list["IOroomPunchCardReader"].adjectives.extend(["reader"])
-thing_list["IOroomPunchCardReader"].alternate_names.extend(["reader", "device"])
+thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "device")
+thing_list["IOroomPunchCardReader"].description = "A reading device. It seems like it might accept those old fashioned punch cards. There is a cavity below, where it looks like objects are dispensed."
+thing_list["IOroomPunchCardReader"].list_name = "a reading device"
+thing_list["IOroomPunchCardReader"].adjectives.extend(["reading"])
+thing_list["IOroomPunchCardReader"].alternate_names.extend(["reader"])
 thing_list["IOroomPunchCardReader"].receive_preps.append("in")
 thing_list["IOroomPunchCardReader"].key_consumed = True
 thing_list["IOroomPunchCardReader"].door_lock = False
 thing_list["IOroomPunchCardReader"].item_dispenser = True
-thing_list["IOroomPunchCardReader"].msg_toggled = "The reader device accepts the punch card. You hear deafening mechanical noises coming from all around you. After awhile, the reader spits out a key. You add the key to your inventory."
+thing_list["IOroomPunchCardReader"].msg_toggled = "The reading device accepts the punch card. You hear deafening mechanical noises coming from all around you. After awhile, the reader spits out a key. You add the key to your inventory."
 
 thing_list["IOroomLock"] = Thing.Lock("IOroomLock", "lock")
 thing_list["IOroomLock"].description = "A locking mechanism next to the door. There is a hole where a key should go."
