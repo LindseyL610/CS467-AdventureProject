@@ -315,8 +315,8 @@ thing_list["IOroomCabinet"].adjectives.extend(["filing"])
 thing_list["IOroomPunchCardReader"] = Thing.Lock("IOroomPunchCardReader", "reader device")
 thing_list["IOroomPunchCardReader"].description = "A reader device. It seems like it might accept those old fashioned punch cards. There is a cavity below, where it looks like objects are dispensed."
 thing_list["IOroomPunchCardReader"].list_name = "a reader device"
-thing_list["IOroomPunchCardReader"].adjectives.extend(["reader"])
-thing_list["IOroomPunchCardReader"].alternate_names.extend(["device"])
+#thing_list["IOroomPunchCardReader"].adjectives.extend(["reader"])
+thing_list["IOroomPunchCardReader"].alternate_names.extend(["reader", "device"])
 thing_list["IOroomPunchCardReader"].receive_preps.append("in")
 thing_list["IOroomPunchCardReader"].key_consumed = True
 thing_list["IOroomPunchCardReader"].door_lock = False
