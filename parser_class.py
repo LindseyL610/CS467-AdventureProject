@@ -194,11 +194,12 @@ class Parser:
 				dobj = prep
 				prep = None	
 
-		if (direction is not None) and (verb == "go") and (dobj is None):
+		if (direction is not None) and (dobj is None):
 			dobj = direction
 
 		if (verb is None) and (dobj is not None):
-			if (dobj in self.exits) or (dobj in game.direction_list):
+			if (dobj in self.exits) or (dobj in game.direction_list)\
+			or (dobj == "up") or (dobj == "down"):
 				verb = "go"
 
 		if verb is not None:
@@ -243,5 +244,5 @@ class Parser:
 
 			idx += 1
 
-		print(message)
+		say(message)
 		print()
