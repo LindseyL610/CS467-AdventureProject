@@ -134,16 +134,16 @@ thing_list["utilityRoomLocker"].adjectives.extend(["green", "metal"])
 
 # Creating cleaning supplies
 thing_list["cleaning supplies"] = Thing.Feature("cleaning supplies", "cleaning supplies")
-thing_list["cleaning supplies"].description = "There are dozens of bottles of cleaning supplies, "\
+thing_list["cleaning supplies"].description = "There are dozens of bottles of cleaning supplies "\
 					      "but none of them stand out to you as being in "\
 					      "any way noteworthy."	
-thing_list["cleaning supplies"].list_name = "some bottles of cleaning supplies"
+thing_list["cleaning supplies"].list_name = "some cleaning supplies"
 thing_list["cleaning supplies"].alternate_names.extend(["supplies", "bottles"])
 thing_list["cleaning supplies"].adjectives.extend(["cleaning"])
 thing_list["cleaning supplies"].msg_cannot_take = "There are too many bottles for you to take."
 
 # Creating debugger
-thing_list["debugger"] = Thing.Debugger("debugger", "debugger")
+thing_list["debugger"] = Thing.Debugger("debugger", "Debugger")
 thing_list["debugger"].description = "The only things on the label are the word "\
 				     "<WRITTEN_TEXT>'Debugger'</> and a small picture of a moth. "
 thing_list["debugger"].alternate_names.extend(["can"])
@@ -959,13 +959,14 @@ room_list["roomB"].short_description = \
 
 # Creating roomC
 room_list["roomC"] = Room.Room("roomC", "Utility Room")
-room_list["roomC"].long_description = "You step into a small room from its western side. "\
+room_list["roomC"].long_description = "You step into a small room. "\
 				      "It's just your luck that you immediately trip over a toolbox that you hadn't noticed lying on the floor. "\
-				      "Irritated, you shove the toolbox to the right, where it stops with a thud next to a desk. "\
+				      "Irritated, you shove the toolbox away from you, and it stops with a thud next to a desk. "\
 				      "You glance at the desk and notice a newspaper lying on top of it. "\
-				      "Straight ahead of you, a large locker stands against the wall. "\
-				      "To your left, on the north side of the room, you see a dark hallway. There is a clock on the wall."
+				      "A large locker stands against the wall next to the desk. "\
+				      "On the north side of the room, you see a dark hallway. There is a clock on the wall."
 room_list["roomC"].short_description = "You are in the utility room. "
+room_list["roomC"].documentation = "<WRITTEN_TEXT>Looking to the past often provides the best solutions to problems in the present.</>"
 
 
 # Creating roomD
