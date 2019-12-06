@@ -577,7 +577,7 @@ thing_list["puzzle2Computer"].description = "A computer."
 
 # ROOM P3 (Library) FEATURES AND ITEMS--------------------------------------
 thing_list["puzzle3Touchscreen"] = Thing.InputPuzzle3("puzzle3Touchscreen", "touchscreen")
-thing_list["puzzle3Table"] = Thing.Surface("puzzle5Table", "table")
+thing_list["puzzle3Table"] = Thing.Surface("puzzle3Table", "table")
 thing_list["puzzle3Table"].description = "A long table extending the length of the room. " \
                                          "It separates you from the shelves of books."
 
