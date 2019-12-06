@@ -1011,7 +1011,7 @@ room_list["roomG"].short_description = "You are in the bus station."
 room_list["roomG"].documentation = "<WRITTEN_TEXT>Transporting bits from one place to another on a common bus can be a complex task. System components must be synchronized so that transmission via the bus occurs with the expected data at the expected <CLUE>time<WRITTEN_TEXT>.</>"
 
 # Creating room H
-room_list["roomH"] = Room.Room("roomH", "Web")
+room_list["roomH"] = Room.Room("roomH", "Web Room")
 room_list["roomH"].long_description = "You step into the west side of an extravagent marble hall, warmly lit by the glow from a fireplace in the north-east corner of the hall. "\
 				      "A comfortable-looking velvet couch and two overstuffed chairs sit in front of the fireplace, making this room seem like a place where "\
 				      "people gather together. There are some cobwebs in the corners of the room. "\
@@ -1025,7 +1025,7 @@ room_list["roomH"].documentation = "If you're having trouble, try debugging."
 
 
 # Creating roomI
-room_list["roomI"] = Room.DarkWeb("roomI", "Dark Web")
+room_list["roomI"] = Room.DarkWeb("roomI", "Dark Web Room")
 room_list["roomI"].long_description = "You enter a room so dark you can't see much of anything. As you you try to make out more of the room, using the small amount of light "\
 				      "shining in from the hall to the north, you notice spider webs stretching across the room. You'll need to find a source of light before "\
 				      "you can determine anything else about this room..."

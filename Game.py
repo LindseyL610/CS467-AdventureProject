@@ -283,6 +283,25 @@ class Game:
 				if adj not in dictionary:
 					dictionary[adj] = "adjective" # add adj to dict with value "adjective"
 
+		# for each room
+
+		# get room file names
+		filenames = list()
+		files = os.listdir(get_path())
+
+		for name in files:
+			if name.find(ROOM_PREFIX) == 0:
+				filenames.append(name)
+
+		# for each room file
+		for room_file in filenames:
+			data = self.load_data_from_file(room_file)["data"]
+
+			room_name = data["name"]
+
+			if room_name not in dictionary:
+				dictionary[room_name] = "room"
+
 		return dictionary
 
 	def add_directions(self, speech_dict):
