@@ -94,7 +94,7 @@ verb_list["pull"].alternate_names.extend(["yank", "tug"])
 verb_list["pull"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
 
 verb_list["go"] = Verb("go")
-verb_list["go"].alternate_names.extend(["walk", "run", "proceed", "travel", "move", "proceed", "hop", "skip", "jump", "wander", "exit"])
+verb_list["go"].alternate_names.extend(["walk", "run", "travel", "move", "proceed", "hop", "skip", "jump", "wander", "exit"])
 verb_list["go"].supported_prepositions.update(
 	{"NONE":"NONE", "in":"NONE", "into":"NONE", "through":"NONE", "up":"NONE", "down":"NONE"})
 
