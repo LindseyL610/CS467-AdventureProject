@@ -686,9 +686,9 @@ class Newspaper(Item):
 			type = "Newspaper"
 		return super().get_status(type)
 
-	def read(self, game, actionargs):
-		contents = "The newspaper has an article about bugs."
-		say(contents)
+	#def read(self, game, actionargs):								#COMMENTING THIS OUT, BECAUSE DESCRIPTION HAS CONTENT
+		#contents = "The newspaper has an article about bugs."
+		#say(contents)
 
 	def open(self, game, actionargs):
 		self.read(game, actionargs)
