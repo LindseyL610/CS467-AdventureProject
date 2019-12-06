@@ -58,6 +58,7 @@ class Thing:
 		self.msg_cannot_pull = "You cannot pull that."
 
 		self.msg_has_no_contents = "The {} can't store anything.".format(self.name)
+		self.msg_cannot_look_in = "You cannot look in the {}".format(self.name)
 
 		self.msg_nothing_happens = "Nothing happens"
 
@@ -171,6 +172,10 @@ class Thing:
 			say("But then again you can't really see much of anything...")
 		else:
 			say(self.get_desc())
+
+	def look_in(self, game, actionargs):
+		say(self.msg_cannot_look_in)
+
 
 	# ACTION for read
 	def read(self, game, actionargs):
@@ -1493,6 +1498,7 @@ class Storage(Feature):
 		self.msg_open = "You open the {}.".format(self.name)
 		self.msg_close = "You close the {}.".format(self.name)
 		self.msg_is_closed = "The {} is closed.".format(self.name)
+		self.msg_look_in = "You look in the {}.".format(self.name)
 
 	def get_status(self, type=None):
 		if type is None:
@@ -1586,6 +1592,16 @@ class Storage(Feature):
 		if self.contents_accessible_iff_open:
 			self.contents_accessible = False
 
+	def look_in(self, game, actionargs):
+		if "in" not in self.receive_preps or not self.can_be_opened:
+			say(self.msg_cannot_look_in)
+		else:
+			if self.is_open:
+				look_text = self.msg_look_in
+				look_text += self.list_contents()
+				say(look_text)
+			else:
+				self.open(game, actionargs)
 
 class Container(Storage):
 	"""Things are stored IN the Container
