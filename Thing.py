@@ -225,8 +225,7 @@ class Thing:
 			if thing_to_receive is game.thing_list["shiftyMan"]:
 				say("The shifty man does not want the {}.".format(self.name))
 			elif thing_to_receive.can_receive:
-				# TODO better define default action?
-				say("")
+				thing_to_receive.receive_item(game, self, "to", "give")
 			else:
 				say("You cannot give anything to the {}".format(thing_to_receive.name))
 		else:
@@ -241,20 +240,20 @@ class Thing:
 			say(self.msg_cannot_drop)
 		else:
 			storage_object = game.get_thing_by_name(actionargs["iobj"], False)
-			storage_object.receive_item(game, self, "in")
+			storage_object.receive_item(game, self, "in", "put")
 
 	def put_on(self, game, actionargs):
 		if not self.can_be_dropped:
 			say(self.msg_cannot_drop)
 		else:
 			storage_object = game.get_thing_by_name(actionargs["iobj"], False)
-			storage_object.receive_item(game, self, "on")
+			storage_object.receive_item(game, self, "on", "put")
 
 	def pull(self, game, actionargs):
 		say(self.msg_cannot_pull)
 
-	def receive_item(self, game, item, prep):
-		say("You can't put things {} the {}.".format(prep, self.name))
+	def receive_item(self, game, item, prep, verb = "put"):
+		say("You can't {} things {} the {}.".format(verb, prep, self.name))
 
 	def use(self, game, actionargs):
 		say(self.msg_nothing_happens)
@@ -786,8 +785,8 @@ class Lock(Feature):
 			type = "Lock"
 		return super().get_status(type)
 
-	def receive_item(self, game, item, prep):
-		if prep in self.receive_preps:
+	def receive_item(self, game, item, prep, verb = "put"):
+		if prep in self.receive_preps and verb == "put":
 			if self.toggled:
 				say(self.already_used_msg)
 			elif item == self.key:
@@ -800,14 +799,14 @@ class Lock(Feature):
 					elif game.player.is_in_inventory(item):
 						game.player.remove_from_inventory(item)
 		else:
-			say("You can't put things {} the {}.".format(prep, self.name))
+			say("You can't {} things {} the {}.".format(verb, prep, self.name))
 
 	# use
 	def use(self, game, actionargs):
 		# Determine if the key is accessible in the Room or in the Player's inventory
 		accessible = game.player.current_room.get_all_accessible_contents()
 		if self.key in accessible or game.player.is_in_inventory(self.key):
-			self.receive_item(game, self.key, "in")
+			self.receive_item(game, self.key, "in", "put")
 		else:
 			say("You don't have anything that works with the " + self.name + "!")
 
@@ -1227,8 +1226,8 @@ class Computer(Feature):
 	def get_status(self):
 		return super().get_status("Computer")
 
-	def receive_item(self, game, item, prep):
-		if prep == "in":
+	def receive_item(self, game, item, prep, verb="put"):
+		if prep == "in" and verb=="put":
 			if item.id in self.key_items:
 				game.player.remove_from_inventory(item)
 				self.inserted_things.append(item)
@@ -1238,7 +1237,7 @@ class Computer(Feature):
 			else:
 				say("You can't find anywhere in the computer to put the {}.".format(item.name))
 		else:
-			say("You can't put things {} the computer.".format(prep))
+			say("You can't {} things {} the computer.".format(verb, prep))
 
 	def get_desc(self):
 		text = self.description_text
@@ -1488,19 +1487,19 @@ class Moth(Feature):
 
 	def put_in(self, game, actionargs):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, "in")
+			super().receive_item(game, actionargs, "in", "put")
 
 	def put_on(self, game, actionargs):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, "on")
+			super().receive_item(game, actionargs, "on", "put")
 
 	def pull(self, game, actionargs):
 		if not self.err_message(game):
 			super().pull(game, actionargs)
 
-	def receive_item(self, game, actionargs, prep):
+	def receive_item(self, game, actionargs, prep, verb="put"):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, prep)
+			super().receive_item(game, actionargs, prep, verb)
 
 	def use(self, game, actionargs):
 		if not self.err_message(game):
@@ -1606,19 +1605,19 @@ class Tape(Item):
 
 	def put_in(self, game, actionargs):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, "in")
+			super().receive_item(game, actionargs, "in", "put")
 
 	def put_on(self, game, actionargs):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, "on")
+			super().receive_item(game, actionargs, "on", "put")
 
 	def pull(self, game, actionargs):
 		if not self.err_message(game):
 			super().pull(game, actionargs)
 
-	def receive_item(self, game, actionargs, prep):
+	def receive_item(self, game, actionargs, prep, verb="put"):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, prep)
+			super().receive_item(game, actionargs, prep, verb)
 
 	def use(self, game, actionargs):
 		if not self.err_message(game):
@@ -1768,19 +1767,19 @@ class Spider(Feature):
 
 	def put_in(self, game, actionargs):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, "in")
+			super().receive_item(game, actionargs, "in", "put")
 
 	def put_on(self, game, actionargs):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, "on")
+			super().receive_item(game, actionargs, "on", "put")
 
 	def pull(self, game, actionargs):
 		if not self.err_message(game):
 			super().pull(game, actionargs)
 
-	def receive_item(self, game, actionargs, prep):
+	def receive_item(self, game, actionargs, prep, verb="put"):
 		if not self.err_message(game):
-			super().receive_item(game, actionargs, prep)
+			super().receive_item(game, actionargs, prep, verb)
 
 	def use(self, game, actionargs):
 		if not self.err_message(game):
@@ -1925,8 +1924,8 @@ class Storage(Feature):
 			type = "Storage"
 		return super().get_status(type)
 
-	def receive_item(self, game, item, prep):
-		if self.has_contents and prep in self.receive_preps:
+	def receive_item(self, game, item, prep, verb="put"):
+		if self.has_contents and prep in self.receive_preps and verb=="put":
 			if self.can_be_opened and not self.is_open:
 				say(self.msg_is_closed)
 			else:
@@ -1934,7 +1933,7 @@ class Storage(Feature):
 				self.add_item(item)
 				say("You put the {} {} the {}.".format(item.name, prep, self.name))
 		else:
-			say("You can't put things {} the {}.".format(prep, self.name))
+			say("You can't {} things {} the {}.".format(verb, prep, self.name))
 
 	def add_item(self, item):
 		self.contents.append(item)
@@ -2099,8 +2098,8 @@ class VendingTerminal(Container):
 			self.description = self.alt_description
 			say(self.msg_rammed)
 
-	def receive_item(self, game, item, prep):
-		say("You can't put things {} the {}.".format(prep, self.name))
+	def receive_item(self, game, item, prep, verb="put"):
+		say("You can't {} things {} the {}.".format(verb, prep, self.name))
 
 
 class Bus(Container):

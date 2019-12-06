@@ -232,6 +232,7 @@ thing_list["DancingDaemon"].adjectives.extend(["dancing"])
 thing_list["DancingDaemon"].description = "The DAEMON dances all across the dance floor and beckons you to join..."
 thing_list["DancingDaemon"].list_name = "a dancing DAEMON"
 thing_list["DancingDaemon"].alternate_names.extend(["DancingDaemon"])
+thing_list["DancingDaemon"].can_receive = True
 
 #--------------------------------------------------------------------------
 #ROOM F (I/O ROOM) FEATURES AND ITEMS--------------------------------------
@@ -362,7 +363,7 @@ thing_list["driverDaemon"].is_listed = True
 thing_list["driverDaemon"].list_name = "a driver DAEMON"
 thing_list["driverDaemon"].adjectives.extend(["driver"])
 thing_list["driverDaemon"].alternate_names.extend(["driverDaemon"])
-
+thing_list["driverDaemon"].can_receive = True
 
 thing_list["ticket"] = Thing.Ticket("ticket", "ticket")
 thing_list["ticket"].list_name = "a ticket"
@@ -467,6 +468,7 @@ thing_list["shiftyMan"].list_name = "a shifty man"
 thing_list["shiftyMan"].alternate_names.extend(["man"])
 thing_list["shiftyMan"].adjectives.extend(["shifty"])
 thing_list["shiftyMan"].msg_cannot_take = "You cannot take the shifty man."
+thing_list["shiftyMan"].can_receive = True
 
 # Creating clock room clock
 thing_list["crClock"] = Thing.ComplexClock("crClock", "clock")
@@ -657,6 +659,7 @@ thing_list["puzzle5Desk"].description = "A high quality desk made of beautiful w
 thing_list["motherDaemon"] = Thing.MotherDaemon("motherDaemon", "DAEMON")
 thing_list["motherDaemon"].description = \
     "This DAEMON casually sits in her chair, with her feet up on the table."
+thing_list["motherDaemon"].can_receive = True
 thing_list["metaPuzzleComputer"] = Thing.MetaPuzzleInput("metaPuzzleComputer", "computer")
 thing_list["metaPuzzleTable"] = Thing.Surface("metaPuzzleTable", "table")
 thing_list["metaPuzzleTable"].description = "The is a long boardroom table made of rich mahogany."
