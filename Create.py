@@ -557,7 +557,7 @@ thing_list["puzzle2Letters"].description = \
     "and there's something <CLUE>in their words</> that makes you think they're " \
     "going against their <CLUE>programming</>. \n" \
     "Here are the strange sentences: \n" \
-    "<WRITTEN_TEXT>\"I'll need a chainsaw if the trees keep growing so </><CLUE>fast<WRITTEN_TEXT>.\" \n " \
+    "<WRITTEN_TEXT>\"I'll need a chainsaw if the trees keep growing so </><CLUE>fast</><WRITTEN_TEXT>.\" \n " \
     "\"Better to have wanderlust than to let your dreams </><CLUE>corrode</><WRITTEN_TEXT>.\" \n" \
     "\"To give my mojo a valuable boost, I drink some strong </><CLUE>coffee</><WRITTEN_TEXT>.\" \n" \
     "\"I'm going to run by the jewelers, to buy a </><CLUE>gemstone</><WRITTEN_TEXT>.\" \n" \
