@@ -993,7 +993,7 @@ room_list["roomE"].documentation = "The art of programming starts at the keyboar
 									"However, a real PRO can type 90+ wpm!"
 
 # Creating room F
-room_list["roomF"] = Room.Room("roomF", "I/O Room")
+room_list["roomF"] = Room.Room("roomF", "Customs Office")
 room_list["roomF"].long_description = "You are in a cluttered office. There is a desk, with high stacks of documents along with an inbox and an outbox. " \
 										"A file cabinet sits next to the desk. A cardboard box sits on the floor next to the cabinet. " \
 										"Near the desk is a reader for reading punch cards. There is a clock on the wall. There is an elevator, and on the western wall a hallway with florescent lighting leads to the west. On the southern wall is a door with a lock on it."
