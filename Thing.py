@@ -162,7 +162,7 @@ class Thing:
 	def look(self, game, actionargs):
 		cannot_see = False
 	
-		if  game.player.current_room.name == "Dark Web Room":
+		if  game.player.current_room.id == "roomI":
 			if not game.player.current_room.is_lit\
 			and self.name != "cobwebs":
 				cannot_see = True
@@ -550,6 +550,14 @@ class Cheese(Item):
 
 	def give_to(self, game, actionargs):
 		thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+
+		if game.player.current_room.id == "roomI" and\
+		game.player.current_room.is_lit == False and\
+		thing_to_receive.id is not "cobwebs":	
+			print("You don't see {}.".format(thing_to_receive.list_name))
+			print("Then again you can't really see much of anything...")
+			return
+
 		if thing_to_receive is game.thing_list["hungryMouse"]:
 			message = "As you hold out the cheese, the mosue's eyes widen. " \
 					  "It snatches it from your hand, and runs to the opposite corner of the room. " \
@@ -1328,15 +1336,15 @@ class Moth(Feature):
 		self.floppy = None
 		self.been_sprayed = False
 		self.msg_spray = "You spray the moth with the Debugger."
-		self.msg_first_spray = "The moth flies into the opening, taking the cartridge with it " \
+		self.msg_first_spray = "The moth flies into the opening, taking whatever is in its mouth with it " \
 							   ", but leaving the door unguarded."
 		self.msg_been_sprayed = "The moth flaps its wings in an attempt to get away."
 		self.in_web = False
-		self.msg_kin_not_in_web = "Hundreds of smaller moths appear. They appear to check on the "\
+		self.msg_kin_not_in_web = "Hundreds of other moths appear. They appear to check on the "\
 			       		  "giant moth before flying away."
-		self.msg_kin_in_web = "Hundreds of smaller moths appear. They work to free the giant moth "\
-				      "from the web. The giant moth comes loose from the web, dropping the "\
-				      "cartridge in your hand before flying away with its friends."
+		self.msg_kin_in_web = "Hundreds of other moths appear. They work to free the giant moth "\
+				      "from the web. The giant moth comes loose from the web, dropping a "\
+				      "cartridge in your hand before flying away with its family."
 
 
 	def get_status(self, type=None):
@@ -1344,7 +1352,31 @@ class Moth(Feature):
 			type = "Moth"
 		return super().get_status(type)
 
+	def err_message(self, game):
+		if game.player.current_room.id == "roomI" and\
+		game.player.current_room.is_lit == False:
+			say("You don't see a moth.")
+			say("But then again you don't really see much of anything...")
+			return True
+		else:
+			return False
+
+	def look(self, game, actionargs):
+		if self.err_message(game):
+			return
+
+		self.get_desc(game)
+
+	def get_desc(self, game):
+		message = self.description
+		message += " It seems to be calling out for help... but to who?"
+
+		say(message)
+
 	def spray(self, game, actionargs):
+		if self.err_message(game):
+			return
+
 		has_debugger = False
 
 		for item in game.player.inventory:
@@ -1369,12 +1401,20 @@ class Moth(Feature):
 			say("You don't have anything to spray the moth with.")
 
 	def spray_with(self, game, actionargs):
-		if actionargs["iobj"] == "Debugger":
+		if self.err_message(game):
+			return
+
+		obj = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+		
+		if obj.id == "debugger":
 			self.spray(game, actionargs)
 		else:
 			say("You cannot spray the moth with that.")
 
 	def kin(self, game, actionargs):
+		if self.err_message(game):
+			return
+
 		if not self.in_web:
 			say(self.msg_kin_not_in_web)
 		else:
@@ -1388,6 +1428,212 @@ class Moth(Feature):
 				game.room_list["roomI"].remove_thing(self)
 				game.room_list["roomI"].contains_moth = False
 				say(message)
+
+	def look_in(self, game, actionargs):
+		if not self.err_message(game):
+			super().look_in(game, actionargs)
+
+	def read(self, game, actionargs):
+		if not self.err_message(game):
+			super().read(game, actionargs)
+
+	def open(self, game, actionargs):
+		if not self.err_message(game):
+			super().open(game, actionargs)
+
+	def close(self, game, actionargs):
+		if not self.err_message(game):
+			super().close(game, actionargs)
+
+	def take(self, game, actionargs):
+		if not self.err_message(game):
+			super().take(game, actionargs)
+
+	def drop(self, game, actionargs):
+		if not self.err_message(game):
+			super().drop(game, actionargs)
+
+	def put_down(self, game, actionargs):
+		if not self.err_message(game):
+			super().put_down(game, actionargs)
+
+	def give_to(self, game, actionargs):
+		if not self.err_message(game):
+			super().give_to(game, actionargs)
+
+	def go(self, game, actionargs):
+		if not self.err_message(game):
+			super().go(game, actionargs)
+
+	def put_in(self, game, actionargs):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, "in")
+
+	def put_on(self, game, actionargs):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, "on")
+
+	def pull(self, game, actionargs):
+		if not self.err_message(game):
+			super().pull(game, actionargs)
+
+	def receive_item(self, game, actionargs, prep):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, prep)
+
+	def use(self, game, actionargs):
+		if not self.err_message(game):
+			super().use(game, actionargs)
+
+	def dance(self, game, actionargs):
+		if not self.err_message(game):
+			super().dance(game, actionargs)
+
+	def eat(self, game, actionargs):
+		if not self.err_message(game):
+			super().eat(game, actionargs)
+
+	def drink(self, game, actionargs):
+		if not self.err_message(game):
+			super().drink(game, actionargs)
+
+	def play(self, game, actionargs):
+		if not self.err_message(game):
+			super().play(game, actionargs)
+
+	def talk(self, game, actionargs):
+		if not self.err_message(game):
+			super().talk(game, actionargs)
+
+	def hit(self, game, actionargs):
+		if not self.err_message(game):
+			super().hit(game, actionargs)
+
+	def ram(self, game, actionargs):
+		if not self.err_message(game):
+			super().ram(game, actionargs)
+
+	def tic(self, game, actionargs):
+		if not self.err_message(game):
+			super().tic(game, actionargs)
+
+class Tape(Item):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Tape"
+		return super().get_status(type)
+
+	def err_message(self, game):
+		if game.player.current_room.id == "roomI" and\
+		game.player.current_room.is_lit == False:
+			say("You don't see a tape.")
+			say("Then again you can't really see much of anything...")
+			return True
+		else:
+			return False
+
+	def spray(self, game, actionargs):
+		if not self.err_message(game):
+			super().spray(game, actionargs)
+
+	def spray_with(self, game, actionargs):
+		if not self.err_message(game):
+			super().spray_with(game, actionargs)
+
+	def look_in(self, game, actionargs):
+		if not self.err_message(game):
+			super().look_in(game, actionargs)
+
+	def read(self, game, actionargs):
+		if not self.err_message(game):
+			super().read(game, actionargs)
+
+	def open(self, game, actionargs):
+		if not self.err_message(game):
+			super().open(game, actionargs)
+
+	def close(self, game, actionargs):
+		if not self.err_message(game):
+			super().close(game, actionargs)
+
+	def take(self, game, actionargs):
+		if not self.err_message(game):
+			super().take(game, actionargs)
+
+	def drop(self, game, actionargs):
+		if not self.err_message(game):
+			super().drop(game, actionargs)
+
+	def put_down(self, game, actionargs):
+		if not self.err_message(game):
+			super().put_down(game, actionargs)
+
+	def give_to(self, game, actionargs):
+		if not self.err_message(game):
+			super().give_to(game, actionargs)
+
+	def go(self, game, actionargs):
+		if not self.err_message(game):
+			super().go(game, actionargs)
+
+	def put_in(self, game, actionargs):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, "in")
+
+	def put_on(self, game, actionargs):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, "on")
+
+	def pull(self, game, actionargs):
+		if not self.err_message(game):
+			super().pull(game, actionargs)
+
+	def receive_item(self, game, actionargs, prep):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, prep)
+
+	def use(self, game, actionargs):
+		if not self.err_message(game):
+			super().use(game, actionargs)
+
+	def dance(self, game, actionargs):
+		if not self.err_message(game):
+			super().dance(game, actionargs)
+
+	def eat(self, game, actionargs):
+		if not self.err_message(game):
+			super().eat(game, actionargs)
+
+	def drink(self, game, actionargs):
+		if not self.err_message(game):
+			super().drink(game, actionargs)
+
+	def play(self, game, actionargs):
+		if not self.err_message(game):
+			super().play(game, actionargs)
+
+	def talk(self, game, actionargs):
+		if not self.err_message(game):
+			super().talk(game, actionargs)
+
+	def hit(self, game, actionargs):
+		if not self.err_message(game):
+			super().hit(game, actionargs)
+
+	def ram(self, game, actionargs):
+		if not self.err_message(game):
+			super().ram(game, actionargs)
+
+	def kin(self, game, actionargs):
+		if not self.err_message(game):
+			super().kin(game, actionargs)
+
+	def tic(self, game, actionargs):
+		if not self.err_message(game):
+			super().tic(game, actionargs)
 
 class ShiftyMan(Feature):
 	def __init__(self, id, name):
@@ -1419,7 +1665,19 @@ class Spider(Feature):
 			type = "Spider"
 		return super().get_status(type)
 
+	def err_message(self, game):
+		if game.player.current_room.id == "roomI" and\
+		game.player.current_room.is_lit == False:
+			say("You don't see a spider.")
+			say("But then again you don't really see much of anything...")
+			return True
+		else:
+			return False
+
 	def spray(self, game, actionargs):
+		if self.err_message(game):
+			return
+
 		has_debugger = False
 
 		for item in game.player.inventory:
@@ -1433,11 +1691,108 @@ class Spider(Feature):
 			say("You don't have anything to spray the spider with.")
 
 	def spray_with(self, game, actionargs):
-		if actionargs["iobj"] == "Debugger":
+		if self.err_message(game):
+			return
+
+		obj = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+	
+		if obj.id == "debugger":
 			self.spray(game, actionargs)
 		else:
 			say("You cannot spray the spider with that.")
 
+	def look_in(self, game, actionargs):
+		if not self.err_message(game):
+			super().look_in(game, actionargs)
+
+	def read(self, game, actionargs):
+		if not self.err_message(game):
+			super().read(game, actionargs)
+
+	def open(self, game, actionargs):
+		if not self.err_message(game):
+			super().open(game, actionargs)
+
+	def close(self, game, actionargs):
+		if not self.err_message(game):
+			super().close(game, actionargs)
+
+	def take(self, game, actionargs):
+		if not self.err_message(game):
+			super().take(game, actionargs)
+
+	def drop(self, game, actionargs):
+		if not self.err_message(game):
+			super().drop(game, actionargs)
+
+	def put_down(self, game, actionargs):
+		if not self.err_message(game):
+			super().put_down(game, actionargs)
+
+	def give_to(self, game, actionargs):
+		if not self.err_message(game):
+			super().give_to(game, actionargs)
+
+	def go(self, game, actionargs):
+		if not self.err_message(game):
+			super().go(game, actionargs)
+
+	def put_in(self, game, actionargs):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, "in")
+
+	def put_on(self, game, actionargs):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, "on")
+
+	def pull(self, game, actionargs):
+		if not self.err_message(game):
+			super().pull(game, actionargs)
+
+	def receive_item(self, game, actionargs, prep):
+		if not self.err_message(game):
+			super().receive_item(game, actionargs, prep)
+
+	def use(self, game, actionargs):
+		if not self.err_message(game):
+			super().use(game, actionargs)
+
+	def dance(self, game, actionargs):
+		if not self.err_message(game):
+			super().dance(game, actionargs)
+
+	def eat(self, game, actionargs):
+		if not self.err_message(game):
+			super().eat(game, actionargs)
+
+	def drink(self, game, actionargs):
+		if not self.err_message(game):
+			super().drink(game, actionargs)
+
+	def play(self, game, actionargs):
+		if not self.err_message(game):
+			super().play(game, actionargs)
+
+	def talk(self, game, actionargs):
+		if not self.err_message(game):
+			super().talk(game, actionargs)
+
+	def hit(self, game, actionargs):
+		if not self.err_message(game):
+			super().hit(game, actionargs)
+
+	def ram(self, game, actionargs):
+		if not self.err_message(game):
+			super().ram(game, actionargs)
+
+	def kin(self, game, actionargs):
+		if not self.err_message(game):
+			super().kin(game, actionargs)
+
+	def tic(self, game, actionargs):
+		if not self.err_message(game):
+			super().tic(game, actionargs)
+			
 class Freezer(Feature):
 	"""Freezer that manipulates chunk of ice"""
 

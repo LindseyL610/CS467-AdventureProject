@@ -78,7 +78,7 @@ thing_list["cartridge"] = Thing.Item("cartridge", "cartridge")
 thing_list["cartridge"].description = \
     "An ancient data storage device."
 
-thing_list["tape"] = Thing.Item("tape", "tape")
+thing_list["tape"] = Thing.Tape("tape", "tape")
 thing_list["tape"].description = \
     "This appears to be a form of magnetic tape, used to store data."
 
@@ -1036,7 +1036,7 @@ room_list["roomH"].long_description = "You step into the west side of an extrava
 				      "people gather together. There are some cobwebs in the corners of the room. "\
 				      "What really draws your attention is "\
 				      "the giant moth hovering directly across from you, on the east side of the room. You take a good look at the moth "\
-				      "and notice that it is holding some sort of a cartride in its mouth. Behind the moth lies a door, which the moth "\
+				      "and notice that it is holding something in its mouth, though you can't tell what. Behind the moth lies a door, which the moth "\
 				      "appears to be guarding. On the north side of the hall, you see a ramp going downward. On the south side "\
 				      "of the hall, you see a pitch black opening. On the wall is a clock." 
 room_list["roomH"].short_description = "You are in the marble hall that looks to be a place where people gather together."
@@ -1049,7 +1049,7 @@ room_list["roomI"].long_description = "You enter a room so dark you can't see mu
 				      "shining in from the hall to the north, you notice spider webs stretching across the room. You'll need to find a source of light before "\
 				      "you can determine anything else about this room..."
 room_list["roomI"].short_description = "You are in the dark room. The only thing you can see is some spider webs stretching across the room."
-
+room_list["roomI"].documentation = "Sometimes when you're stuck, all you need is others to help you out."
 
 
 # Creating room J

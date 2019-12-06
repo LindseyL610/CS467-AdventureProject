@@ -73,7 +73,7 @@ class Parser:
 
 	def update_dictionaries(self, game):
 		for function in game.player.special_functions:
-			if game.player.special_functions[function]["learned"] == True:
+			if game.player.special_functions[function]["learned"] == False:
 				name = game.player.special_functions[function]["name"]
 
 				if name not in self.dictionary:
