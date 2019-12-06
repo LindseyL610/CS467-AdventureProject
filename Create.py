@@ -707,6 +707,7 @@ thing_list["utilityHallway"].description = "This dark hallway leads off to the n
 thing_list["utilityHallway"].msg_go = "You slowly creep down the hallway."
 thing_list["utilityHallway"].has_dynamic_description = True
 thing_list["utilityHallway"].dynamic_description_text = "There is a hallway leading to the north."
+thing_list["utilityHallway"].alternate_names.extend(["hall"])
 
 # Creating mousepadHallway
 thing_list["mousepadHallway"] = Thing.Exit("mousepadHallway", "hallway")
@@ -714,6 +715,7 @@ thing_list[
     "mousepadHallway"].description = "This dark hallway leads off to the north." \
                                      "A strange smell seems to be coming through it."
 thing_list["mousepadHallway"].msg_go = "You slowly creep down the hallway."
+thing_list["mousepadHallway"].alternate_names.extend(["hall"])
 
 
 
@@ -798,12 +800,14 @@ thing_list["IOroomHallway"].description = "A long, well-lit hallway leading off 
 thing_list["IOroomHallway"].msg_go = "You walk through the hallway to the west."
 thing_list["IOroomHallway"].has_dynamic_description = True
 thing_list["IOroomHallway"].dynamic_description_text = "There is a hallway to the west."
+thing_list["IOroomHallway"].alternate_names.extend(["hall"])
+
 thing_list["busHallway"] = Thing.Exit("busHallway", "hallway")
 thing_list["busHallway"].description = "A long, well-lit hallway leading off to the east."
 thing_list["busHallway"].msg_go = "You walk through the hallway to the east."
 thing_list["busHallway"].has_dynamic_description = True
 thing_list["busHallway"].dynamic_description_text = "There is a hallway to the east."
-
+thing_list["busHallway"].alternate_names.extend(["hall"])
 
 # Creating exits between F and P3 [[Door]]
 thing_list["IOroomDoorLocked"] = Thing.Exit("IOroomDoorLocked", "door")
@@ -882,10 +886,12 @@ thing_list["clockRoomHallway"].description = "This hallway leads south."\
 thing_list["clockRoomHallway"].msg_go = "You follow the hallway south."
 thing_list["clockRoomHallway"].has_dynamic_description = True
 thing_list["clockRoomHallway"].dynamic_description_text = "There is a hallway to the south."
+thing_list["clockRoomHallway"].alternate_names.extend(["hall"])
 thing_list["coolingHallway"] = Thing.Exit("coolingHallway", "hallway")
 thing_list["coolingHallway"].description = "This hallway leads north." \
                                            "You can feel warmer air coming from that direction."
 thing_list["coolingHallway"].msg_go = "You follow the hallway north."
+thing_list["coolingHallway"].alternate_names.extend(["hall"])
 
 # Creating exits between J and P5 [[DOOR]]
 thing_list["clockRoomDoor"] = Thing.BlockedDoor("clockRoomDoor", "door")
