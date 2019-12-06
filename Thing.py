@@ -1343,7 +1343,7 @@ class Moth(Feature):
 		has_debugger = False
 
 		for item in game.player.inventory:
-			if item.name == "debugger":
+			if item.id == "debugger":
 				has_debugger = True
 				break
 
@@ -1364,7 +1364,7 @@ class Moth(Feature):
 			say("You don't have anything to spray the moth with.")
 
 	def spray_with(self, game, actionargs):
-		if actionargs["iobj"] == "debugger":
+		if actionargs["iobj"] == "Debugger":
 			self.spray(game, actionargs)
 		else:
 			say("You cannot spray the moth with that.")
@@ -1418,7 +1418,7 @@ class Spider(Feature):
 		has_debugger = False
 
 		for item in game.player.inventory:
-			if item.name == "debugger":
+			if item.id == "debugger":
 				has_debugger = True
 				break
 
@@ -1428,7 +1428,7 @@ class Spider(Feature):
 			say("You don't have anything to spray the spider with.")
 
 	def spray_with(self, game, actionargs):
-		if actionargs["iobj"] == "debugger":
+		if actionargs["iobj"] == "Debugger":
 			self.spray(game, actionargs)
 		else:
 			say("You cannot spray the spider with that.")
