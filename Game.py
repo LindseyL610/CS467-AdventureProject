@@ -90,7 +90,7 @@ def intro():
 		file.close()
 
 		print()
-		any = input("Press any key to continue...") 
+		any = input("Press enter to continue...") 
 		say("Main Menu")
 	else:
 		print()
