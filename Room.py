@@ -27,6 +27,8 @@ class Room:
 
 		self.msg_dance = "You dance. Nothing happens."
 
+		self.msg_sit = "You sit on the ground... You decide it's pretty uncomfortable and stand back up."
+
 		self.hints = []
 		self.used_hints = 0
 
@@ -274,6 +276,9 @@ class Room:
 				say("Hint #{}: ".format(num+1) + self.hints[num])
 			if self.used_hints == max_hints:
 				say("There are no additional hints.")
+
+	def sit(self, game, actionargs):
+		say(self.msg_sit)
 			
 
 class ClockRoom(Room):

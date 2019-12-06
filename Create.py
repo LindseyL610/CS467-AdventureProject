@@ -76,11 +76,13 @@ thing_list["floppyDisk"].adjectives.extend(["floppy"])
 
 thing_list["cartridge"] = Thing.Item("cartridge", "cartridge")
 thing_list["cartridge"].description = \
-    "An ancient data storage device."
+    "An cartridge, used long ago as a storage device."
 
 thing_list["tape"] = Thing.Tape("tape", "tape")
 thing_list["tape"].description = \
     "This appears to be a form of magnetic tape, used to store data."
+thing_list["tape"].list_name = "a magnetic tape"
+thing_list["tape"].adjectives.extend(["magnetic"])
 
 thing_list["cd"] = Thing.Item("cd", "CD")
 thing_list["cd"].description = \
@@ -388,7 +390,7 @@ thing_list["moth"].description = "This large, brown moth appears to be "\
 thing_list["moth"].list_name = "a moth with something in its mouth"
 
 # Creating couch
-thing_list["webCouch"] = Thing.Feature("webCouch", "couch")
+thing_list["webCouch"] = Thing.Seat("webCouch", "couch")
 thing_list["webCouch"].description = "A blue, velvet couch. It looks like "\
 				     "it's comfortable."
 thing_list["webCouch"].list_name = "a couch"
@@ -396,19 +398,24 @@ thing_list["webCouch"].alternate_names.extend(["sofa"])
 thing_list["webCouch"].adjectives.extend(["blue", "velvet"])
 
 # Creating chairs
-thing_list["webChairs"] = Thing.Feature("webChairs", "chairs")
+thing_list["webChairs"] = Thing.Seat("webChairs", "chairs")
 thing_list["webChairs"].description = "Two overstuffed, striped chairs."
 thing_list["webChairs"].list_name = "two chairs"
 thing_list["webChairs"].alternate_names.extend(["chair", "seat", "seats"])
 thing_list["webChairs"].adjectives.extend(["overstuffed", "striped"])
+thing_list["webChairs"].msg_sit = "You sit on one of the chairs. "\
+				  "After resting for some time on "\
+				  "the comfortable chair, you get "\
+				  "back up, ready to continue exploring."
 
 # Creating fireplace
-thing_list["webFireplace"] = Thing.Feature("webFireplace", "fireplace")
+thing_list["webFireplace"] = Thing.Fireplace("webFireplace", "fireplace")
 thing_list["webFireplace"].description = "The lit fire in this marble "\
 					 "fireplace gives off a soft light "\
 					 "and warms the room."
 thing_list["webFireplace"].list_name = "a fireplace"
 thing_list["webFireplace"].adjectives.extend(["marble"])
+thing_list["webFireplace"].alternate_names.extend(["fire"])
 
 # Creating cobwebs
 thing_list["webCobwebs"] = Thing.Feature("webCobwebs", "cobwebs")
@@ -705,6 +712,7 @@ thing_list["motherboardOrnateDoor"].msg_cannot_go = ""
 thing_list["lobbyStairs"] = Thing.Exit("lobbyStairs", "stairs")
 thing_list["lobbyStairs"].description = "A dark staircase leads up and to the east."
 thing_list["lobbyStairs"].msg_go = "You ascend the stairs to the east."
+thing_list["lobbyStairs"].alternate_names.extend(["staircase", "stair"])
 
 # Creating utilityStairs
 thing_list["utilityStairs"] = Thing.Exit("utilityStairs", "stairs")
@@ -712,6 +720,7 @@ thing_list["utilityStairs"].description = "A dark staircase leads down and to th
 thing_list["utilityStairs"].msg_go = "You descend the stairs to the west."
 thing_list["utilityStairs"].has_dynamic_description = True
 thing_list["utilityStairs"].dynamic_description_text = "There is a staircase leading down and to the west."
+thing_list["utilityStairs"].alternate_names.extend(["staircase", "stair"])
 
 # Creating exits between C (Utilities) and D (Mousepad) [[HALLWAY]]
 # Creating utilityHallway
@@ -747,12 +756,14 @@ thing_list["coolingRamp"].msg_go = "You walk up the ramp to the east."
 thing_list["mousepadStairs"] = Thing.Exit("mousepadStairs", "stairs")
 thing_list["mousepadStairs"].description = "A staircase leading up and to the north."
 thing_list["mousepadStairs"].msg_go = "You ascend the stairs to the north."
+thing_list["mousepadStairs"].alternate_names.extend(["staircase", "stair"])
 
 thing_list["ballroomStairs"] = Thing.Exit("ballroomStairs", "stairs")
 thing_list["ballroomStairs"].description = "A staircase leading down and to the south."
 thing_list["ballroomStairs"].msg_go = "You descend the stairs to the south."
 thing_list["ballroomStairs"].has_dynamic_description = True
 thing_list["ballroomStairs"].dynamic_description_text = "There are stairs to the south."
+thing_list["ballroomStairs"].alternate_names.extend(["staircase", "stair"])
 
 
 # Creating exits between D (Mousepad) and P1 (Monitors) [[BRICKS/ TUNNEL]]
@@ -875,11 +886,13 @@ thing_list["websStairs"].description = "A staircase leading up and to the west."
 thing_list["websStairs"].msg_go = "You walk up the stairs to the west."
 thing_list["websStairs"].has_dynamic_description = True
 thing_list["websStairs"].dynamic_description_text = "There is a staircase to the west."
+thing_list["websStairs"].alternate_names.extend(["staircase", "stair"])
 thing_list["clockRoomStairs"] = Thing.Exit("clockRoomStairs", "stairs")
 thing_list["clockRoomStairs"].description = "A staircase leading down and to the east ."
 thing_list["clockRoomStairs"].msg_go = "You walk down the stairs to the east."
 thing_list["clockRoomStairs"].has_dynamic_description = True
 thing_list["clockRoomStairs"].dynamic_description_text = "There is a staircase to the east."
+thing_list["clockRoomStairs"].alternate_names.extend(["staircase", "stair"])
 
 # Creating exits between H and P4 [[DOOR]]
 thing_list["webDoor"] = Thing.BlockedDoor("webDoor", "door")
@@ -912,7 +925,7 @@ thing_list["clockRoomDoor"] = Thing.BlockedDoor("clockRoomDoor", "door")
 thing_list["clockRoomDoor"].description = "There is a door leading to the north."
 thing_list["clockRoomDoor"].msg_go = "You walk north through the door."
 thing_list["clockRoomDoor"].locked = True
-thing_list["clockRoomDoor"].msg_unlock = "The shifty man opens the door for you."
+thing_list["clockRoomDoor"].msg_unlock = "The shifty man thanks you for returning his friend to him and opens the door for you."
 thing_list["clockRoomDoor"].msg_cannot_go = "Strangely you can't see any way to open this door yourself. "\
 					    "Maybe someone else can open it for you..."
 thing_list["clockRoomDoor"].alt_msg_cannot_go = "The shifty man blocks you from approaching the door. "\
@@ -1046,9 +1059,9 @@ room_list["roomH"].documentation = "If you're having trouble, try debugging."
 # Creating roomI
 room_list["roomI"] = Room.DarkWeb("roomI", "Dark Web Room")
 room_list["roomI"].long_description = "You enter a room so dark you can't see much of anything. As you you try to make out more of the room, using the small amount of light "\
-				      "shining in from the hall to the north, you notice spider webs stretching across the room. You'll need to find a source of light before "\
+				      "shining in from the hall to the north, you notice a clock on the wall and spider webs stretching across the room. You'll need to find a source of light before "\
 				      "you can determine anything else about this room..."
-room_list["roomI"].short_description = "You are in the dark room. The only thing you can see is some spider webs stretching across the room."
+room_list["roomI"].short_description = "You are in the dark room. The only thing you can see is a clock on the wall and some spider webs stretching across the room."
 room_list["roomI"].documentation = "Sometimes when you're stuck, all you need is others to help you out."
 
 
@@ -1056,7 +1069,7 @@ room_list["roomI"].documentation = "Sometimes when you're stuck, all you need is
 room_list["roomJ"] = Room.ClockRoom("roomJ", "Clock Room")
 room_list["roomJ"].long_description = "You enter a room containing a large, hand-carved clock on its west side. "\
 				      "On the east side of the room, a staircase leads downward. "\
-				      "Across from you, on the north side of the room, there is a door. "
+				      "There is a door on the north side of the room. "
 room_list["roomJ"].short_description = "You are in the clock room."
 room_list["roomJ"].special_time.append(2)
 room_list["roomJ"].documentation = "</>On the relevant page of the Tome, you find a sticky note with a handwritten message: <WRITTEN_TEXT>Meet here at </><CLUE>t=2</><WRITTEN_TEXT>!."

@@ -140,11 +140,15 @@ verb_list["talk"].alternate_names.extend(["speak", "converse"])
 verb_list["talk"].supported_prepositions.update({"to": "NONE", "with": "NONE"})
 
 verb_list["sleep"] = Verb("sleep")
-verb_list["sleep"].alternate_names.extend(["nap", "snooze", "wait"])
+verb_list["sleep"].alternate_names.extend(["nap", "snooze", "wait", "rest"])
 verb_list["sleep"].supported_prepositions.update({"NONE": "NONE"})
 
 verb_list["hint"] = Verb("hint")
 verb_list["hint"].supported_prepositions.update({"NONE": "NONE"})
+
+verb_list["sit"] = Verb("sit")
+verb_list["sit"].alternate_names.extend(["recline", "lounge"])
+verb_list["sit"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
 
 # not sure how we will keep track of prepositions, but here's a running list:
 prep_list = ["at", "on", "in", "to", "into", "inside", "through", "up", "down", "with"]
@@ -392,3 +396,8 @@ action_list["sleep"] = ActionVerbOnly("sleep")
 # sleep
 # verb "sleep" -> Room.sleep()
 action_list["hint"] = ActionVerbOnly("hint")
+
+# sit
+# only verb "sit" -> Room.sit()
+# verb + dobj(ANYWHERE) "sit couch" -> Thing.sit()
+action_list["sit"] = ActionVerbOnlyOrDirect("sit")

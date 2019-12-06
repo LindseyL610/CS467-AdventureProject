@@ -74,6 +74,8 @@ class Thing:
 
 		self.msg_cannot_talk = "You cannot talk to that."
 
+		self.msg_cannot_sit = "You cannot sit there."
+
 	def get_status(self, type):
 		"""returns the status of a thing in JSON format"""
 
@@ -280,6 +282,9 @@ class Thing:
 
 	def hit(self, game, actionargs):
 		say(self.msg_nothing_happens)
+
+	def sit(self, game, actionargs):
+		say(self.msg_cannot_sit)
 
 	# Special Functions
 	def ram(self, game, actionargs):
@@ -727,7 +732,7 @@ class Debugger(Item):
 		return super().get_status(type)
 
 	def spray(self, game, actionargs):
-		print("You spray the Debugger in the air. Nothing happens.")
+		say("You spray the Debugger in the air. Nothing happens.")
 
 
 class Feature(Thing):
@@ -743,6 +748,22 @@ class Feature(Thing):
 		if type is None:
 			type = "Feature"
 		return super().get_status(type)
+
+
+class Seat(Feature):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.msg_sit = "You sit on the {}. After resting for some time "\
+				"on the comfortable {}, you get back up, ready "\
+				"to continue exploring.".format(self.name, self.name)
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Seat"
+		return super().get_status(type)
+
+	def sit(self, game, actionargs):
+		say(self.msg_sit)	
 
 
 class Lock(Feature):
@@ -1517,6 +1538,10 @@ class Moth(Feature):
 		if not self.err_message(game):
 			super().tic(game, actionargs)
 
+	def sit(self, game, actionargs):
+		if not self.err_message(game):
+			super().sit(game, actionargs)
+
 class Tape(Item):
 	def __init__(self, id, name):
 		super().__init__(id, name)
@@ -1635,6 +1660,10 @@ class Tape(Item):
 		if not self.err_message(game):
 			super().tic(game, actionargs)
 
+	def sit(self, game, actionargs):
+		if not self.err_message(game):
+			super().sit(game, actionargs)
+
 class ShiftyMan(Feature):
 	def __init__(self, id, name):
 		super().__init__(id, name)
@@ -1645,7 +1674,7 @@ class ShiftyMan(Feature):
 		return super().get_status(type)
 
 	def talk(self, game, actionargs):
-		say("There are five DAEMONS in the Tower who stole some very important things from me:")
+		say("There are five DAEMONS in the Tower who stole some very important things from my computer:")
 		say("One likes to play pranks.")
 		say("One likes to dance - but only likes very fast music.")
 		say("One got a job as a bus driver.")
@@ -1792,6 +1821,25 @@ class Spider(Feature):
 	def tic(self, game, actionargs):
 		if not self.err_message(game):
 			super().tic(game, actionargs)
+
+	def sit(self, game, actionargs):
+		if not self.err_message(game):
+			super().tic(game, actionargs)
+
+class Fireplace(Feature):
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.look_in_msg = "You look in the fireplace, but "\
+				   "you don't see anything other than the "\
+				   "burning fire."
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Fireplace"
+		return super().get_status(type)
+
+	def look_in(self, game, actionargs):
+		say(self.look_in_msg)
 			
 class Freezer(Feature):
 	"""Freezer that manipulates chunk of ice"""
