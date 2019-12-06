@@ -272,6 +272,8 @@ thing_list["IOroomFiles"].can_be_read = True
 
 thing_list["IOroomDesk"] = Thing.Surface("IOroomDesk", "desk")
 thing_list["IOroomDesk"].description = "A cluttered desk. There is a drawer."
+thing_list["IOroomDesk"].is_listed = True
+thing_list["IOroomDesk"].contents_accessible = True
 
 thing_list["IOroomDeskDrawer"] = Thing.Container("IOroomDeskDrawer", "drawer")
 thing_list["IOroomDeskDrawer"].description = "A desk drawer."
@@ -312,7 +314,7 @@ thing_list["IOroomCabinet"].can_be_opened = True
 thing_list["IOroomCabinet"].is_open = False
 thing_list["IOroomCabinet"].contents_accessible = False
 thing_list["IOroomCabinet"].contents_accessible_iff_open = True
-thing_list["IOroomCabinet"].is_listed = False
+thing_list["IOroomCabinet"].is_listed = True
 thing_list["IOroomCabinet"].list_name = "a filing cabinet"
 thing_list["IOroomCabinet"].adjectives.extend(["filing"])
 
