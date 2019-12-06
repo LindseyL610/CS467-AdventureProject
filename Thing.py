@@ -221,7 +221,7 @@ class Thing:
 
 	def give_to(self, game, actionargs):
 		if self.can_be_dropped:
-			thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			thing_to_receive = game.get_thing_by_name(actionargs["iobj"], False)
 			if thing_to_receive is game.thing_list["shiftyMan"]:
 				say("The shifty man does not want the {}.".format(self.name))
 			elif thing_to_receive.can_receive:
@@ -240,14 +240,14 @@ class Thing:
 		if not self.can_be_dropped:
 			say(self.msg_cannot_drop)
 		else:
-			storage_object = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			storage_object = game.get_thing_by_name(actionargs["iobj"], False)
 			storage_object.receive_item(game, self, "in")
 
 	def put_on(self, game, actionargs):
 		if not self.can_be_dropped:
 			say(self.msg_cannot_drop)
 		else:
-			storage_object = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			storage_object = game.get_thing_by_name(actionargs["iobj"], False)
 			storage_object.receive_item(game, self, "on")
 
 	def pull(self, game, actionargs):
@@ -490,7 +490,7 @@ class RubberDuck(Item):
 		recipient = game.get_thing_by_name(actionargs["iobj"], False)
 
 		if recipient is not game.thing_list["shiftyMan"]:	
-			recipient = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			recipient = game.get_thing_by_name(actionargs["iobj"], False)
 
 			if recipient.can_receive:
 				say("The {} doesn't want the rubber duck.".format(recipient.name))
@@ -554,7 +554,7 @@ class Cheese(Item):
 		return super().get_status(type)
 
 	def give_to(self, game, actionargs):
-		thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+		thing_to_receive = game.get_thing_by_name(actionargs["iobj"], False)
 
 		if game.player.current_room.id == "roomI" and\
 		game.player.current_room.is_lit == False and\
@@ -570,7 +570,7 @@ class Cheese(Item):
 			say(message)
 			self.mouse_eats_cheese(game, actionargs)
 		else:
-			thing_to_receive = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			thing_to_receive = game.get_thing_by_name(actionargs["iobj"], False)
 			if thing_to_receive.can_receive:
 				say("The {} doesn't want the cheese.".format(thing_to_receive.name))
 			else:
@@ -626,7 +626,7 @@ class Ticket(Item):
 			say(message)
 			self.grant_bus_access(game, actionargs)
 		else:
-			thing_to_receive = Utilities.find_by_name(actionargs["dobj"], game.thing_list)
+			thing_to_receive = game.get_thing_by_name(actionargs["dobj"], False)
 			if thing_to_receive.can_receive:
 				say("The {} doesn't want the ticket.".format(thing_to_receive.name))
 			else:
@@ -1425,7 +1425,7 @@ class Moth(Feature):
 		if self.err_message(game):
 			return
 
-		obj = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+		obj = game.get_thing_by_name(actionargs["iobj"], False)
 		
 		if obj.id == "debugger":
 			self.spray(game, actionargs)
@@ -1723,7 +1723,7 @@ class Spider(Feature):
 		if self.err_message(game):
 			return
 
-		obj = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+		obj = game.get_thing_by_name(actionargs["iobj"], False)
 	
 		if obj.id == "debugger":
 			self.spray(game, actionargs)
