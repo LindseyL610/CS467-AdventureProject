@@ -182,7 +182,10 @@ class Game:
 		else:
 			if(must_be_in_inventory):
 				default_thing = self.find_by_name(thing_name, self.thing_list)
-				say("You don't have {}.".format(default_thing.list_name))
+				if default_thing is not None:
+					say("You don't have {}.".format(default_thing.list_name))
+				else:
+					say("I don't understand that. Please try another command.")
 				return None
 			else:
 				# look in room's accessible contents:
