@@ -424,6 +424,7 @@ thing_list["webCobwebs"].description = "There are some cobwebs in the corner "\
 				       "in the webs."
 thing_list["webCobwebs"].list_name = "some cobwebs"
 thing_list["webCobwebs"].alternate_names.extend(["web", "webs"])
+thing_list["webCobwebs"].msg_cannot_take = "The cobwebs are too sticky to take."
 
 
 # ROOM I (Dark Webs) FEATURES AND ITEMS--------------------------------------
@@ -438,11 +439,16 @@ thing_list["cobwebs"].description = "You can see that there are sticky cobwebs e
 				    "but can't see much more detail without any light."
 thing_list["cobwebs"].list_name = "some cobwebs"
 thing_list["cobwebs"].alternate_names.extend(["web", "webs"])
+thing_list["cobwebs"].msg_cannot_take = "The cobwebs are too sticky to take."
 
 # Creating spider
 thing_list["spider"] = Thing.Spider("spider", "spider")
-thing_list["spider"].description = "This is the biggest spider you've ever seen!"
+thing_list["spider"].description = "You look closer at the giant black spider. This is the biggest spider you've ever seen!"
 thing_list["spider"].list_name = "a spider"
+thing_list["spider"].msg_cannot_take = "You think about taking the spider but "\
+				       "quickly decide against it. That spider "\
+				       "probably wouldn't be too happy if you "\
+				       "tried to pick it up."
 
 
 # ROOM J (Clock Room) FEATURES AND ITEMS---------------------------------------
@@ -456,6 +462,7 @@ thing_list["shiftyMan"].description = "This man looks very shifty... "\
 thing_list["shiftyMan"].list_name = "a shifty man"
 thing_list["shiftyMan"].alternate_names.extend(["man"])
 thing_list["shiftyMan"].adjectives.extend(["shifty"])
+thing_list["shiftyMan"].msg_cannot_take = "You cannot take the shifty man."
 
 # Creating clock room clock
 thing_list["crClock"] = Thing.ComplexClock("crClock", "clock")
