@@ -1214,7 +1214,7 @@ class Clock(Feature):
 		return super().get_status("Clock")
 
 	def look(self, game, actionargs):
-		say("The time is t=" + str(game.game_time))
+		say("The time is <DIGITAL_TEXT>t=" + str(game.game_time) + "</>")
 
 
 class ComplexClock(Feature):
@@ -1231,7 +1231,7 @@ class ComplexClock(Feature):
 
 	def look(self, game, actionargs):
 		say(self.description)
-		say("The time is t=" + str(game.game_time))
+		say("The time is <DIGITAL_TEXT>t=" + str(game.game_time) + "</>")
 
 class Piano(Feature):
 	"""Playable piano"""
