@@ -67,7 +67,7 @@ verb_list = {}
 
 verb_list["look"] = Verb("look")
 verb_list["look"].alternate_names.extend(["examine", "inspect"])
-verb_list["look"].supported_prepositions.update({"NONE":"NONE", "at":"NONE"})
+verb_list["look"].supported_prepositions.update({"NONE":"NONE", "at":"NONE", "around":"NONE", "in":"in"})
 
 verb_list["read"] = Verb("read")
 verb_list["read"].alternate_names.extend(["scan","interpret"])
@@ -293,6 +293,10 @@ action_list["go"] = ActionDirectGo("go")
 # only verb "look"-> Room.look()
 # verb + dobj(ANYWHERE) "look door"-> Thing.look()
 action_list["look"] = ActionVerbOnlyOrDirect("look")
+
+# look in
+# verb + dobj(ANYWHERE) "look in fridge" -> Thing.look_in()
+action_list["look_in"] = ActionDirect("look_in")
 
 # read
 # verb + dobj(IN_INVENTORY/IN_ROOM) "read book" -> Thing.read()
