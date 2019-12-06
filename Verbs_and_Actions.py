@@ -35,8 +35,8 @@ class Verb():
 
 	def execute(self, game, actionargs):
 		### DEBUG
-		print("actionargs: verb={} dobj={} prep={} iobj={}".format(
-			actionargs.get("verb"),actionargs.get("dobj"),actionargs.get("prep"),actionargs.get("iobj") ))
+		# print("actionargs: verb={} dobj={} prep={} iobj={}".format(
+		# 	actionargs.get("verb"),actionargs.get("dobj"),actionargs.get("prep"),actionargs.get("iobj") ))
 		###
 
 		verb_string = actionargs["verb"]
