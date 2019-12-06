@@ -46,8 +46,8 @@ thing_list["plaque"].description = \
     "A small plaque. It reads: \n" \
     "<WRITTEN_TEXT>Welcome to Tower Escape, a game by Jason DiMedio, Lindsey Lopian, and Casey Proulx. " \
     "This interactive fiction game contains a number of logic puzzles, whose answers are words or phrases. " \
-    "Outside resources may be required to solve them (like... the internet). Can you escape the tower? " \
-    "</>"
+    "Outside resources may be required to solve them (like... the internet). For a list of basic commands, " \
+    "type \"help\". Can you escape the tower? </>"
 
 # Creating balcony keyboard
 thing_list["balconyKeypad"] = Thing.InputBalconyWindow("balconyKeypad", "keypad")
