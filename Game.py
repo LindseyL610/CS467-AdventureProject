@@ -707,7 +707,7 @@ class Game:
 # Temporarily turning off width validation for ease of use in my IDE
 # if valid_screen_size() or True:
 if valid_screen_size():
-	intro()		#temporarily turning off intro screen for dev stage
+	intro()
 	game = Game()
 	if game.game_loaded:
 		game.play()
