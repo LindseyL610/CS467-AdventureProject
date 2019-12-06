@@ -954,7 +954,7 @@ room_list["roomC"].long_description = "You step into a small room from its weste
 				      "Irritated, you shove the toolbox to the right, where it stops with a thud next to a desk. "\
 				      "You glance at the desk and notice a newspaper lying on top of it. "\
 				      "Straight ahead of you, a large locker stands against the wall. "\
-				      "To your left, on the north side of the room, you see a dark hallway. "
+				      "To your left, on the north side of the room, you see a dark hallway. There is a clock on the wall."
 room_list["roomC"].short_description = "You are in the utility room. "
 
 
@@ -967,7 +967,7 @@ room_list["roomD"].long_description = "As you enter the room, the first thing yo
                                       "This appears to be the mouse's... dwelling. " \
                                       "It looks like there may be some kind of lever on the wall, " \
                                       "but the mouse is in the way. The rest of the room is empty with walls " \
-                                      "made of large stone bricks. On the west wall, " \
+                                      "made of large stone bricks with a clock on one of the walls. On the west wall, " \
                                       "some of the bricks appear discolored. There is a hallway to the south, " \
                                       "and stairs ascending to the north."
 room_list["roomD"].short_description = "The floor is covered in hay and debris. There is a hallway to the south, " \
@@ -1009,7 +1009,7 @@ room_list["roomH"].long_description = "You step into the west side of an extrava
 				      "the giant moth hovering directly across from you, on the east side of the room. You take a good look at the moth "\
 				      "and notice that it is holding some sort of a cartride in its mouth. Behind the moth lies a door, which the moth "\
 				      "appears to be guarding. On the north side of the hall, you see a ramp going downward. On the south side "\
-				      "of the hall, you see a pitch black opening." 
+				      "of the hall, you see a pitch black opening. On the wall is a clock." 
 room_list["roomH"].short_description = "You are in the marble hall that looks to be a place where people gather together."
 room_list["roomH"].documentation = "If you're having trouble, try debugging."
 
@@ -1040,7 +1040,7 @@ room_list[
     "This room is cold. Like extremely cold. You see tubes coming in and out of the walls " \
     "and ceiling that seem to be transporting some blue liquid. " \
     "On the south side of the room is what looks like a refrigerator. " \
-    "Against the west wall is a contraption labeled \"freezer\", next to which is a chunk of ice. " \
+    "Against the west wall is a contraption labeled \"freezer\", next to which is a chunk of ice. Above the contraption, on the wall, is a clock." \
     "There is a ramp ascending to the east, and a hallway leading north."
 room_list["roomK"].short_description = \
     "You are in a very cold room. " \
@@ -1056,7 +1056,7 @@ room_list["roomP1"].long_description = \
     "This appears to be some kind of surveillance room. " \
     "The walls are covered with several screens, of various sizes, most of which seem to be horribly malfunctioning. " \
     "They are all displaying nonsense, with the exception of a large control panel " \
-    "on the north wall. All of the monitors have cords running into a large machine. " \
+    "on the north wall that includes a clock. All of the monitors have cords running into a large machine. " \
     "There is a sign hanging next to the machine. " \
     "There is a tunnel to the east."
 room_list["roomP1"].short_description = \
@@ -1074,7 +1074,7 @@ room_list["roomP1"].hints = [
 # Creating room P2
 room_list["roomP2"] = Room.Room("roomP2", "Mailroom")
 room_list["roomP2"].long_description = "In this small room, there is a desk, with a computer, and pile of letters. " \
-                                       "There is a door to the east."
+                                       "There is a door to the east. A clock hangs on the wall."
 room_list["roomP2"].short_description = "A small, dusty room." \
                                         "There is a door to the east."
 room_list["roomP2"].documentation = "In this room all mail is gathered, sorted, " \
@@ -1094,7 +1094,7 @@ room_list["roomP3"].long_description =\
     "There is a long table separating you from the other side of the room, " \
     "where there are countless books on shelves. The table is unattended, " \
     "but on it sits a touchscreen and some sort of catalog. " \
-    "There is a sign hanging on the wall." \
+    "There is a sign hanging on the wall along with a clock." \
     "There is a door to the north."
 room_list["roomP3"].short_description = \
     "You are in a library. Out of reach on the other side of the room are books on shelves." \
@@ -1115,7 +1115,7 @@ room_list["roomP4"].long_description = \
     "In this large room, there is seems to be a large mechanical system that is malfunctioning. " \
     "There are several large processors, all of which are beeping, blinking, groaning, and smoking! " \
     "In the center of the room is a computer." \
-    "There is a door to the west."
+    "There is a door to the west and a clock hanging on the wall."
 room_list["roomP4"].short_description = \
     "There is a large mechanical system in this room. " \
     "There is a door to the west."
@@ -1133,7 +1133,7 @@ room_list["roomP5"] = Room.Room("roomP5", "Manager's Office.")
 room_list["roomP5"].long_description = \
     "You walk into a clean and well furnished office. " \
     "There is a gorgeous desk, with a nameplate and computer on it. " \
-    "There is a door to the south."
+    "There is a door to the south and a clock hanging on the wall."
 room_list["roomP5"].short_description = "This is a nice looking office. " \
                                         "There is a door to the south."
 room_list["roomP5"].documentation = "This is the office of the Password Manager. The manager is known to " \
