@@ -119,3 +119,21 @@ def find_by_name(name, group_to_search):
 #     if thing.name == name:
 #       return thing
 #   return None
+
+TEST = \
+    "A stack of printed out emails between family members. As you glance through them, " \
+    "there are several sentences in different messages that stand out to you. " \
+    "There's something not quite right about them, " \
+    "like someone has been <CLUE>injecting</> things into them. " \
+    "Now it seems as if they're speaking <CLUE>different languages</>, " \
+    "and there's something <CLUE>in their words</> that makes you think they're " \
+    "going against their <CLUE>programming</>. \n" \
+    "Here are the strange sentences: \n" \
+    "<WRITTEN_TEXT>\"I'll need a chainsaw if the trees keep growing so </><CLUE>fast</><WRITTEN_TEXT>.\" \n " \
+    "\"Better to have wanderlust than to let your dreams </><CLUE>corrode</><WRITTEN_TEXT>.\" \n" \
+    "\"To give my mojo a valuable boost, I drink some strong </><CLUE>coffee</><WRITTEN_TEXT>.\" \n" \
+    "\"I'm going to run by the jewelers, to buy a </><CLUE>gemstone</><WRITTEN_TEXT>.\" \n" \
+    "\"Isn't therapy the one thing that will help your fear of </><CLUE>snakes</><WRITTEN_TEXT>?\""
+
+print(TEST)
+say(TEST)
