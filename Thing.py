@@ -1678,12 +1678,12 @@ class ShiftyMan(Feature):
 		return super().get_status(type)
 
 	def talk(self, game, actionargs):
-		say("There are five DAEMONS in the Tower who stole some very important things from my computer:")
-		say("One likes to play pranks.")
-		say("One likes to dance - but only likes very fast music.")
-		say("One got a job as a bus driver.")
-		say("One has been hanging out with a spider.")
-		say("One is the Tower custodian, and keeps a strange pet.")
+		say("<SPOKEN_TEXT>There are five DAEMONS in the Tower who stole some very important things from my computer:</>")
+		say("<SPOKEN_TEXT>One likes to play pranks.</>")
+		say("<SPOKEN_TEXT>One likes to dance - but only likes very fast music.</>")
+		say("<SPOKEN_TEXT>One got a job as a bus driver.</>")
+		say("<SPOKEN_TEXT>One has been hanging out with a spider.</>")
+		say("<SPOKEN_TEXT>One is the Tower custodian, and keeps a strange pet.</>")
 
 class Spider(Feature):
 
