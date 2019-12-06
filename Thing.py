@@ -40,7 +40,7 @@ class Thing:
 		self.dynamic_description_text = "There is a thing."
 
 		# Default Text for all messages
-		self.msg_take_first = "You take the {} (for the first time).".format(self.name)
+		self.msg_take_first = "You take the {}.".format(self.name)
 		self.msg_take = "You take the {}.".format(self.name)
 		self.msg_cannot_take = "You cannot take the {}.".format(self.name)
 		self.msg_already_in_inventory = "You already have the {}.".format(self.name)
@@ -898,7 +898,7 @@ class InputPuzzle1(Input):
 			"<DIGITAL_TEXT>Crystals are gone, shutting down and switching to manual monitoring system.</>\n" \
 			"All of the monitors in the room turn off, and it is now pitch black. \n" \
 			"Your Documentation Tome begins to glow. Opening it, you see a new function appear: LED. " \
-			"To use this function, input 'call LED'. You try it, and the lights in the room turn back on."
+			"To use this function, input \"call LED\". You try it, and the lights in the room turn back on."
 
 	# "The light from the tome fades away, and the room is again completely dark."
 
@@ -939,9 +939,9 @@ class InputPuzzle2(Input):
 		self.msg_correct_answer = \
 			"You type the final word and send the email. You feel better now that this apology " \
 			"has been sent to those who deserve to hear it. As you reflect on your bizarre adventure, " \
-			"and dream of being free of this tower, you realize that maybe the real adventure is the friends you " \
-			"make along the way. Just then, your Tome of Documentation rumbles. You open it and see a new function " \
-			"has appeared: KIN. You can use it by saying 'call KIN on thing'. It will reconnect something with " \
+			"and dream of being free of this tower, you wonder when you will next see your own family. " \
+			"Just then, your Tome of Documentation starts to get very warm. You open it and see a new function " \
+			"has appeared: KIN. You can use it by saying \"call KIN on _____\". It will reconnect something with " \
 			"it's relatives."
 		self.msg_incorrect_answer = "You think harder, and realize that is not the right word to complete the email."
 
@@ -950,10 +950,10 @@ class InputPuzzle2(Input):
 
 	def get_desc(self):
 		if not self.triggered:
-			desc = "The computer is on, and on the screen it appears as though someone was composing an email." \
+			desc = "The computer is on, and on the screen it appears as though someone was composing an email. " \
 				   "Here is what is says: \n" \
 				   "<DIGITAL_TEXT>Dear family, \n" \
-				   "I'm sorry for disrupting our relationship database." \
+				   "I'm sorry for disrupting our relationship database. " \
 				   "My actions have caught up to me. Now I must confess that my fears have become reality, " \
 				   "for, now I am ...</> \n" \
 				   "The email is missing a final word. What should you type before sending the email?"
@@ -982,7 +982,8 @@ class InputPuzzle3(Input):
 			"You discover that sometimes, the best answer is brute force. " \
 			"Just then your Tome of Documentation begins to thrash wildly. " \
 			"It falls on the table and opens, and you see a new function appear: RAM. " \
-			"To use it, say \"call RAM on thing\". The drone is startled, grabs the hackers book and flies away."
+			"This will apply a great force to something. " \
+			"To use it, say \"call RAM on _____\". The drone is startled, grabs the hackers book and flies away."
 		self.msg_incorrect_answer = "The search comes up empty, there are no books by that name."
 
 	def get_status(self):
@@ -1023,7 +1024,7 @@ class InputPuzzle4(Input):
 			"The computer screen reads: <DIGITAL_TEXT>Booting up...</>. It appears you've fixed the system! " \
 			"You suddenly feel a jolt, as if your Tome of Documentation just shocked you. " \
 			"Opening its pages you see a new function appear: TIC. This function will make a machine malfunction; " \
-			"to use it, say \"call TIC on thing\". "
+			"to use it, say \"call TIC on _____\". "
 		self.msg_incorrect_answer = "The computer reads: <DIGITAL_TEXT>You've entered an unknown status. " \
 									"Please enter correct status.</>"
 
@@ -1063,7 +1064,7 @@ class InputPuzzle5(Input):
 			"for increasing coordination. After skimming through a few pages, " \
 			"you notice your Tome of Documentation begin to vibrate. " \
 			"You open it up and see a new function has been added: PRO. " \
-			"oO use it, say \"call PRO\". This will temporarilty increase your skill and dexterity. " \
+			"To use it, say \"call PRO\". This will temporarilty increase your skill and dexterity. " \
 			"You exit the course and turn off the computer."
         self.msg_incorrect_answer = "You've entered the incorrect password."
 
@@ -1085,9 +1086,9 @@ class InputPuzzle5(Input):
 				"Who ever previously tried to log in experienced <CLUE>off-by-one-errors</> " \
 				"with every key! The incorrect passwords were: \n" \
             "<DIGITAL_TEXT>COMDEXS \nGUMWEED \nROBSZED \nTUBREAR</>\n" \
-            "What do you suppose the actual password is?"
+            "You wonder what the actual password might be."
         else:
-            desc = "The computer's is turned off."
+            desc = "The computer is turned off."
         say(desc)
 
 class MetaPuzzleInput(Input):
@@ -1099,9 +1100,13 @@ class MetaPuzzleInput(Input):
 		self.answer = "pro ram kin tic led"
 		self.answer2 = "geek"
 		self.msg_correct_answer = \
-			"Correct! A more text appears on the screen: \n" \
+			"Correct! More text appears on the screen: \n" \
 			"<DIGITAL_TEXT>Now you should have learned something about yourself. What are you?</>"
-		self.msg_correct_answer2 = "YOU WIN!"
+		self.msg_correct_answer2 = \
+			"The Mother DAEMON look at you and silently nods. She comes over and guides your hands on the keyboard. " \
+			"You press Control... then Alt... then Delete. Everything goes black.\n" \
+			"When you come to, you find yourself sitting in front of your computer at home. " \
+			"You have escaped the tower! And now you have a craving for cheese..."
 		self.msg_incorrect_answer = "<DIGITAL_TEXT>Incorrect sequence.</>"
 		self.msg_incorrect_answer2 = "<DIGITAL_TEXT>Incorrect. Look deeper.</>"
 
@@ -1447,6 +1452,7 @@ class Freezer(Feature):
 
 	def tic(self, game, actionargs):
 		if not self.is_malfunctioned:
+			self.is_malfunctioned = True
 			malfunction_text = \
 				"The freezer buzzes and groans. It begins to shake before finally turning off. " \
 				"The chunk of ice begins to drip, and then crack. Finally, the ice falls apart, and the laptop " \
@@ -1459,6 +1465,17 @@ class Freezer(Feature):
 			game.player.current_room.add_thing(game.thing_list["flashdrive"])
 		else:
 			say("Nothing happens.")
+
+	def get_desc(self):
+		if self.is_malfunctioned:
+			desc_text = "This strange device is labeled as a \"<WRITTEN_TEXT>freezer</>\". " \
+						"It is turned off, and there is now a puddle of water next to it."
+		else:
+			desc_text = "This strange device is labeled as a \"<WRITTEN_TEXT>freezer</>\". " \
+						"Is is making a grumbling sound, and cold air is pouring from it. " \
+						"It is connected to a small platform on which is a chunk of ice. " \
+						"It seems to be keeping it frozen."
+		say(desc_text)
 
 
 class MotherDaemon(Feature):

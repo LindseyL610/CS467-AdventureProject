@@ -37,14 +37,17 @@ thing_list["book"].alternate_names.extend(["tome","documentation"])
 
 # Creating pedestal
 thing_list["pedestal"] = Thing.Surface("pedestal", "pedestal")
-thing_list["pedestal"].description = "A pedestal."
+thing_list["pedestal"].description = "A beautiful marble pedestal."
 
 
 # Creating plaque
 thing_list["plaque"] = Thing.Sign("plaque", "plaque")
 thing_list["plaque"].description = \
     "A small plaque. It reads: \n" \
-    "<WRITTEN_TEXT>Welcome to Tower Escape, a game by Jason DiMedio, Lindsey Lopian, and Casey Proulx.</>"
+    "<WRITTEN_TEXT>Welcome to Tower Escape, a game by Jason DiMedio, Lindsey Lopian, and Casey Proulx. " \
+    "This interactive fiction game contains a number of logic puzzles, whose answers are words or phrases. " \
+    "Outside resources may be required to solve them (like... the internet). Can you escape the tower? " \
+    "</>"
 
 # Creating balcony keyboard
 thing_list["balconyKeypad"] = Thing.InputBalconyWindow("balconyKeypad", "keypad")
@@ -53,8 +56,7 @@ thing_list["balconyKeypad"].description = "A keypad is on the wall next to the w
 thing_list["balconyKeypad"].msg_prompt = "What do you enter on the keypad?"
 thing_list["balconyKeypad"].answer = "hello world"
 thing_list["balconyKeypad"].msg_correct_answer = "After a brief pause, the window swings open, " \
-                                                 "narrowly missing you! You now see more of a " \
-                                                 "dimly lit room within the tower."
+                                                 "narrowly missing you! You now have a way into the tower!"
 
 
 # ROOM B (Lobby) FEATURES AND ITEMS--------------------------------------
@@ -460,28 +462,30 @@ thing_list["crClock"].list_name = "a complex mechanical clock"
 
 # Creating fridge
 thing_list["refrigerator"] = Thing.Container("refrigerator", "refrigerator")
-thing_list["refrigerator"].description = "A refrigerator."
+thing_list["refrigerator"].description = "A large stainless steel refrigerator."
 thing_list["refrigerator"].alternate_names.extend(["fridge"])
 
 # Creating cheese
 thing_list["cheese"] = Thing.Cheese("cheese", "cheese")
-thing_list["cheese"].description = "The block of cheese smells quite potent."
-thing_list["cheese"].list_name = "some cheese"
+thing_list["cheese"].description = "This large block of Bleu cheese smells quite potent."
+thing_list["cheese"].list_name = "a piece of cheese"
 
 thing_list["freezer"] = Thing.Freezer("freezer", "freezer")
-thing_list["freezer"].description = "This strange device is labeled as a \"<WRITTEN_TEXT>freezer</>\". " \
-                                    "Is is making a grumbling sound, and cold air is pouring from it. " \
-                                    "It is connected to a small platform on which is a chunk of ice. " \
-                                    "It seems to be keeping it frozen."
+# thing_list["freezer"].description = "This strange device is labeled as a \"<WRITTEN_TEXT>freezer</>\". " \
+#                                     "Is is making a grumbling sound, and cold air is pouring from it. " \
+#                                     "It is connected to a small platform on which is a chunk of ice. " \
+#                                     "It seems to be keeping it frozen."
+
 
 thing_list["frozenLaptop"] = Thing.Feature("frozenLaptop", "ice")
 thing_list["frozenLaptop"].description = \
     "A strangely shaped chunk of ice sitting on a platform. " \
     "Looking closer at it, it appears as though something is inside. " \
     "You're not sure, but it resembles a laptop."
+thing_list["frozenLaptop"].list_name = "a chunk of ice"
 
 thing_list["brokenLaptop"] = Thing.Item("brokenLaptop", "laptop")
-thing_list["brokenLaptop"].description = "A laptop, broken, though no longer frozen."
+thing_list["brokenLaptop"].description = "A laptop, which was frozen. Now it is broken."
 
 # ROOM P1 (Monitor Station) FEATURES AND ITEMS--------------------------------------
 
@@ -501,9 +505,10 @@ thing_list["puzzle1Machine"].description = \
     "Written on the machine are the words: <WRITTEN_TEXT>'Crystal Display System'</> " \
     "In the center of the machine are nine square cells, arranged in a 3x3 grid. " \
     "In each cell of the grid is a hole, " \
-    "where it looks like something used to be. But nothing is there now. "
+    "where it looks like something used to be. The cells are now empty..."
 
-thing_list["puzzle1Panel"] = Thing.InputPuzzle1("puzzle1Panel", "panel")
+thing_list["puzzle1Panel"] = Thing.InputPuzzle1("puzzle1Panel", "control panel")
+thing_list["puzzle1Panel"].alternate_names.extend(["panel"])
 thing_list["puzzle1Panel"].adjectives.extend(["control"])
 
 thing_list["puzzle1MonitorsBroken"] = Thing.Feature("puzzle1MonitorsBroken", "monitors")
@@ -530,14 +535,14 @@ thing_list["puzzle1MonitorsFixed"].dynamic_description_text = \
 # ROOM P2 (Mailroom) FEATURES AND ITEMS--------------------------------------
 
 thing_list["puzzle2Desk"] = Thing.Surface("puzzle2Desk", "desk")
-thing_list["puzzle2Desk"].description = "A small desk."
+thing_list["puzzle2Desk"].description = "A desk, small, and quite dusty."
 
 thing_list["puzzle2Letters"] = Thing.Feature("puzzle2Letters", "letters")
 thing_list["puzzle2Letters"].description = \
     "A stack of printed out emails between family members. As you glance through them, " \
     "there are several sentences in different messages that stand out to you. " \
     "There's something not quite right about them, " \
-    "like someone has been <CLUE>injecting</> things into them that shouldn't be there. " \
+    "like someone has been <CLUE>injecting</> things into them. " \
     "Now it seems as if they're speaking <CLUE>different languages</>, " \
     "and there's something <CLUE>in their words</> that makes you think they're " \
     "going against their <CLUE>programming</>. \n" \
@@ -550,7 +555,7 @@ thing_list["puzzle2Letters"].description = \
 
 thing_list["puzzle2Letters"].can_be_taken = False
 thing_list["puzzle2Letters"].msg_cannot_take = "There are too many letters to take all of them."
-thing_list["puzzle2Letters"].list_name = "a pile of letters."
+thing_list["puzzle2Letters"].list_name = "a pile of letters"
 thing_list["puzzle2Letters"].can_be_read = True
 
 
@@ -584,7 +589,7 @@ thing_list["puzzle3Catalog"].description = "This is a catalog listing all of the
                                            "[*9] Song/Album/Movie by the Beatles (1 4 3'1 5) \n" \
                                            "[*5] Has a gentle quiet voice (4 6) </>\n" \
                                            "The last entry has been erased. " \
-                                           "You wonder what book they could have been searching for?"
+                                           "You wonder what book they could have been searching for..."
 
 thing_list["puzzle3Catalog"].alternate_names.extend(["catalogue"])
 thing_list["puzzle3Catalog"].can_be_read = True
@@ -592,10 +597,10 @@ thing_list["puzzle3Catalog"].can_be_read = True
 
 thing_list["puzzle3Sign"] = Thing.Sign("puzzle3Sign", "sign")
 thing_list["puzzle3Sign"].description = \
-    "The sign reads as follows: \n " \
+    "The sign reads as follows: \n" \
     "<WRITTEN_TEXT>Remember to sign your name when checking out a book! Also remember our special notation: \n" \
-    "[*6] \"INDEX LETTERS\" -> L \n" \
-    "\"I am how long\" -> (1 2 3 4) </>\n"
+    "[*6] \"INDEX LETTERS\" = L \n" \
+    "\"I am how long\" = (1 2 3 4) </>\n"
 
 
 # ROOM P4 (Processing Plant) FEATURES AND ITEMS--------------------------------------
@@ -605,7 +610,7 @@ thing_list["puzzle4ProcessorsBroken"] = Thing.Feature("puzzle4ProcessorsBroken",
 thing_list["puzzle4ProcessorsBroken"].description = \
     "It is hard to determine the purpose of these large machines, but they appear to be malfunctioning wildly. " \
     "Every processor is displaying an error code, which should be a number. " \
-    "But each processor is from a different manufacturer, and uses a different encoding method. \n " \
+    "But each processor is from a different manufacturer, and uses a different encoding method. \n" \
     "#1 Pork Processor: <DIGITAL_TEXT>\"ooh-tay\"</> \n" \
     "#2 Elemental Processor: <DIGITAL_TEXT>\"Ar\"</> \n" \
     "#3 Root Processor: <DIGITAL_TEXT>\"81\"</> \n" \
@@ -614,16 +619,18 @@ thing_list["puzzle4ProcessorsBroken"].description = \
     "#6 Coin Processor: <DIGITAL_TEXT>\"Jefferson\"</> \n" \
     "#7 Athens Processor: <DIGITAL_TEXT>\"IV\"</> \n"
 thing_list["puzzle4ProcessorsBroken"].alternate_names.extend(["processor"])
+thing_list["puzzle4ProcessorsBroken"].list_name = "several processors"
 
 thing_list["puzzle4ProcessorsFixed"] = Thing.Feature("puzzle4ProcessorsFixed", "processors")
 thing_list["puzzle4ProcessorsFixed"].description = \
     "All seven processors have stopped malfunctioning."
 thing_list["puzzle4ProcessorsFixed"].alternate_names.extend(["processor"])
+thing_list["puzzle4ProcessorsFixed"].list_name = "several processors"
 
 # ROOM P5 (Manager's Office) FEATURES AND ITEMS--------------------------------------
 thing_list["puzzle5Computer"] = Thing.InputPuzzle5("puzzle5Computer", "computer")
 thing_list["puzzle5Nameplate"] = Thing.Sign("puzzle5Nameplate", "nameplate")
-thing_list["puzzle5Nameplate"].description = "The nameplate reads: <WRITTEN_TEXT>Password Manager</>\""
+thing_list["puzzle5Nameplate"].description = "The nameplate reads: <WRITTEN_TEXT>Password Manager</>"
 thing_list["puzzle5Nameplate"].alternate_names.extend(["nametag"])
 thing_list["puzzle5Desk"] = Thing.Surface("puzzle5Desk", "desk")
 thing_list["puzzle5Desk"].description = "A high quality desk made of beautiful wood."
@@ -637,6 +644,8 @@ thing_list["motherDaemon"] = Thing.MotherDaemon("motherDaemon", "DAEMON")
 thing_list["motherDaemon"].description = \
     "This DAEMON casually sits in her chair, with her feet up on the table."
 thing_list["metaPuzzleComputer"] = Thing.MetaPuzzleInput("metaPuzzleComputer", "computer")
+thing_list["metaPuzzleTable"] = Thing.Surface("metaPuzzleTable", "table")
+thing_list["metaPuzzleTable"].description = "The is a long boardroom table made of rich mahogany."
 
 #--------------------------------------------------------------------------
 #CLOCK STUFF---------------------------------------------------------------
@@ -658,17 +667,21 @@ thing_list["balconyWindowClosed"].can_go = False
 thing_list["balconyWindowClosed"].msg_cannot_go = "The window is closed, and you can't see how to open it."
 thing_list["balconyWindowClosed"].has_dynamic_description = True
 thing_list["balconyWindowClosed"].dynamic_description_text = "There is huge window to the north."
+thing_list["balconyWindowClosed"].msg_cannot_be_closed = "The window is already closed."
 thing_list["balconyWindowClosed"].msg_cannot_be_opened = "There does not seem to be a way to manually " \
                                                          "open the window from the outside."
 
+
 # Creating balconyWindowClosed
 thing_list["balconyWindowOpen"] = Thing.Exit("balconyWindowOpen", "window")
-thing_list["balconyWindowOpen"].description = "A large window. It is open, and you can see a large room inside."
+thing_list["balconyWindowOpen"].description = "A large window. It is now open, and provides a way into the tower."
 thing_list["balconyWindowOpen"].msg_go = "You climb through the open window. As you step inside the tower, " \
                                          "the window slams behind you."
 thing_list["balconyWindowOpen"].has_dynamic_description = True
 thing_list["balconyWindowOpen"].dynamic_description_text = "There is huge open window to the north."
 thing_list["balconyWindowOpen"].msg_cannot_be_opened = "The window is open."
+thing_list["balconyWindowOpen"].msg_cannot_be_closed = "You can't figure out how to close the window, " \
+                                                         "which is for the best at it is the only way you can go."
 
 # Creating lobbyWindow
 thing_list["lobbyWindow"] = Thing.Exit("lobbyWindow", "window")
@@ -717,16 +730,16 @@ thing_list["utilityHallway"].alternate_names.extend(["hall"])
 # Creating mousepadHallway
 thing_list["mousepadHallway"] = Thing.Exit("mousepadHallway", "hallway")
 thing_list[
-    "mousepadHallway"].description = "This dark hallway leads off to the north." \
-                                     "A strange smell seems to be coming through it."
-thing_list["mousepadHallway"].msg_go = "You slowly creep down the hallway."
+    "mousepadHallway"].description = "This hallway leads off to the south."
+thing_list["mousepadHallway"].msg_go = "You walk down the hallway."
 thing_list["mousepadHallway"].alternate_names.extend(["hall"])
 
 
 
 # Creating exits between B and K [[RAMP (OR ESCALATOR?)]]
 thing_list["lobbyRamp"] = Thing.Exit("lobbyRamp", "ramp")
-thing_list["lobbyRamp"].description = "This ramp descends to the west."
+thing_list["lobbyRamp"].description = "This ramp descends to the west. " \
+                                      "You can feel cold air coming from that direction."
 thing_list["lobbyRamp"].msg_go = "You walk down the ramp to the west."
 thing_list["coolingRamp"] = Thing.Exit("coolingRamp", "ramp")
 thing_list["coolingRamp"].description = "This ramp goes up to the east."
@@ -942,6 +955,7 @@ room_list["roomA"].documentation = "Enter the tower at your own risk, you may fi
                                    "To remedy this, you must discover who you are. " \
                                    "As with most journeys, you may want to start with a simple phrase: " \
                                    "\"<CLUE>Hello World</>.\""
+room_list["roomA"].hints = ["The phrase to enter on the keypad is found by reading the book."]
 
 
 # Creating roomB
@@ -956,6 +970,10 @@ room_list["roomB"].short_description = \
     "In this massive room, there is some type of large computer taking up most of the east wall. " \
     "A huge ornate door is to the north. Stairs ascend to the east. A ramp goes down to the west. " \
     "A large window is to the south. "
+room_list["roomB"].documentation = \
+    "Large computers such as this often rely on removable media to transfer data between systems. " \
+    "Over the years, many different forms of portable computer storage have been developed. " \
+    "But there's a big risk with removable storage: it can be removed."
 
 
 # Creating roomC
@@ -984,6 +1002,9 @@ room_list["roomD"].long_description = "As you enter the room, the first thing yo
                                       "and stairs ascending to the north."
 room_list["roomD"].short_description = "The floor is covered in hay and debris. There is a hallway to the south, " \
                                        "and stairs ascending to the north."
+room_list["roomD"].documentation = \
+    "The Bleu Tooth wireless standard allows for communication with a wide variety of devices, " \
+    "including keyboards, mice, headphones, and wearable devices, among others."
 
 # Creating room E
 room_list["roomE"] = Room.Ballroom("roomE", "Ballroom")
@@ -1049,14 +1070,19 @@ room_list["roomK"] = Room.Room("roomK", "Cooling Room")
 
 room_list[
     "roomK"].long_description = \
-    "This room is cold. Like extremely cold. You see tubes coming in and out of the walls " \
+    "This room is cold. Like extremely cold. There are several loud fans " \
+    "and you see tubes coming in and out of the walls " \
     "and ceiling that seem to be transporting some blue liquid. " \
     "On the south side of the room is what looks like a refrigerator. " \
-    "Against the west wall is a contraption labeled \"<WRITTEN_TEXT>freezer</>\", next to which is a chunk of ice. Above the contraption, on the wall, is a clock." \
-    "There is a ramp ascending to the east, and a hallway leading north."
+    "Against the west wall is a contraption labeled \"<WRITTEN_TEXT>freezer</>\", " \
+    "next to which is a chunk of ice. Above the contraption, on the wall, is a clock. " \
+    "There is a ramp ascending to the east, and a hallway leading north. "
 room_list["roomK"].short_description = \
     "You are in a very cold room. " \
-    "There is a ramp ascending to the east, and a hallway leading north."
+    "There is a ramp ascending to the east, and a hallway leading north. "
+room_list["roomK"].documentation = \
+    "There are several effecting methods for keeping things cold. But sometimes these methods work too well, " \
+    "and need to be disabled."
 
 
 
@@ -1075,24 +1101,28 @@ room_list["roomP1"].short_description = \
     "This appears to be some kind of surveillance room. " \
     "There is a tunnel to the east. "
 room_list["roomP1"].documentation = "This room uses a Crystal Display System to power the monitors used " \
-                                    "for surveillance of the tower. "
+                                    "for surveillance of the tower. It utilizes nine different colored crystals " \
+                                    "in a precise configuration."
 room_list["roomP1"].hints = [
     "The machine used to have nine differently colored crystals arranged in a 3x3 grid. You need to determine how they were arranged.",
-    "The sequences of letters and numbers in the paths correspond to the different colored crystals somehow… check the monitors.",
+    "The sequences of letters and numbers in the paths correspond to the different colored crystals somehow... check the monitors.",
     "The sequences are hex codes for the different colors which can be found using an external resource (aka the internet).",
     "By tracing the paths of the crystal colors on the properly filled out grid, you will trace the shapes of letters which spell a word."
 ]
 
 # Creating room P2
 room_list["roomP2"] = Room.Room("roomP2", "Mailroom")
-room_list["roomP2"].long_description = "In this small room, there is a desk, with a computer, and pile of letters. " \
+room_list["roomP2"].long_description = "This is a small, dusty room. There is a small, dusty desk, " \
+                                       "on which sits a small, dusty computer, and pile of letters. " \
+                                       "The letters are dusty, and average sized. " \
                                        "There is a door to the east. A clock hangs on the wall."
 room_list["roomP2"].short_description = "A small, dusty room." \
                                         "There is a door to the east."
-room_list["roomP2"].documentation = "In this room all mail is gathered, sorted, " \
-                                    "and added to the database."
+room_list["roomP2"].documentation = "In this room all mail, electronic or otherwise, is gathered, sorted, " \
+                                    "and added to the database. Mail between relatives " \
+                                    "is instead added to a relational database."
 room_list["roomP2"].hints = [
-    "The clue words in each sentence are all referencing a certain type of language…",
+    "The clue words in each sentence are all referencing a certain type of language...",
     "Each sentence references a popular programming language.",
     "Look for the names of the languages in the sentences, with something injected into them.",
     "The letters in the name of each programming language are contained in each sentence (sometimes across multiple words) with one extra letter added to each.",
@@ -1106,16 +1136,17 @@ room_list["roomP3"].long_description =\
     "There is a long table separating you from the other side of the room, " \
     "where there are countless books on shelves. The table is unattended, " \
     "but on it sits a touchscreen and some sort of catalog. " \
-    "There is a sign hanging on the wall along with a clock." \
-    "There is a door to the north."
+    "There is a sign hanging on the wall along with a clock. " \
+    "There is a door to the north. "
 room_list["roomP3"].short_description = \
-    "You are in a library. Out of reach on the other side of the room are books on shelves." \
-    "There is a door to the north."
+    "You are in a library. Out of reach on the other side of the room are books on shelves. " \
+    "There is a door to the north. "
 # TODO
-room_list["roomP3"].documentation = "The answer is 'answer'."
+room_list["roomP3"].documentation = "This library is a collection of valuable resources. " \
+                                    "They can be used to great effect, for noble purposes or otherwise."
 room_list["roomP3"].hints = [
     "The numbers in parenthesis next to a clue give the number of letters in each word of that answer.",
-    "The answers to each clue will follow a certain trend…",
+    "The answers to each clue will follow a certain trend...",
     "Each answer contains the word \"hard\" or \"soft\"",
     "The number in brackets with an asterisk tells you how many letters to count into each answer to extract a letter.",
     "Combine the extracted letters for hard answers, and for soft answers"
@@ -1126,11 +1157,11 @@ room_list["roomP4"] = Room.Room("roomP4", "Processing Plant")
 room_list["roomP4"].long_description = \
     "In this large room, there is seems to be a large mechanical system that is malfunctioning. " \
     "There are several large processors, all of which are beeping, blinking, groaning, and smoking! " \
-    "In the center of the room is a computer." \
-    "There is a door to the west and a clock hanging on the wall."
+    "In the center of the room is a computer. " \
+    "There is a door to the west and a clock hanging on the wall. "
 room_list["roomP4"].short_description = \
     "There is a large mechanical system in this room. " \
-    "There is a door to the west."
+    "There is a door to the west. "
 room_list["roomP4"].documentation = "In this processing plant, finding the system status should be " \
                                     "as easy as 1, 2, 3 -> A, B, C!"
 room_list["roomP4"].hints = [
@@ -1160,11 +1191,10 @@ room_list["roomP5"].hints = [
 # Creating roomMP
 room_list["roomMP"] = Room.Room("roomMP", "Mother Boardrooom")
 room_list["roomMP"].long_description = \
-    "This room contains a long long table. At the end closest to you is a computer. In fact..." \
-    "it looks very familiar. At the opposite end of the table sits... a DAEMON!" \
+    "This intimidating room contains a long long table. At the end closest to you is a computer. In fact... " \
+    "it looks very familiar. At the opposite end of the table sits... a DAEMON! " \
     "The door you came in is to the south."
-room_list["roomMP"].short_description = "A room with a long table. A familiar looking computer is at one end, " \
-                                        "and at the other end sits a DAEMON. A door is to the south. "
+room_list["roomMP"].short_description = "This boardroom is quite intimidating. A door is to the south. "
 room_list["roomMP"].documentation =\
     "The boardroom is where the mother DAEMON spends most of her time. Her riddles can be answered by " \
     "utilizing your special functions somehow. You may even be able to combine two of them, " \
@@ -1262,20 +1292,25 @@ room_list["roomC"].exits["down"] = thing_list["utilityStairs"]
 
 room_list["roomD"].add_thing(thing_list["hungryMouse"])
 room_list["roomD"].add_thing(thing_list["lever"])
-room_list["roomD"].add_thing(thing_list["secretWall"])
 
 thing_list["mousepadHallway"].destination = room_list["roomC"]
-# TODO
 thing_list["mousepadStairs"].destination = room_list["roomE"]
 thing_list["mousepadTunnel"].destination = room_list["roomP1"]
 
 room_list["roomD"].exits["south"] = thing_list["mousepadHallway"]
 room_list["roomD"].exits["west"] = thing_list["secretWall"]
-# TODO
 room_list["roomD"].exits["north"] = thing_list["mousepadStairs"]
 room_list["roomD"].exits["up"] = thing_list["mousepadStairs"]
-room_list["roomD"].exits["west"] = thing_list["secretWall"]
 
+# print("EXITS BEFORE")
+# for dir, ex in room_list["roomD"].exits.items():
+#      print("roomD exit {} : {}".format(dir, ex.name))
+#
+# room_list["roomD"].remove_exit(thing_list["secretWall"])
+# print("EXITS AFTER")
+# for dir, ex in room_list["roomD"].exits.items():
+#     print("roomD exit {} : {}".format(dir, ex.name))
+#
 
 
 # linking roomE (Ballroom) stuff
@@ -1470,7 +1505,8 @@ room_list["roomP5"].exits["south"] = thing_list["officeDoor"]
 
 # linking roomMP stuff
 
-room_list["roomMP"].add_thing(thing_list["metaPuzzleComputer"])
+room_list["roomMP"].add_thing(thing_list["metaPuzzleTable"])
+thing_list["metaPuzzleTable"].add_item(thing_list["metaPuzzleComputer"])
 room_list["roomMP"].add_thing(thing_list["motherDaemon"])
 
 thing_list["motherboardOrnateDoor"].destination = room_list["roomB"]

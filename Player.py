@@ -13,7 +13,17 @@ class Player:
 		self.inventory = []
 		# Room object
 		self.current_room = None
-		self.special_functions = {"pro":
+		self.special_functions = {"kin":
+									  {"name": "kin",
+									   "learned": False,
+									   "description": "Reconnect with relatives.",
+									   "action": "direct_object"},
+								  "led":
+									  {"name": "led",
+									   "learned": False,
+									   "description": "Power a room's lights.",
+									   "action": "verb_only"},
+								  "pro":
 									  {"name": "pro",
 									   "learned": False,
 									   "description": "Gain extreme coordination.",
@@ -23,21 +33,11 @@ class Player:
 									   "learned": False,
 									   "description": "Apply a great force.",
 									   "action": "direct_object"},
-								  "kin":
-									  {"name": "kin",
-									   "learned": False,
-									   "description": "Reconnect with relatives.",
-									   "action": "direct_object"},
 								  "tic":
 									  {"name": "tic",
 									   "learned": False,
 									   "description": "Make a machine malfucntion.",
-									   "action": "direct_object"},
-								  "led":
-									  {"name": "led",
-									   "learned": False,
-									   "description": "Power a room's lights.",
-									   "action": "verb_only"}
+									   "action": "direct_object"}
 								  }
 
 		# TEMPORARY STATUS EFFECTS - these will clear after going into another room, or based on other criteria
