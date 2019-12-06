@@ -431,9 +431,13 @@ class BusStation(Room):
 			super().get_description()
 
 	def set_normal(self):
-		self.remove_thing(self.bus)
-		self.remove_thing(self.daemon)
+		if self.bus in self.contents:
+			self.remove_thing(self.bus)
+		if self.daemon in self.contents:
+			self.remove_thing(self.daemon)
 
 	def set_special(self):
-		self.add_thing(self.bus)
-		self.add_thing(self.daemon)
+		if self.bus not in self.contents:
+			self.add_thing(self.bus)
+		if self.daemon not in self.contents:
+			self.add_thing(self.daemon)

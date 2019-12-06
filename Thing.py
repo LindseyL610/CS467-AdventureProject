@@ -1659,3 +1659,66 @@ class VendingTerminal(Container):
 	def receive_item(self, game, item, prep):
 		say("You can't put things {} the {}.".format(prep, self.name))
 
+
+class Bus(Container):
+	"""Not-Takable, Not-Dropable thing"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.can_be_taken = False
+		self.can_be_dropped = False
+		self.msg_cannot_take = "The {} is fixed in place.".format(self.name)
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Bus"
+		return super().get_status(type)
+
+	def go(self, game, actionargs):
+		say(self.msg_go)
+		if game.thing_list["floppyDisk"] in self.contents:
+			say("On your way out of the bus, you notice a floppy disk sitting on the driver's seat...")
+
+
+class Document(Item):
+	"""Takable, Dropable thing"""
+
+	def __init__(self, id, name):
+		super().__init__(id, name)
+		self.file = "binary"
+
+
+	def get_status(self, type=None):
+		if type is None:
+			type = "Document"
+		return super().get_status(type)
+
+	# ACTION for read
+	def read(self, game, actionargs):
+		file = open(self.file, "r")
+
+		count = 0
+	
+		if file.mode == 'r':
+			str = file.read()
+			str = str.split(" ")
+
+			display_str = ""
+
+			for x in str:
+				display_str += x
+				count += 1
+				if count % 10 == 0:
+					say(display_str)
+					display_str = ""
+				if count % 100 == 0:
+					ans = game.get_yn_answer("...Are you sure you want to keep reading? (y/n)")
+					if not ans:
+						say("That was... useful.")
+						break
+				if count % 1000 == 0:
+					say("You stop reading in spite of yourself, lest you go mad...")
+					break
+
+
+		file.close()

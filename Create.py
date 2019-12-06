@@ -32,7 +32,7 @@ thing_list["rubberDuck"].adjectives.extend(["rubber", "yellow"])
 #ROOM A (Balcony) FEATURES AND ITEMS--------------------------------------
 # Creating book
 thing_list["book"] = Thing.Book("book", "book")
-thing_list["book"].description = "This ancient book has the title \"Tome of Documentation\" printed on its cover. "
+thing_list["book"].description = "This ancient book has the title <WRITTEN_TEXT>\"Tome of Documentation\"</> printed on its cover. "
 thing_list["book"].alternate_names.extend(["tome","documentation"])
 
 # Creating pedestal
@@ -66,10 +66,11 @@ thing_list["lobbyComputer"].description = \
     "You can only assume it functions as some type of computer. " \
     "There appears to be a handful of unique ports in the machine where something could be inserted."
 
-thing_list["floppyDisk"] = Thing.Item("floppyDisk", "disk")
+thing_list["floppyDisk"] = Thing.Item("floppyDisk", "floppy disk")
 thing_list["floppyDisk"].description = \
     "An ancient data storage device."
-thing_list["floppyDisk"].alternate_names.extend(["floppy","floppydisk"])
+thing_list["floppyDisk"].alternate_names.extend(["disk","floppydisk"])
+thing_list["floppyDisk"].adjectives.extend(["floppy"])
 
 thing_list["cartridge"] = Thing.Item("cartridge", "cartridge")
 thing_list["cartridge"].description = \
@@ -144,9 +145,9 @@ thing_list["cleaning supplies"].msg_cannot_take = "There are too many bottles fo
 # Creating debugger
 thing_list["debugger"] = Thing.Debugger("debugger", "debugger")
 thing_list["debugger"].description = "The only things on the label are the word "\
-				     "'Debugger' and a small picture of a moth. "
+				     "<WRITTEN_TEXT>'Debugger'</> and a small picture of a moth. "
 thing_list["debugger"].alternate_names.extend(["can"])
-thing_list["debugger"].list_name = "a can labeled 'Debugger'"
+thing_list["debugger"].list_name = "a can labeled <WRITTEN_TEXT>'Debugger'</>"
 
 
 # ROOM D (Mouse Pad) FEATURES AND ITEMS--------------------------------------
@@ -177,7 +178,7 @@ thing_list["lever"].description = "There is some kind of lever on the wall." \
 
 #ROOM E (BALLROOM) FEATURES AND ITEMS--------------------------------------
 thing_list["wine"] = Thing.Wine("wine", "wine")
-thing_list["wine"].description = "A bottle of 'Ivory Keyboard' wine. Seems to be a good vintage."
+thing_list["wine"].description = "A bottle of <WRITTEN_TEXT>'Ivory Keyboard'</> wine. Seems to be a good vintage."
 thing_list["wine"].list_name = "a bottle of wine"
 
 thing_list["water"] = Thing.Drink("water", "water")
@@ -185,7 +186,7 @@ thing_list["water"].description = "A bottle of water."
 thing_list["water"].list_name = "a bottle of water"
 
 thing_list["soda"] = Thing.Drink("soda", "soda")
-thing_list["soda"].description = "A bottle of Mountain Mist soda. It shines brighter than the light of earendil."
+thing_list["soda"].description = "A bottle of <WRITTEN_TEXT>Mountain Mist</> soda. It shines brighter than the light of earendil."
 thing_list["soda"].list_name = "a bottle of soda"
 
 thing_list["bar"] = Thing.Surface("ballroomBar", "bar")
@@ -202,11 +203,11 @@ thing_list["tipJar"].adjectives.extend(["tip"])
 thing_list["coin"] = Thing.Key("coin", "coin")
 thing_list["coin"].list_name = "a gold coin"
 thing_list["coin"].adjectives.extend(["gold"])
-thing_list["coin"].description = "A gold coin."
+thing_list["coin"].description = "A gold coin with a <WRITTEN_TEXT>B</> on the front. It is heavy in your hand, proof of all of your hard work."
 
 thing_list["piano"] = Thing.Piano("piano", "piano")
 thing_list["piano"].description = "A grand piano with a long keyboard of shiny white and black ivory keys. " \
-                                  "The piano has the words 'Qwerty Classics Series' painted in gold cursive " \
+                                  "The piano has the words <WRITTEN_TEXT>'Qwerty Classics Series'</> painted in gold cursive " \
                                   "beneath the cover. Next to the piano is a tip jar."
 thing_list["piano"].adjectives.extend(["grand"])
 
@@ -237,12 +238,13 @@ thing_list["card"] = Thing.Key("card", "punch card")
 thing_list["card"].list_name = "a punch card"
 thing_list["card"].alternate_names.extend(["card"])
 thing_list["card"].adjectives.extend(["punch"])
-thing_list["card"].description = "An old computer punch card. At the top of the card is the word 'key'."
+thing_list["card"].description = "An old computer punch card. At the top of the card is the word <WRITTEN_TEXT>'key'</>."
 
-thing_list["IOroomDocuments"] = Thing.Item("IOroomDocuments", "documents")
+thing_list["IOroomDocuments"] = Thing.Document("IOroomDocuments", "documents")
 thing_list["IOroomDocuments"].description = "A disorderly stack of documents. Coffee rings abound."
 thing_list["IOroomDocuments"].list_name = "some useless documents"
 thing_list["IOroomDocuments"].adjectives.extend(["disorderly"])
+thing_list["IOroomDocuments"].can_be_read = True
 
 thing_list["IOroomCardScraps"] = Thing.Item("IOroomCardScraps", "scraps")
 thing_list["IOroomCardScraps"].description = "A pile of paper scraps. Looks like old punch cards. These things have been used, and not gently. They are useless."
@@ -260,7 +262,7 @@ thing_list["IOroomShreddings"].list_name = "some paper shreddings"
 thing_list["IOroomShreddings"].adjectives.extend(["paper"])
 
 thing_list["IOroomFiles"] = Thing.Item("IOroomFiles", "files")
-thing_list["IOroomFiles"].description = "Files. They appear to contain technical schematics."
+thing_list["IOroomFiles"].description = "Files. They appear to contain technical schematics. One of the documents is entitled, <WRITTEN_TEXT>'System and method for detecting and measuring discharge from males of bovine species and earthenware crock for storing same</>.'"
 thing_list["IOroomFiles"].list_name = "a bunch of files"
 
 thing_list["IOroomDesk"] = Thing.Surface("IOroomDesk", "desk")
@@ -276,7 +278,7 @@ thing_list["IOroomDeskDrawer"].is_listed = False
 thing_list["IOroomDeskDrawer"].list_name = "a desk drawer"
 
 thing_list["IOroomBox"] = Thing.Container("IOroomBox", "box")
-thing_list["IOroomBox"].description = "A cardboard box with 'junk' scrawled on it with marker."
+thing_list["IOroomBox"].description = "A cardboard box with <WRITTEN_TEXT>'junk'</> scrawled on it with marker."
 thing_list["IOroomBox"].can_be_opened = True
 thing_list["IOroomBox"].is_open = False
 thing_list["IOroomBox"].contents_accessible = False
@@ -286,7 +288,7 @@ thing_list["IOroomBox"].list_name = "a cardboard box"
 thing_list["IOroomBox"].adjectives.extend(["cardboard"])
 
 thing_list["IOroomInbox"] = Thing.Container("IOroomInbox", "inbox")
-thing_list["IOroomInbox"].description = "An inbox. That is, a literal inbox. A bin labeled 'in' for putting papers into, to be pushed, for instance, to an outbox."
+thing_list["IOroomInbox"].description = "An inbox. That is, a literal inbox. A bin labeled <WRITTEN_TEXT>'in'</> for putting papers into, to be pushed, for instance, to an outbox."
 thing_list["IOroomInbox"].can_be_opened = False
 thing_list["IOroomInbox"].is_open = True
 thing_list["IOroomInbox"].contents_accessible = True
@@ -331,17 +333,18 @@ thing_list["IOroomLock"].msg_toggled = "The key turns in the lock, and the door 
 #--------------------------------------------------------------------------
 #ROOM G (BUS STATION) FEATURES AND ITEMS--------------------------------------
 thing_list["busLocked"] = Thing.Feature("busLocked", "bus")
-thing_list["busLocked"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. You can see through the windows that it is lit inside, but the Driver DAEMON stands at the door, blocking access to the bus."
+thing_list["busLocked"].description = "A bus. On the side of the bus it says <WRITTEN_TEXT>'Serial Bus Lines'</>. You can see through the windows that it is lit inside, but the Driver DAEMON stands at the door, blocking access to the bus."
 thing_list["busLocked"].is_listed = True
 thing_list["busLocked"].list_name = "a bus waiting at the platform"
 
-thing_list["bus"] = Thing.Container("bus", "bus")
-thing_list["bus"].description = "A bus. On the side of the bus it says 'Serial Bus Lines'. The driver DAEMON has stepped aside, allowing you access to the bus."
+thing_list["bus"] = Thing.Bus("bus", "bus")
+thing_list["bus"].description = "A bus. On the side of the bus it says <WRITTEN_TEXT>'Serial Bus Lines'</>. The driver DAEMON has stepped aside, allowing you access to the bus."
 thing_list["bus"].can_be_opened = False
 thing_list["bus"].is_open = True
 thing_list["bus"].contents_accessible = True
 thing_list["bus"].contents_accessible_iff_open = True
 thing_list["bus"].is_listed = True
+thing_list["bus"].msg_go = "You go into the bus, but there's no way you're going to fit into these bit-sized seats. Also the driver is a literal DAEMON. You decide to keep hoofing it."
 thing_list["bus"].list_name = "a bus waiting at the platform"
 
 thing_list["driverDaemon"] = Thing.Feature("driverDaemon", "daemon")
@@ -355,18 +358,19 @@ thing_list["driverDaemon"].alternate_names.extend(["driverDaemon"])
 thing_list["ticket"] = Thing.Ticket("ticket", "ticket")
 thing_list["ticket"].list_name = "a ticket"
 thing_list["ticket"].description = "Maybe a bus ticket, but you can't see it, because it's stuck in the vending terminal."
-thing_list["ticket"].alt_description = "A ticket for a bus. On the ticket it reads 'Serial Bus Lines, trip 600', origin GPU, destination CPU."
+thing_list["ticket"].alt_description = "A ticket for a bus. On the ticket it reads <WRITTEN_TEXT>'Serial Bus Lines, trip 600'</>, origin GPU, destination CPU."
 thing_list["ticket"].msg_blocked = "The ticket seems to be stuck far back in the dispensing slot, and you hear a mechanical whining sound. Maybe you can do something to dislodge it..."
+thing_list["ticket"].can_be_read = True
 
 thing_list["busTicketTerminal"] = Thing.VendingTerminal("busTicketTerminal", "terminal")
-thing_list["busTicketTerminal"].description = "A vending terminal for bus tickets. The screen reads 'Dispensing ticket...'. Below the screen is a dispensing slot. You can hear a whining noise coming from inside the terminal. Inside the dispensing slot you can see that a bus ticket is right at the edge but seems to be blocked."
+thing_list["busTicketTerminal"].description = "A vending terminal for bus tickets. The screen reads <DIGITAL_TEXT>'Dispensing ticket...'</>. Below the screen is a dispensing slot. You can hear a whining noise coming from inside the terminal. Inside the dispensing slot you can see that a bus ticket is right at the edge but seems to be blocked."
 thing_list["busTicketTerminal"].alt_description = "A vending terminal for bus tickets."
 thing_list["busTicketTerminal"].list_name = "a bus ticket vending terminal"
 thing_list["busTicketTerminal"].msg_rammed = "The whining sound coming from the terminal is replaced with the satisfying sound of a gear locking into place, followed by silence. The ticket has been dispensed!"
 thing_list["busTicketTerminal"].adjectives.extend(["vending"])
 
 thing_list["busSchedule"] = Thing.Sign("busSchedule", "schedule")
-thing_list["busSchedule"].description = "Bus to GPU: t=4; Bus to CPU: t=7."
+thing_list["busSchedule"].description = "<WRITTEN_TEXT>Bus to GPU: t=4; Bus to CPU: t=7.</>"
 thing_list["busSchedule"].list_name = "a bus schedule"
 
 #--------------------------------------------------------------------------
@@ -464,7 +468,7 @@ thing_list["cheese"].description = "The block of cheese smells quite potent."
 thing_list["cheese"].list_name = "some cheese"
 
 thing_list["freezer"] = Thing.Freezer("freezer", "freezer")
-thing_list["freezer"].description = "This strange device is labeled as a \"freezer\". " \
+thing_list["freezer"].description = "This strange device is labeled as a <WRITTEN_TEXT>\"freezer\"</>. " \
                                     "Is is making a grumbling sound, and cold air is pouring from it. " \
                                     "It is connected to a small platform on which is a chunk of ice. " \
                                     "It seems to be keeping it frozen."
@@ -902,9 +906,9 @@ thing_list["clockRoomDoor"].msg_unlock = "The shifty man opens the door for you.
 thing_list["clockRoomDoor"].msg_cannot_go = "Strangely you can't see any way to open this door yourself. "\
 					    "Maybe someone else can open it for you..."
 thing_list["clockRoomDoor"].alt_msg_cannot_go = "The shifty man blocks you from approaching the door. "\
-						"'I lost my friend, who I used to bounce all my ideas "\
+						"<SPOKEN_TEXT>'I lost my friend, who I used to bounce all my ideas "\
 						"off of. If you can find him for me, I'll open the door "\
-						"for you.'"
+						"for you.'</>"
 thing_list["clockRoomDoor"].has_dynamic_description = True
 thing_list["clockRoomDoor"].dynamic_description_text = "There is a door to the north."
 thing_list["officeDoor"] = Thing.BlockedDoor("officeDoor", "door")
@@ -936,7 +940,7 @@ room_list["roomA"].documentation = "Enter the tower at your own risk, you may fi
                                    "in an infinite loop. " \
                                    "To remedy this, you must discover who you are. " \
                                    "As with most journeys, you may want to start with a simple phrase: " \
-                                   "\"Hello World.\""
+                                   "<CLUE>\"Hello World.\"</>"
 
 
 # Creating roomB
@@ -986,11 +990,11 @@ room_list["roomE"].long_description = "You enter an enormous ballroom, which is 
 										"An elevator with shiny doors and a gold finish is on one end of the room. On the western wall is a door with a coin slot next to it. " \
 										"On the southern wall is a staircase leading down. There is a clock on the wall."
 room_list["roomE"].short_description = "You are in the ballroom."
-room_list["roomE"].documentation = "The art of programming starts at the keyboard. " \
+room_list["roomE"].documentation = "<WRITTEN_TEXT>The art of programming starts at the keyboard. " \
 									"Typing involves inputting text by pressing keys on a keyboard, which " \
 									"might be a computer keyboard, a graphical user interface, or anything with keys to be pressed. " \
 									"Typing is measured in words per minute (wpm). On average, programmers can type 50-70 wpm. " \
-									"However, a real PRO can type 90+ wpm!"
+									"However, a real PRO can type 90+ wpm!</>"
 
 # Creating room F
 room_list["roomF"] = Room.Room("roomF", "Customs Office")
@@ -998,7 +1002,7 @@ room_list["roomF"].long_description = "You are in a cluttered office. There is a
 										"A file cabinet sits next to the desk. A cardboard box sits on the floor next to the cabinet. " \
 										"Near the desk is a reader for reading punch cards. There is a clock on the wall. There is an elevator, and on the western wall a hallway with florescent lighting leads to the west. On the southern wall is a door with a lock on it."
 room_list["roomF"].short_description = "You are in the cluttered office."
-room_list["roomF"].documentation = "The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase 'Garbage in, garbage out!'"
+room_list["roomF"].documentation = "The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase <WRITTEN_TEXT>'Garbage in, garbage out!'</>"
 
 # Creating room G
 room_list["roomG"] = Room.BusStation("roomG", "Bus Station")
@@ -1036,7 +1040,7 @@ room_list["roomJ"].long_description = "You enter a room containing a large, hand
 				      "Across from you, on the north side of the room, there is a door. "
 room_list["roomJ"].short_description = "You are in the clock room."
 room_list["roomJ"].special_time.append(2)
-room_list["roomJ"].documentation = "Come to the Clock Room at 2."
+room_list["roomJ"].documentation = "On the relevant page of the Tome, you find a sticky note with a handwritten message: <WRITTEN_TEXT>Come to the Clock Room at 2</>."
 
 # Creating roomK
 room_list["roomK"] = Room.Room("roomK", "Cooling Room")
@@ -1046,7 +1050,7 @@ room_list[
     "This room is cold. Like extremely cold. You see tubes coming in and out of the walls " \
     "and ceiling that seem to be transporting some blue liquid. " \
     "On the south side of the room is what looks like a refrigerator. " \
-    "Against the west wall is a contraption labeled \"freezer\", next to which is a chunk of ice. Above the contraption, on the wall, is a clock." \
+    "Against the west wall is a contraption labeled <WRITTEN_TEXT>\"freezer\"</>, next to which is a chunk of ice. Above the contraption, on the wall, is a clock." \
     "There is a ramp ascending to the east, and a hallway leading north."
 room_list["roomK"].short_description = \
     "You are in a very cold room. " \
