@@ -264,6 +264,7 @@ thing_list["IOroomShreddings"].adjectives.extend(["paper"])
 thing_list["IOroomFiles"] = Thing.Item("IOroomFiles", "files")
 thing_list["IOroomFiles"].description = "Files. They appear to contain technical schematics. One of the documents is entitled, '<WRITTEN_TEXT>System and method for detecting and measuring discharge from males of bovine species and earthenware vessel for storing said discharge</>.'"
 thing_list["IOroomFiles"].list_name = "a bunch of files"
+thing_list["IOroomFiles"].can_be_read = True
 
 thing_list["IOroomDesk"] = Thing.Surface("IOroomDesk", "desk")
 thing_list["IOroomDesk"].description = "A cluttered desk. There is a drawer."
