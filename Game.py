@@ -192,7 +192,10 @@ class Game:
 					return thing_in_room
 				else:
 					default_thing = self.find_by_name(thing_name, self.thing_list)
-					say("You don't see {}.".format(default_thing.list_name))
+					if default_thing is not None:
+						say("You don't see {}.".format(default_thing.list_name))
+					else:
+						say("You don't see that.")
 					if self.player.current_room.id == "roomI"\
 					and self.player.current_room.is_lit == False:
 						say("But then again you can't really see much of anything...")	
