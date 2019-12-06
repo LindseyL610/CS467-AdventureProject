@@ -105,23 +105,15 @@ class Game:
 
 		self.keywords = set()
 
-		self.end_game = False
-
 		self.parser = parser_class.Parser(self)
 
 		#self.load_room_data()
 
 		self.game_loaded = self.load_menu(True)
 
-		self.new_room = True
-
 		self.direction_list = ["north", "east", "south", "west", "up", "down"]
 
 		self.find_by_name = find_by_name
-
-		self.new_load = False
-
-		self.game_over = False
 
 	def get_word_answer(self, prompt, answer):
 		# displays the prompt
@@ -476,6 +468,11 @@ class Game:
 
 		self.hints = 0
 
+		self.new_load = False
+		self.new_room = True
+		self.game_over = False
+		self.end_game = False
+
 	def advance_time(self):
 		time = self.game_time
 
@@ -610,7 +607,8 @@ class Game:
 
 		self.new_room = False
 		self.new_load = True
-
+		self.game_over = False
+		self.end_game = False
 
 	def save_game(self):
 		data = dict()
