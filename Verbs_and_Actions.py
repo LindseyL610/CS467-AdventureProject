@@ -30,7 +30,6 @@ class Verb():
 		#  This is a way to have "alternate names" for prepositions that can be specific to which verb is used.
 		self.supported_prepositions = {}
 
-		#TODO Come up with better general wording
 		self.msg_improper_use = "That is not how to use the command \"{}\".".format(self.name)
 
 	def execute(self, game, actionargs):
