@@ -103,8 +103,6 @@ class Game:
 		self.verb_list = verb_list
 		self.game_data = self.load_data_from_file(SAVES)
 
-		self.keywords = set()
-
 		self.parser = parser_class.Parser(self)
 
 		#self.load_room_data()
@@ -507,7 +505,6 @@ class Game:
 
 				id = data["id"]
 				name = data["name"]
-				self.keywords.add(name)
 
 				self.default_rooms[id] = data
 
@@ -519,7 +516,6 @@ class Game:
 
 				id = data["id"]
 				name = data["name"]
-				self.keywords.add(name)
 
 				self.room_list[id] = getattr(Room, type)(id, name)
 
@@ -544,7 +540,6 @@ class Game:
 			# get the object id (and add ID to ID index for color output)
 			id = data["id"]
 			name = data["name"]
-			self.keywords.add(name)
 
 			if self.default_things is not None:
 				self.default_things[id] = data
