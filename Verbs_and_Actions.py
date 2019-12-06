@@ -66,7 +66,7 @@ class Verb():
 verb_list = {}
 
 verb_list["look"] = Verb("look")
-verb_list["look"].alternate_names.extend(["examine", "inspect"])
+verb_list["look"].alternate_names.extend(["examine", "inspect", "glance"])
 verb_list["look"].supported_prepositions.update({"NONE":"NONE", "at":"NONE", "around":"NONE", "in":"in"})
 
 verb_list["read"] = Verb("read")
@@ -74,11 +74,11 @@ verb_list["read"].alternate_names.extend(["scan","interpret"])
 verb_list["read"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["take"] = Verb("take")
-verb_list["take"].alternate_names.extend(["grab", "pick"])
+verb_list["take"].alternate_names.extend(["grab", "pick", "collect", "acquire", "hold", "snatch"])
 verb_list["take"].supported_prepositions.update({"NONE":"NONE", "up":"NONE"})
 
 verb_list["drop"] = Verb("drop")
-verb_list["drop"].alternate_names.extend(["leave"])
+verb_list["drop"].alternate_names.extend(["leave", "dump", "unload", "release"])
 verb_list["drop"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["put"] = Verb("put")
@@ -86,15 +86,15 @@ verb_list["put"].alternate_names.extend(["place", "set", "store", "insert"])
 verb_list["put"].supported_prepositions.update({"on":"on", "in":"in", "into":"in", "inside":"in", "down":"down"})
 
 verb_list["give"] = Verb("give")
-verb_list["give"].alternate_names.extend([])
+verb_list["give"].alternate_names.extend(["hand"])
 verb_list["give"].supported_prepositions.update({"to":"to"})
 
 verb_list["pull"] = Verb("pull")
-verb_list["pull"].alternate_names.extend(["yank"])
+verb_list["pull"].alternate_names.extend(["yank", "tug"])
 verb_list["pull"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
 
 verb_list["go"] = Verb("go")
-verb_list["go"].alternate_names.extend(["walk", "run", "proceed"])
+verb_list["go"].alternate_names.extend(["walk", "run", "proceed", "travel", "move", "proceed", "hop", "skip", "jump", "wander", "exit"])
 verb_list["go"].supported_prepositions.update(
 	{"NONE":"NONE", "in":"NONE", "into":"NONE", "through":"NONE", "up":"NONE", "down":"NONE"})
 
@@ -106,6 +106,7 @@ verb_list["open"] = Verb("open")
 verb_list["open"].supported_prepositions.update({"NONE":"NONE", "up":"NONE"})
 
 verb_list["close"] = Verb("close")
+verb_list["close"].alternate_names.extend(["shut"])
 verb_list["close"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["call"] = Verb("call")
@@ -113,6 +114,7 @@ verb_list["call"].alternate_names.extend(["cast"])
 verb_list["call"].supported_prepositions.update({"NONE":"NONE", "on":"NONE"})
 
 verb_list["eat"] = Verb("eat")
+verb_list["eat"].alternate_names.extend(["bite", "nibble", "consume", "munch", "chew", "devour"])
 verb_list["eat"].supported_prepositions.update({"NONE":"NONE"})
 
 verb_list["drink"] = Verb("drink")
