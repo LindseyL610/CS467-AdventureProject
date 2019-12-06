@@ -1,1 +1,31 @@
-{"type": "Room", "data": {"id": "roomD", "name": "Mouse Pad", "long_description": "As you enter the room, the first thing you notice is the pungent smell. You are startled to see in the corner... a huge mouse! Scattered about the floor is bits of hay and... debris. This appears to be the mouse's... dwelling. It looks like there may be some kind of lever on the wall, but the mouse is in the way. The rest of the room is empty with walls made of large stone bricks with a clock on one of the walls. On the west wall, some of the bricks appear discolored. There is a hallway to the south, and stairs ascending to the north.", "short_description": "The floor is covered in hay and debris. There is a hallway to the south, and stairs ascending to the north.", "exits": {"south": "<T:mousepadHallway>", "west": "<T:secretWall>", "north": "<T:mousepadStairs>", "up": "<T:mousepadStairs>"}, "has_been_visited": false, "contents": ["<T:universalClock>", "<T:hungryMouse>", "<T:lever>"], "msg_cannot_go_direction": "You cannot go that direction.", "msg_nothing_happens": "Nothing happens.", "documentation": "The Bleu Tooth wireless standard allows for communication with a wide variety of devices, including keyboards, mice, headphones, and wearable devices, among others.", "msg_already_pro": "You are already feeling the effects of the pro function.", "msg_pro": "Your speed and coordination increase!", "msg_dance": "You dance. Nothing happens.", "msg_sit": "You sit on the ground... You decide it's pretty uncomfortable and stand back up.", "hints": [], "used_hints": 0}}
+{
+	"type": "Room",
+	"data": {
+		"id": "roomD",
+		"name": "Mouse Pad",
+		"long_description": "As you enter the room, the first thing you notice is the pungent smell. You are startled to see in the corner... a huge mouse! Scattered about the floor is bits of hay and... debris. This appears to be the mouse's... dwelling. It looks like there may be some kind of lever on the wall, but the mouse is in the way. The rest of the room is empty with walls made of large stone bricks with a clock on one of the walls. On the west wall, some of the bricks appear discolored. There is a hallway to the south, and stairs ascending to the north.",
+		"short_description": "The floor is covered in hay and debris. There is a hallway to the south, and stairs ascending to the north.",
+		"exits": {
+			"south": "<T:mousepadHallway>",
+			"west": "<T:secretWall>",
+			"north": "<T:mousepadStairs>",
+			"up": "<T:mousepadStairs>"
+		},
+		"has_been_visited": false,
+		"contents": [
+			"<T:universalClock>",
+			"<T:hungryMouse>",
+			"<T:lever>"
+		],
+		"msg_cannot_go_direction": "You cannot go that direction.",
+		"msg_nothing_happens": "Nothing happens.",
+		"documentation": "The Bleu Tooth wireless standard allows for communication with a wide variety of devices, including keyboards, mice, headphones, and wearable devices, among others.",
+		"msg_already_pro": "You are already feeling the effects of the pro function.",
+		"msg_pro": "Your speed and coordination increase!",
+		"msg_dance": "You dance. Nothing happens.",
+		"msg_sit": "You sit on the ground... You decide it's pretty uncomfortable and stand back up.",
+		"hints": [
+		],
+		"used_hints": 0
+	}
+}

@@ -1,1 +1,36 @@
-{"type": "BusStation", "data": {"id": "roomG", "name": "Bus Station", "long_description": "You are in... a bus station? Isn't this a tower? Nonetheless, there is a bus platform with sixteen parallel bus lanes that start on one end of the station and run together to the other end. At both ends, the lanes disappear into darkness. There is a ticket vending terminal on the platform and a bus schedule hanging on a post near the terminal. There is a clock on the wall. A ramp leading up is to the south, and there is a hallway leading east.", "short_description": "You are in the bus station.", "exits": {"east": "<T:busHallway>", "south": "<T:busRamp>", "up": "<T:busRamp>"}, "has_been_visited": false, "contents": ["<T:universalClock>", "<T:busTicketTerminal>", "<T:busSchedule>"], "msg_cannot_go_direction": "You cannot go that direction.", "msg_nothing_happens": "Nothing happens.", "documentation": "Transporting bits from one place to another on a common bus can be a complex task. System components must be synchronized so that transmission via the bus occurs with the expected data at the expected <CLUE>time</><WRITTEN_TEXT>.", "msg_already_pro": "You are already feeling the effects of the pro function.", "msg_pro": "Your speed and coordination increase!", "msg_dance": "You dance. Nothing happens.", "msg_sit": "You sit on the ground... You decide it's pretty uncomfortable and stand back up.", "hints": [], "used_hints": 0, "special_time": [4, 7], "bus": "<T:busLocked>", "daemon": "<T:driverDaemon>"}}
+{
+	"type": "BusStation",
+	"data": {
+		"id": "roomG",
+		"name": "Bus Station",
+		"long_description": "You are in... a bus station? Isn't this a tower? Nonetheless, there is a bus platform with sixteen parallel bus lanes that start on one end of the station and run together to the other end. At both ends, the lanes disappear into darkness. There is a ticket vending terminal on the platform and a bus schedule hanging on a post near the terminal. There is a clock on the wall. A ramp leading up is to the south, and there is a hallway leading east.",
+		"short_description": "You are in the bus station.",
+		"exits": {
+			"east": "<T:busHallway>",
+			"south": "<T:busRamp>",
+			"up": "<T:busRamp>"
+		},
+		"has_been_visited": false,
+		"contents": [
+			"<T:universalClock>",
+			"<T:busTicketTerminal>",
+			"<T:busSchedule>"
+		],
+		"msg_cannot_go_direction": "You cannot go that direction.",
+		"msg_nothing_happens": "Nothing happens.",
+		"documentation": "Transporting bits from one place to another on a common bus can be a complex task. System components must be synchronized so that transmission via the bus occurs with the expected data at the expected <CLUE>time</><WRITTEN_TEXT>.",
+		"msg_already_pro": "You are already feeling the effects of the pro function.",
+		"msg_pro": "Your speed and coordination increase!",
+		"msg_dance": "You dance. Nothing happens.",
+		"msg_sit": "You sit on the ground... You decide it's pretty uncomfortable and stand back up.",
+		"hints": [
+		],
+		"used_hints": 0,
+		"special_time": [
+			4,
+			7
+		],
+		"bus": "<T:busLocked>",
+		"daemon": "<T:driverDaemon>"
+	}
+}

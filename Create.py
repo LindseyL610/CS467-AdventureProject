@@ -1,3 +1,8 @@
+# NOTE: Create.py is a script that was used in development to automate creation of the data files
+# This script does not execute at any point while the game is running, nor does the Game.py file
+# require this file to run. We are including this script to fully demonstrate our development process.
+
+
 from Utilities import say
 import Utilities
 import Thing

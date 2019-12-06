@@ -1,1 +1,30 @@
-{"type": "Room", "data": {"id": "roomP5", "name": "Manager's Office.", "long_description": "You walk into a clean and well furnished office. There is a gorgeous desk, with a nameplate and computer on it. There is a door to the south and a clock hanging on the wall.", "short_description": "This is a nice looking office. There is a door to the south.", "exits": {"south": "<T:officeDoor>"}, "has_been_visited": false, "contents": ["<T:universalClock>", "<T:puzzle5Desk>"], "msg_cannot_go_direction": "You cannot go that direction.", "msg_nothing_happens": "Nothing happens.", "documentation": "This is the office of the Password Manager. The manager is known to make several typos.", "msg_already_pro": "You are already feeling the effects of the pro function.", "msg_pro": "Your speed and coordination increase!", "msg_dance": "You dance. Nothing happens.", "msg_sit": "You sit on the ground... You decide it's pretty uncomfortable and stand back up.", "hints": ["Every character in the incorrect passwords are \"off-by-one\" key", "The passwords were entered on a standard US QWERTY keyboard", "Look the the first letter of every password, and find a key on the computer keyboard that is adjacent to all of them; this was the intended letter. Repeat for all letters."], "used_hints": 0}}
+{
+	"type": "Room",
+	"data": {
+		"id": "roomP5",
+		"name": "Manager's Office.",
+		"long_description": "You walk into a clean and well furnished office. There is a gorgeous desk, with a nameplate and computer on it. There is a door to the south and a clock hanging on the wall.",
+		"short_description": "This is a nice looking office. There is a door to the south.",
+		"exits": {
+			"south": "<T:officeDoor>"
+		},
+		"has_been_visited": false,
+		"contents": [
+			"<T:universalClock>",
+			"<T:puzzle5Desk>"
+		],
+		"msg_cannot_go_direction": "You cannot go that direction.",
+		"msg_nothing_happens": "Nothing happens.",
+		"documentation": "This is the office of the Password Manager. The manager is known to make several typos.",
+		"msg_already_pro": "You are already feeling the effects of the pro function.",
+		"msg_pro": "Your speed and coordination increase!",
+		"msg_dance": "You dance. Nothing happens.",
+		"msg_sit": "You sit on the ground... You decide it's pretty uncomfortable and stand back up.",
+		"hints": [
+			"Every character in the incorrect passwords are \"off-by-one\" key",
+			"The passwords were entered on a standard US QWERTY keyboard",
+			"Look the the first letter of every password, and find a key on the computer keyboard that is adjacent to all of them; this was the intended letter. Repeat for all letters."
+		],
+		"used_hints": 0
+	}
+}
