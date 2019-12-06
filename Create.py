@@ -163,6 +163,7 @@ thing_list["hungryMouse"].is_listed = False
 thing_list["hungryMouse"].has_dynamic_description = True
 thing_list["hungryMouse"].dynamic_description_text = "There is a large mouse sitting against the wall, " \
                                                      "and a lever behind it."
+thing_list["hungryMouse"].can_receive = True
 
 
 # Creating eatingMouse
@@ -172,6 +173,7 @@ thing_list["eatingMouse"].is_listed = False
 thing_list["eatingMouse"].has_dynamic_description = True
 thing_list["eatingMouse"].dynamic_description_text = "There is a large mouse eating in the corner. " \
                                                      "A lever is on the wall. "
+thing_list["eatingMouse"].can_receive = True
 
 # Creating lever
 thing_list["lever"] = Thing.Lever("lever", "lever")
