@@ -471,10 +471,6 @@ thing_list["cheese"].description = "This large block of Bleu cheese smells quite
 thing_list["cheese"].list_name = "a piece of cheese"
 
 thing_list["freezer"] = Thing.Freezer("freezer", "freezer")
-# thing_list["freezer"].description = "This strange device is labeled as a \"<WRITTEN_TEXT>freezer</>\". " \
-#                                     "Is is making a grumbling sound, and cold air is pouring from it. " \
-#                                     "It is connected to a small platform on which is a chunk of ice. " \
-#                                     "It seems to be keeping it frozen."
 
 
 thing_list["frozenLaptop"] = Thing.Feature("frozenLaptop", "ice")
@@ -572,9 +568,9 @@ thing_list["puzzle3Table"].description = "A long table extending the length of t
 thing_list["puzzle3Catalog"] = Thing.Item("puzzle3Catalog", "catalog")
 thing_list["puzzle3Catalog"].can_be_taken = False
 thing_list["puzzle3Catalog"].description = "This is a catalog listing all of the books previously checked out. " \
-                                           "Recently, someone searched for several intersting books. " \
-                                           "Clearly they were searching for some forbiddon knowledge. " \
-                                           "Here are the recent rentals: \n" \
+                                           "Recently, someone searched for several interesting books. " \
+                                           "Clearly they were seeking some forbidden knowledge. " \
+                                           "Here is the recent search history: \n" \
                                            "<WRITTEN_TEXT>[*5] Construction worker wears this (4 3) \n" \
                                            "[*4] Do this while carrying a big stick (5 6) \n" \
                                            "[*5] Less dense ice cream (4 5) \n" \
@@ -954,7 +950,7 @@ room_list["roomA"].documentation = "Enter the tower at your own risk, you may fi
                                    "in an infinite loop. " \
                                    "To remedy this, you must discover who you are. " \
                                    "As with most journeys, you may want to start with a simple phrase: " \
-                                   "\"<CLUE>Hello World</>.\""
+                                   "<CLUE>Hello World</><WRITTEN_TEXT>."
 room_list["roomA"].hints = ["The phrase to enter on the keypad is found by reading the book."]
 
 
@@ -985,7 +981,7 @@ room_list["roomC"].long_description = "You step into a small room. "\
 				      "A large locker stands against the wall next to the desk. "\
 				      "On the north side of the room, you see a dark hallway. There is a clock on the wall."
 room_list["roomC"].short_description = "You are in the utility room. "
-room_list["roomC"].documentation = "<WRITTEN_TEXT>Looking to the past often provides the best solutions to problems in the present.</>"
+room_list["roomC"].documentation = "Looking to the past often provides the best solutions to problems in the present."
 
 
 # Creating roomD
@@ -1013,11 +1009,11 @@ room_list["roomE"].long_description = "You enter an enormous ballroom, which is 
 										"An elevator with shiny doors and a gold finish is on one end of the room. On the western wall is a door with a coin slot next to it. " \
 										"On the southern wall is a staircase leading down. There is a clock on the wall."
 room_list["roomE"].short_description = "You are in the ballroom."
-room_list["roomE"].documentation = "<WRITTEN_TEXT>The art of programming starts at the keyboard. " \
+room_list["roomE"].documentation = "The art of programming starts at the keyboard. " \
 									"Typing involves inputting text by pressing keys on a keyboard, which " \
 									"might be a computer keyboard, a graphical user interface, or anything with keys to be pressed. " \
 									"Typing is measured in words per minute (wpm). On average, programmers can type 50-70 wpm. " \
-									"However, a real PRO can type 90+ wpm!</>"
+									"However, a real PRO can type 90+ wpm!"
 
 # Creating room F
 room_list["roomF"] = Room.Room("roomF", "Customs Office")
@@ -1025,13 +1021,13 @@ room_list["roomF"].long_description = "You are in a cluttered office. There is a
 										"A file cabinet sits next to the desk. A cardboard box sits on the floor next to the cabinet. " \
 										"Near the desk is a reader for reading punch cards. There is a clock on the wall. There is an elevator, and on the western wall a hallway with florescent lighting leads to the west. On the southern wall is a door with a lock on it."
 room_list["roomF"].short_description = "You are in the cluttered office."
-room_list["roomF"].documentation = "The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase <WRITTEN_TEXT>'Garbage in, garbage out!'</>"
+room_list["roomF"].documentation = "</>The relevant page is ripped out except for a small triangular portion on the bottom containing the phrase <WRITTEN_TEXT>'Garbage in, garbage out!'"
 
 # Creating room G
 room_list["roomG"] = Room.BusStation("roomG", "Bus Station")
 room_list["roomG"].long_description = "You are in... a bus station? Isn't this a tower? Nonetheless, there is a bus platform with sixteen parallel bus lanes that start on one end of the station and run together to the other end. At both ends, the lanes disappear into darkness. There is a ticket vending terminal on the platform and a bus schedule hanging on a post near the terminal. There is a clock on the wall. A ramp leading up is to the south, and there is a hallway leading east."
 room_list["roomG"].short_description = "You are in the bus station."
-room_list["roomG"].documentation = "<WRITTEN_TEXT>Transporting bits from one place to another on a common bus can be a complex task. System components must be synchronized so that transmission via the bus occurs with the expected data at the expected <CLUE>time<WRITTEN_TEXT>.</>"
+room_list["roomG"].documentation = "Transporting bits from one place to another on a common bus can be a complex task. System components must be synchronized so that transmission via the bus occurs with the expected data at the expected <CLUE>time</><WRITTEN_TEXT>."
 
 # Creating room H
 room_list["roomH"] = Room.Room("roomH", "Web Room")
@@ -1063,7 +1059,7 @@ room_list["roomJ"].long_description = "You enter a room containing a large, hand
 				      "Across from you, on the north side of the room, there is a door. "
 room_list["roomJ"].short_description = "You are in the clock room."
 room_list["roomJ"].special_time.append(2)
-room_list["roomJ"].documentation = "On the relevant page of the Tome, you find a sticky note with a handwritten message: <WRITTEN_TEXT>Meet here at <CLUE>t=2<WRITTEN_TEXT>!</>."
+room_list["roomJ"].documentation = "</>On the relevant page of the Tome, you find a sticky note with a handwritten message: <WRITTEN_TEXT>Meet here at </><CLUE>t=2</><WRITTEN_TEXT>!."
 
 # Creating roomK
 room_list["roomK"] = Room.Room("roomK", "Cooling Room")
@@ -1163,7 +1159,7 @@ room_list["roomP4"].short_description = \
     "There is a large mechanical system in this room. " \
     "There is a door to the west. "
 room_list["roomP4"].documentation = "In this processing plant, finding the system status should be " \
-                                    "as easy as 1, 2, 3 -> A, B, C!"
+                                    "as easy as </><CLUE>1, 2, 3 -> A, B, C</><WRITTEN_TEXT>!"
 room_list["roomP4"].hints = [
     "Interpret the error message from each processor as a number.",
     "The name of each processor is a clue as to how to interpret it’s number.",

@@ -1103,7 +1103,7 @@ class MetaPuzzleInput(Input):
 			"Correct! More text appears on the screen: \n" \
 			"<DIGITAL_TEXT>Now you should have learned something about yourself. What are you?</>"
 		self.msg_correct_answer2 = \
-			"The Mother DAEMON look at you and silently nods. She comes over and guides your hands on the keyboard. " \
+			"The Mother DAEMON looks at you and silently nods. She comes over and guides your hands on the keyboard. " \
 			"You press Control... then Alt... then Delete. Everything goes black.\n" \
 			"When you come to, you find yourself sitting in front of your computer at home. " \
 			"You have escaped the tower! And now you have a craving for cheese..."
@@ -1483,10 +1483,10 @@ class MotherDaemon(Feature):
 		super().__init__(id, name)
 		self.talk_msg = \
 			"<SPOKEN_TEXT>Greetings. I am the mother of the DAEMON's. " \
-			"You've arrived here </><CLUE>due to motions</><SPOKEN_TEXT> out of your control. " \
-			"It is surprising you have made it this far- a great </><CLUE>application</><SPOKEN_TEXT> of your skills. " \
-			"I hope you are </><CLUE>quite pleased</><SPOKEN_TEXT>. " \
-			"You may be upset, and you might think that revenge is a </><CLUE>small dish</><SPOKEN_TEXT> best served cold. " \
+			"You've arrived here <CLUE>due to motions<SPOKEN_TEXT> out of your control. " \
+			"It is surprising you have made it this far- a great <CLUE>application<SPOKEN_TEXT> of your skills. " \
+			"I hope you are <CLUE>quite pleased<SPOKEN_TEXT>. " \
+			"You may be upset, and you might think that revenge is a <CLUE>small dish<SPOKEN_TEXT> best served cold. " \
 			"But hopefully by now you have at least learned what you truly are...</>"
 
 	def get_status(self, type=None):
