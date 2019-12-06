@@ -162,7 +162,7 @@ class Thing:
 	def look(self, game, actionargs):
 		cannot_see = False
 	
-		if  game.player.current_room.name == "Dark Web":
+		if  game.player.current_room.name == "Dark Web Room":
 			if not game.player.current_room.is_lit\
 			and self.name != "cobwebs":
 				cannot_see = True
