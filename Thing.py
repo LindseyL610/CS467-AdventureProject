@@ -240,14 +240,18 @@ class Thing:
 		if not self.can_be_dropped:
 			say(self.msg_cannot_drop)
 		else:
-			storage_object = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			storage_object = Utilities.find_by_name(actionargs["iobj"], game.player.current_room.get_all_accessible_contents())
+			if storage_object == None:
+				storage_object = Utilities.find_by_name(actionargs["iobj"],game.player.inventory)
 			storage_object.receive_item(game, self, "in")
 
 	def put_on(self, game, actionargs):
 		if not self.can_be_dropped:
 			say(self.msg_cannot_drop)
 		else:
-			storage_object = Utilities.find_by_name(actionargs["iobj"], game.thing_list)
+			storage_object = Utilities.find_by_name(actionargs["iobj"], game.player.current_room.get_all_accessible_contents())
+			if storage_object == None:
+				storage_object = Utilities.find_by_name(actionargs["iobj"],game.player.inventory)
 			storage_object.receive_item(game, self, "on")
 
 	def pull(self, game, actionargs):
